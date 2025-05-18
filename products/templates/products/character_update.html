@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Edit Character: {{ object.title }}
+{% endblock %}
+
+{% block content %}
+    <!-- Edit Form -->
+    <form method="POST" action="{% url 'character-update' object.pk %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+    {% if new_character %}
+        <h2>Character Updated Successfully!</h2>
+
+        <h3>Generated Image</h3>
+        <img src="{{ new_character.image_url }}" alt="Character Image" style="max-width: 100%; height: auto;" />
+    {% endif %}
+
+    <br>
+    <a href="{% url 'character-list' %}" class="btn btn-secondary">Back to Characters List</a>
+{% endblock %}

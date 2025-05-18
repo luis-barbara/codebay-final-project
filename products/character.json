@@ -1,0 +1,29 @@
+{
+    "character": {
+      "name": "John Cena",  
+      "gender": "male",
+      "age": 30,
+      "skin": "light",
+      "ethnicity": "Caucasian",
+      "eye_color": "brown",
+      "hair_color": "brown",
+      "hair_style": "short and well-groomed",
+      "clothing": "light blue shirt and dark jeans",
+      "clothing_style": "casual",
+      "accessories": ["wristwatch", "sunglasses"],
+      "expression": "confident",
+      "pose": "facing forward, upright posture",
+      "lighting": "soft and diffuse",
+      "additional_details": "no background, ultra-realistic",
+      
+      "image_details": {
+        "image_type": "photorealistic",
+        "style": "realistic",
+        "texture": "smooth and soft",
+        "dominant_colors": "neutral",
+        "contrast": "moderate",
+        "shading": "soft"
+      }
+    }
+  }
+  

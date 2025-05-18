@@ -1,0 +1,31 @@
+services:
+
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: poetry run uvicorn codebay.asgi:application --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    volumes:
+      - ./:/app/
+    depends_on:
+      - db
+    
+  db:
+    image: postgres:17-alpine
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - 8080:8080
+
+  
+
+

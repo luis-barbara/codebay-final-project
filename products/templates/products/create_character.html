@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Your Character
+{% endblock %}
+
+{% block menu %}
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        <h1>Create Your Character</h1>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <!-- Button to view all characters at the top -->
+    <form action="{% url 'character-list' %}">
+        <button type="submit">View All Characters</button>
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Character</button>
+    </form>
+
+    {% if new_character %}
+        <h2>Character Created Successfully!</h2>
+
+        <h3>Generated Image</h3>
+        <img src="{{ new_character.image_url }}" alt="Character Image" style="max-width: 100%; height: auto;" />
+    {% endif %}
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

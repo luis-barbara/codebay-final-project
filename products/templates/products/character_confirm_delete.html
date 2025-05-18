@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Are you sure you want to delete the character "{{ object.title }}"?</h1>
+  
+  <p>This action cannot be undone.</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+  </form>
+
+  <br>
+  <a href="{% url 'character-list' %}" class="btn btn-secondary">Cancel</a>
+{% endblock %}
+

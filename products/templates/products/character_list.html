@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Your Characters
+{% endblock %}
+
+{% block menu %}
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <a href="{% url 'character-create' %}">
+        <button>Create New Character</button>
+    </a>
+
+    <h1>Your Characters</h1>
+    
+    <ul>
+        {% for character in characters %}
+            <li>
+                <h3>{{ character.title }}</h3>
+
+                <!-- Edit Button -->
+                <a href="{% url 'character-update' character.pk %}" class="btn-edit">
+                    <button>Edit</button>
+                </a>
+
+                <!-- Delete Form -->
+                <a href="{% url 'character-delete' character.pk %}" class="btn-delete">
+                    <button>Delete</button>
+                </a>
+            </li>
+        {% empty %}
+            <li>You have no characters yet.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

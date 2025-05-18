@@ -1,0 +1,30 @@
+[project]
+name = "codebay-final-project"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "luis-barbara",email = "luis.carlos.barbara@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django (>=5.1.7,<6.0.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "openai (>=1.68.2,<2.0.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "whitenoise (>=6.9.0,<7.0.0)",
+    "typer (>=0.15.2,<0.16.0)", 
+]
+
+[tool.poetry]
+packages = [{include = "codebay"}]
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-django = "^4.10.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
