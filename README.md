@@ -24,7 +24,7 @@ A marketplace to buy and sell digital assets
 │   ├── __init__.py
 │   ├── admin.py                                # Django Admin configuration
 │   ├── apps.py                                 # Application configuration
-│   ├── character.json                          # Sample data for testing/populating database
+│   ├── product.json                            # Sample data for testing database
 │   ├── forms.py                                # Form handling logic
 │   ├── stripe_service.py                       # Stripe payment logic
 │   ├── getstream_service.py                    # GetStream messaging logic
