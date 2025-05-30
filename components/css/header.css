@@ -14,7 +14,7 @@ body {
 
 .header-content {
   width: 100%;
-  max-width: 1400px;
+  max-width: 2160px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -28,8 +28,8 @@ body {
 }
 
 .logo-wrapper {
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   overflow: hidden;
   background-color: white;
@@ -39,8 +39,8 @@ body {
 }
 
 .logo {
-  width: 120%; /* zoom */
-  height: 120%;
+  width: 150%; 
+  height: 150%;
   object-fit: cover;
 }
 
