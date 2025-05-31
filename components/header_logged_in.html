@@ -5,75 +5,7 @@
     <meta charset="UTF-8">
     <title>Header</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            /* só para contraste com o header */
-        }
-
-        header {
-            background-color: #0D1116;
-            color: #c8c9cd;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .left-section,
-        .right-section {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-circle {
-            background-color: white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-circle img {
-            width: 24px;
-            height: 24px;
-        }
-
-        .menu-icon,
-        .icon {
-            width: 24px;
-            height: 24px;
-            fill: #c8c9cd;
-            cursor: pointer;
-
-        }
-
-
-
-        .avatar {
-            background-color: #c8c9cd;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .hamburger {
-            padding: 3px 3px 0px 3px;
-            border: 0.6px solid #c8c9cd;
-            border-radius: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/header_logged_in.css">
 </head>
 
 <body>
@@ -81,23 +13,33 @@
     <header>
         <div class="left-section">
             <div class="hamburger">
-                <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" color="#000000">
+                <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="#c8c9cd" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
                 </svg>
             </div>
             <div class="logo-container">
                 <div class="logo-circle">
-                    <img src="logo.png" alt="Logo">
+                    <img src="images/logo.png" alt="Logo" class="logo">
                 </div>
-                <span style="color: white; font-weight: bold;">CodeBay</span>
+                <span class="brand">CodeBay</span>
             </div>
         </div>
 
         <div class="right-section">
-            <i class="fa-solid fa-message" style="font-size: 20px; color: #c8c9cd;"></i>
-            <i class="fa-solid fa-bell" style="font-size: 20px; color: #c8c9cd;"></i>
-            <i class="fa-solid fa-cart-shopping" style="font-size: 20px; color: #c8c9cd;"></i>
-            <div class="avatar"></div>
+            <div class="icons_box">
+                <div class="icons">
+                    <i class="fa-solid fa-message"></i>
+                </div>
+                <div class="icons">
+                <i class="fa-solid fa-bell" class="icons" style="margin-bottom: 2px;"></i>
+                </div>
+                <div class="icons">
+                <i class="fa-solid fa-cart-shopping" class="icons" style="margin-bottom: 2px;"></i>
+                </div>
+            </div>
+            <div class="logo-circle">
+                <img src="images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="avatar" class="avatar">
+            </div>
         </div>
     </header>
 

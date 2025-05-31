@@ -4,62 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Footer</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    footer {
-      background-color: #0D1116;
-      color: #c8c9cd;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-    }
-
-    .footer-content {
-      display: flex;
-      align-items: center;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 30px;
-    }
-
-    .footer-links a {
-      color: #c8c9cd;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .footer-links a:hover {
-      text-decoration: underline;
-    }
-
-    .logo-icon {
-      width: 60px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
 
 <footer>
   <div class="footer-content">
     <div class="footer-logo">
-      <img src="logo-codebay_footer.webp" alt="Logo" class="logo-icon">
-      <span>© 2025 CodeBay - all rights reserved</span>
+      <img src="images/logo-codebay_footer.webp" alt="Logo" class="logo-icon">
+      <span id="copyright-year"></span>
     </div>
     <div class="footer-links">
       <a href="#">Support</a>
@@ -72,4 +25,5 @@
 </footer>
 
 </body>
+  <script src="js/footer.js"></script>
 </html>
