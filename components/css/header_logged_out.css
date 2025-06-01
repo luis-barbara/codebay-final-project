@@ -1,8 +1,3 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #0d1116;
-}
 
 .header {
   background-color: #020408;
@@ -26,7 +21,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-left: 32px;
+
 }
 
 .logo-wrapper {
@@ -54,7 +49,8 @@ body {
 .brand {
   color: white;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .brand:hover {
@@ -67,7 +63,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-right: 32px;
+
 }
 
 .signin {

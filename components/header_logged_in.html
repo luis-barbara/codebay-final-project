@@ -1,48 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Header</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/header_logged_in.css">
-</head>
-
-<body>
-
-    <header>
-        <div class="left-section">
-            <div class="hamburger">
-                <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path fill="#c8c9cd" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
-                </svg>
-            </div>
-            <div class="logo-container">
-                <div class="logo-circle">
-                    <img src="images/logo.png" alt="Logo" class="logo">
-                </div>
-                <span class="brand">CodeBay</span>
-            </div>
+<div class="header">
+    <div class="left-section">
+        <div class="hamburger">
+            <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="#c8c9cd" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+            </svg>
         </div>
+        <div class="logo-container">
+            <a class="logo-circle" href="index.html">
+                <img src="../components/images/logo.png" alt="Logo" class="logo">
+            </a>
+            <a class="brand" href="index.html">CodeBay</a>
+        </div>
+    </div>
 
-        <div class="right-section">
-            <div class="icons_box">
-                <div class="icons">
-                    <i class="fa-solid fa-message"></i>
-                </div>
-                <div class="icons">
+    <div class="right-section">
+        <div class="icons_box">
+            <div class="icons">
+                <i class="fa-solid fa-message"></i>
+            </div>
+            <div class="icons">
                 <i class="fa-solid fa-bell" class="icons" style="margin-bottom: 2px;"></i>
-                </div>
-                <div class="icons">
-                <i class="fa-solid fa-cart-shopping" class="icons" style="margin-bottom: 2px;"></i>
-                </div>
             </div>
-            <div class="logo-circle">
-                <img src="images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="avatar" class="avatar">
+            <div class="icons">
+                <i class="fa-solid fa-cart-shopping" class="icons" style="margin-bottom: 2px;"></i>
             </div>
         </div>
-    </header>
-
-</body>
-
-</html>
+        <div class="logo-circle">
+            <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="avatar" class="avatar">
+        </div>
+    </div>
+</div>
