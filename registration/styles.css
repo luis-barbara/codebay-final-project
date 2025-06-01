@@ -112,7 +112,6 @@
   .modal {
     display: none;
     position: fixed;
-    z-index: 100;
     left: 0;
     top: 0;
     width: 100%;
@@ -122,7 +121,7 @@
   
   .modal-content {
     background-color: var(--card-bg);
-    margin: 6% auto;
+    margin: 5% auto;
     padding: 2rem;
     border: 1px solid var(--border-color);
     border-radius: 1rem;
@@ -130,13 +129,15 @@
     max-width: 400px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
   }
   
   .modal-title {
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     text-align: center;
   }
   
@@ -158,9 +159,9 @@
     background-color: #0f172a;
     border: 1px solid #334155;
     border-radius: 0.75rem;
-    padding: 2.5rem 2rem;
+    padding: 2rem;
     max-width: 600px;
-    height: 500px;
+    height: auto;
     margin: 6% auto;
     text-align: center;
   }
@@ -169,7 +170,7 @@
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 4rem;
+    margin: 2rem;
   }
   
   input::placeholder {
@@ -200,7 +201,7 @@
     color: var(--text-primary);
     font-size: 1rem;
     text-align: left;
-    margin-left: 10%; 
+    margin-left: 9%; 
     margin-top: 5%;
     
   }
@@ -214,6 +215,7 @@
     background-color: var(--dark-bg);
     color: var(--text-primary);
     transition: border-color 0.3s ease;
+    
   }
   
   input:focus {
@@ -231,32 +233,71 @@
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%;
+    width: 50%;
+    margin-top: 4%;
   }
   
   .btn-primary:hover {
     background-color: var(--primary-hover);
   }
   
-  .remember-forgot {
+  .forgot-password {
+    color: var(--primary-color);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-end;
+    align-items: right;
     margin: 1.5rem 0 0.5rem 0;
   }
-  
-  .remember-me {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .remember-me input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-    accent-color: var(--primary-color);
-  }
-  
+ 
+  .social-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #ccc;
+}
+
+.social-divider hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #444;
+}
+
+.social-divider span {
+  margin: 0 0.5rem;
+  font-size: 0.85rem;
+}
+
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-social {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #666;
+  border-radius: 6px;
+  padding: 0.6rem;
+  cursor: pointer;
+  width: 50%;
+  transition: background 0.2s ease;
+}
+
+.btn-social:hover {
+  background-color: var(--darker-bg);
+}
+
+.btn-social.github {
+  border-color: var(--border-color);
+}
+
+.btn-social.google {
+  border-color: var(--border-color);
+}
+
   #forgotPassword {
     color: var(--primary-color);
     text-decoration: none;
@@ -269,7 +310,7 @@
     color: var(--primary-hover);
   }
   
-  /* Footer styles */
+
   footer {
     background-color: var(--darker-bg);
     padding: 2rem;
@@ -287,4 +328,15 @@
   footer a:hover {
     color: var(--primary-hover);
   }
-  
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Make sure the form fits well on smaller screens */
+@media (max-height: 700px) {
+    .form-card {
+        margin: 2% auto;
+        padding: 1.5rem;
+    }
+}

@@ -20,16 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     closeButtons.forEach(button => {
         button.addEventListener('click', function() {
-            signInModal.style.display = 'none';
-            signUpModal.style.display = 'none';
+            if (signInModal) signInModal.style.display = 'none';
+            if (signUpModal) signUpModal.style.display = 'none';
         });
     });
 
     window.addEventListener('click', function(e) {
-        if (e.target === signInModal) {
+        if (signInModal && e.target === signInModal) {
             signInModal.style.display = 'none';
         }
-        if (e.target === signUpModal) {
+        if (signUpModal && e.target === signUpModal) {
             signUpModal.style.display = 'none';
         }
     });
@@ -69,6 +69,41 @@ document.addEventListener('DOMContentLoaded', function() {
             draggable: true
         });
     });
+
+    document.getElementById('forgotPassword').addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Reset Password',
+            html: `
+                <p>Enter your email to receive a password reset link:</p>
+                <input type="email" id="resetEmail" class="swal2-input" placeholder="Your email">
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Send Link',
+            cancelButtonText: 'Cancel',
+            focusConfirm: false,
+            preConfirm: () => {
+                const email = Swal.getPopup().querySelector('#resetEmail').value;
+                if (!email) {
+                    Swal.showValidationMessage('Please enter your email');
+                }
+                return { email: email };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Email Sent!',
+                    'Check your inbox for the password reset link.',
+                    'success'
+                );
+                console.log('Password reset requested for:', result.value.email);
+            }
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  
 
     document.getElementById('forgotPassword').addEventListener('click', function(e) {
         e.preventDefault();
