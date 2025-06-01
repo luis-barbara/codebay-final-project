@@ -9,8 +9,8 @@ services:
       - 8000:8000
     env_file:
       - .env
-    volumes:
-      - ./:/app/
+    #volumes:
+      #- ./:/app/
     depends_on:
       - db
     

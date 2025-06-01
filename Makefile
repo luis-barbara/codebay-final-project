@@ -69,27 +69,3 @@ compose.tests:
 
 
 
-# =========================================================
-# CLI with Typer Commands
-# =========================================================
-
-
-# Display built-in Typer CLI help (lists all available commands and usage)
-cli.help:
-	docker compose run --rm -e DJANGO_SETTINGS_MODULE=dali.settings web poetry run python cli_typer.py --help
-
-# List all characters
-cli.list-characters:
-	docker compose run --rm -e DJANGO_SETTINGS_MODULE=dali.settings web poetry run python cli_typer.py list-characters
-
-# Delete a specific character
-cli.delete-character:
-	docker compose run --rm -e DJANGO_SETTINGS_MODULE=dali.settings web poetry run python cli_typer.py delete-character $(character_id)
-
-# Show character statistics
-cli.character-stats:
-	docker compose run --rm -e DJANGO_SETTINGS_MODULE=dali.settings web poetry run python cli_typer.py character-stats
-
-# Start development server on port 8000
-cli.runserver:
-	docker compose run --rm -p 8000:8000 web poetry run python cli_typer.py runserver
