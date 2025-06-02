@@ -22,7 +22,10 @@ async function loadheader() {
 async function loadcard() {
     const response = await fetch('../components/card.html');
     const card = await response.text();
-    document.getElementById('product_card').innerHTML = card;
+    for (let i = 0; i < 9; i++) {
+        document.getElementById('product_card_' + i).innerHTML += card;
+    }
+
 }
 
 loadfooter();

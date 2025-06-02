@@ -16,7 +16,78 @@
 
 <body>
     <div id="head"></div>
-    <div id="product_card"></div>
+    <section class="banner">
+        <h1>A Marketplace to Buy and Sell Digital Assets</h1>
+        <p>Templates, landing pages, UI kits, SaaS tools, scripts, dashboards,<br>
+            AI bots, no-code tools, multi-agent systems, and more — all in one place.</p>
+        <button>Start Selling</button>
+    </section>
+
+    <div class="page-layout">
+
+        <aside class="filters-panel">
+            <div class="filter-group">
+                <h3>Sort by</h3>
+                <label><input type="radio" name="sort" checked> Newest</label>
+                <label><input type="radio" name="sort"> Best selling</label>
+                <label><input type="radio" name="sort"> Price: Low to High</label>
+                <label><input type="radio" name="sort"> Price: High to Low</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Categories</h3>
+                <label><input type="checkbox"> Templates</label>
+                <label><input type="checkbox"> Landing pages</label>
+                <label><input type="checkbox"> UI kits</label>
+                <label><input type="checkbox"> SaaS tools</label>
+                <label><input type="checkbox"> Scripts</label>
+                <label><input type="checkbox"> AI bots</label>
+                <label><input type="checkbox"> No-code</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Languages / Stack</h3>
+                <label><input type="checkbox"> Javascript</label>
+                <label><input type="checkbox"> Python</label>
+                <label><input type="checkbox"> HTML</label>
+                <label><input type="checkbox"> CSS</label>
+                <label><input type="checkbox"> React</label>
+                <label><input type="checkbox"> C</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <input type="range" min="0" max="1000" />
+            </div>
+
+            <div class="filter-group">
+                <h3>Rating</h3>
+                <label><input type="checkbox"> 5 stars</label>
+                <label><input type="checkbox"> 4 stars & up</label>
+                <label><input type="checkbox"> 3 stars & up</label>
+                <label><input type="checkbox"> 2 stars & up</label>
+            </div>
+        </aside>
+
+
+        <main class="main-content">
+            <input type="text" class="search-bar" placeholder="Search" />
+
+            <div class="card-grid">
+
+                <div id="product_card_0"></div>
+                <div id="product_card_1"></div>
+                <div id="product_card_2"></div>
+                <div id="product_card_3"></div>
+                <div id="product_card_4"></div>
+                <div id="product_card_5"></div>
+                <div id="product_card_6"></div>
+                <div id="product_card_7"></div>
+                <div id="product_card_8"></div>
+            </div>
+        </main>
+    </div>
+
     <div id="foot"></div>
 
     <div id="sidebar-overlay" class="overlay hidden"></div>
@@ -33,11 +104,11 @@
             <li class="has-submenu">
                 <div><i class="fa-solid fa-handshake"></i> My Sales <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="submenu">
-                    <li><i class="fa-solid fa-box"></i> My Products</li>
-                    <li><i class="fa-solid fa-chart-column"></i> Analytics</li>
+                    <li class="marker-remove"><i class="fa-solid fa-box"></i> My Products</li>
+                    <li class="marker-remove"><i class="fa-solid fa-chart-column"></i> Analytics</li>
                 </ul>
             </li>
-            <li><i class="fa-solid fa-box-open"></i> My Orders</li>
+            <li><i class="fa-solid fa-box-open" style="margin-left: -1px;"></i> My Orders</li>
             <li><i class="fa-solid fa-bell"></i> Notifications</li>
             <li><i class="fa-solid fa-message"></i> Messages</li>
         </ul>
