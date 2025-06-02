@@ -1,26 +1,17 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import (
+    ProductViewSet, OrderViewSet, MessageViewSet,
+    RatingViewSet, NotificationViewSet, WishListViewSet
+)
 
-urlpatterns = [
-    # Produtos
-    path('products/', views.ProductListCreateAPIView.as_view(), name='product-list-create'),
-    path('products/<int:pk>/', views.ProductRetrieveUpdateDestroyAPIView.as_view(), name='product-detail'),
+router = DefaultRouter()
+router.register(r'products', ProductViewSet)
+router.register(r'orders', OrderViewSet)
+router.register(r'messages', MessageViewSet)
+router.register(r'ratings', RatingViewSet)
+router.register(r'notifications', NotificationViewSet, basename='notification')
+router.register(r'wishlist', WishListViewSet, basename='wishlist')
 
-    # Orders
-    path('orders/', views.OrderListCreateAPIView.as_view(), name='order-list-create'),
-    path('orders/<int:pk>/', views.OrderRetrieveUpdateDestroyAPIView.as_view(), name='order-detail'),
+urlpatterns = router.urls
 
-    # Mensagens
-    path('messages/', views.MessageListCreateAPIView.as_view(), name='message-list-create'),
-    path('messages/<int:pk>/', views.MessageRetrieveDestroyAPIView.as_view(), name='message-detail'),
-
-    # Ratings
-    path('ratings/', views.RatingListCreateAPIView.as_view(), name='rating-list-create'),
-    path('ratings/<int:pk>/', views.RatingRetrieveUpdateDestroyAPIView.as_view(), name='rating-detail'),
-
-    # Notificações
-    path('notifications/', views.NotificationListAPIView.as_view(), name='notification-list'),
-
-    # Wish List 
-    path('wishlist/', views.WishListAPIView.as_view(), name='wishlist'),
-]
