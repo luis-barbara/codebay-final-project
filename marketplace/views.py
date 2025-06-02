@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions
-from .models import Product, Order, Message, Notification, Rating, Media, WishList
+from .models import Product, Order, Message, Notification, Rating, Media, Wishlist  
 from .serializers import (
     ProductSerializer, OrderSerializer, MessageSerializer,
-    NotificationSerializer, RatingSerializer, MediaSerializer, WishListSerializer
+    NotificationSerializer, RatingSerializer, MediaSerializer, WishlistSerializer
 )
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -18,6 +18,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        return self.queryset.filter(buyer=self.request.user)
+
     def perform_create(self, serializer):
         serializer.save(buyer=self.request.user)
 
@@ -25,6 +28,9 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(sender=self.request.user) | self.queryset.filter(receiver=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(sender=self.request.user)
@@ -50,9 +56,9 @@ class MediaViewSet(viewsets.ModelViewSet):
     serializer_class = MediaSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-class WishListViewSet(viewsets.ModelViewSet):
-    queryset = WishList.objects.all()
-    serializer_class = WishListSerializer
+class WishlistViewSet(viewsets.ModelViewSet):  
+    queryset = Wishlist.objects.all()
+    serializer_class = WishlistSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
