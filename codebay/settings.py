@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "marketplace"
 ]
 
+AUTH_USER_MODEL = 'marketplace.User'
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware", # for serving static files in production (DEBUG False)
