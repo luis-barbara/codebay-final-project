@@ -55,7 +55,7 @@ A marketplace to buy and sell digital assets
 
 
 
-
+```bash
 marketplace/
 ├── admin.py          # Registra seus models para o admin do Django
 ├── apps.py           # Configuração da app
@@ -67,3 +67,4 @@ marketplace/
 ├── tests.py          # Testes unitários e de integração
 ├── urls.py           # URLs da app marketplace
 ├── views.py          # Views (API endpoints, páginas, etc)
+```
