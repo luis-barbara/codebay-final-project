@@ -21,6 +21,6 @@ urlpatterns = [
     # Notificações
     path('notifications/', views.NotificationListAPIView.as_view(), name='notification-list'),
 
-    # Wish List (exemplo simples)
+    # Wish List 
     path('wishlist/', views.WishListAPIView.as_view(), name='wishlist'),
 ]
