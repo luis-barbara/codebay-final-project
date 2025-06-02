@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Product, Order, Message, Notification, Rating, Media, WishList
+from .models import Product, Order, Message, Notification, Rating, Media, Wishlist
 
 User = get_user_model()
 
@@ -18,15 +18,15 @@ class ProductSerializer(serializers.ModelSerializer):
     seller = UserSerializer(read_only=True)
     media = MediaSerializer(many=True, read_only=True)
     rating = serializers.FloatField(read_only=True)
-    wish_list_users = serializers.PrimaryKeyRelatedField(
-        many=True, read_only=True, source='wish_list'
-    )
+    wish_list_users = UserSerializer(many=True, read_only=True, source='wishlisted_by')
+
+    file = serializers.FileField(required=False, allow_null=True)
 
     class Meta:
         model = Product
         fields = [
             'id', 'seller', 'title', 'description', 'category', 'language',
-            'price', 'created_at', 'rating', 'media', 'wish_list_users'
+            'price', 'created_at', 'rating', 'media', 'wish_list_users', 'file'
         ]
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -60,11 +60,12 @@ class RatingSerializer(serializers.ModelSerializer):
         model = Rating
         fields = ['id', 'user', 'product', 'score', 'comment']
 
-class WishListSerializer(serializers.ModelSerializer):
+class WishlistSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     products = ProductSerializer(many=True, read_only=True)
 
     class Meta:
-        model = WishList
+        model = Wishlist
         fields = ['id', 'user', 'products']
+
 
