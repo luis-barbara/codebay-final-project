@@ -52,3 +52,18 @@ A marketplace to buy and sell digital assets
 ├── manage.py                                   # Django management commands entry point
 └── README.md                                   # Project documentation with setup, usage, and deployment instructions
 ```
+
+
+
+
+marketplace/
+├── admin.py          # Registra seus models para o admin do Django
+├── apps.py           # Configuração da app
+├── forms.py          # Formulários Django (se usar)
+├── models.py         # Definição dos models (User, Product, etc)
+├── services/
+│   ├── stripe_service.py     # Integração com Stripe
+│   └── getstream.py          # Integração com GetStream
+├── tests.py          # Testes unitários e de integração
+├── urls.py           # URLs da app marketplace
+├── views.py          # Views (API endpoints, páginas, etc)
