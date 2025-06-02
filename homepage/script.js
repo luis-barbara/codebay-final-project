@@ -87,3 +87,4 @@ function setupAvatarSidebar() {
         avatarOverlay.classList.add('hidden');
     });
 }
+

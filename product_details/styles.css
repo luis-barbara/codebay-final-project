@@ -1,0 +1,182 @@
+body {
+    background-color: #0D1116;
+    margin: 0;
+    font-family: sans-serif;
+    color: #c8c9cd;
+}
+
+.product-page {
+    padding: 2rem;
+    color: #fff;
+    background-color: #121212;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .product-header {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .product-image img {
+    max-width: 400px;
+    border-radius: 1rem;
+  }
+  
+  .product-details {
+    flex: 1;
+    background-color: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid #333;
+    position: relative;
+  }
+  
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .author-name {
+    font-weight: bold;
+    color: #4faaff;
+  }
+  
+  .verified {
+    color: #4faaff;
+    font-weight: bold;
+  }
+  
+  .product-title {
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+  }
+  
+  .product-description {
+    color: #ccc;
+    margin-bottom: 1rem;
+  }
+  
+  .rating-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .rating .stars {
+    color: gold;
+    margin-right: 0.5rem;
+  }
+  
+  .rating .rating-value {
+    font-weight: bold;
+  }
+  
+  .rating .reviews {
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+  
+  .price-box {
+    text-align: right;
+  }
+  
+  .price-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #aaa;
+  }
+  
+  .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .buy-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 0.5rem;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .buttons button {
+    padding: 0.5rem 1rem;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .buttons .github {
+    background-color: #5865f2;
+    color: #fff;
+  }
+  
+  .files {
+    margin-top: 2rem;
+  }
+  
+  .files h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .files ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .files li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #333;
+    padding: 0.5rem 0;
+    align-items: center;
+  }
+  
+  .files li span {
+    margin: 0 1rem;
+    color: #888;
+  }
+  
+  .files li a {
+    color: #4faaff;
+    text-decoration: none;
+  }
+  
+  .readme {
+    margin-top: 2rem;
+  }
+  
+  .readme h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .readme p {
+    color: #ccc;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  
