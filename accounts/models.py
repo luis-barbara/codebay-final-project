@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
-    username = models.CharField(max_length=150, unique=True)  # Apenas para exibição pública
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True)  
     email = models.EmailField(unique=True)
 
     full_name = models.CharField(max_length=255)
@@ -17,8 +17,14 @@ class User(AbstractUser):
     github_account = models.URLField(blank=True, null=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
 
+    # email como login
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['full_name', 'username']  
+    REQUIRED_FIELDS = ['full_name'] 
 
     def __str__(self):
         return self.email
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
