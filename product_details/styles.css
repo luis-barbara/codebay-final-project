@@ -8,8 +8,7 @@ body {
 .product-page {
   padding: 2rem 4rem;
   color: #fff;
-  background-color: #121212;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: sans-serif;
   display:flex ;
 }
 
@@ -21,17 +20,18 @@ body {
 }
 
 .product-image img {
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
   border-radius: 1rem;
   display: block;
+  box-shadow: #c8c9cd 0px 0px 7px 0px;
 }
 
 .left-column {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
 }
 
@@ -56,28 +56,19 @@ body {
 .buttons-row button {
   flex: 1;
   padding: 0.5rem 0;
-  background-color: #2a2a2a;
+  background-color: #5865f2;
   border: 1px solid #444;
   color: #fff;
   border-radius: 0.5rem;
   cursor: pointer;
 }
 
-.github {
-  background-color: #5865f2;
-  color: #fff;
-  padding: 0.5rem 0;
-  border: none;
-  border-radius: 0.5rem;
-  width: 100%;
-}
 
 .product-details {
   flex: 1;
-  background-color: #1e1e1e;
   padding: 1.5rem;
   border-radius: 1rem;
-  border: 1px solid #333;
+  border: 0.6px solid #6b6e72;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -141,7 +132,9 @@ body {
 }
 
 .price-box {
-  text-align: right;
+  text-align: left;
+  display: flex;
+  align-items: bottom;
 }
 
 .price-label {
@@ -153,26 +146,32 @@ body {
 .price {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
   display: block;
 }
 
+.price-container{
+  display: block
+}
+
 .buy-btn {
-  padding: 0.5rem 1.5rem;
-  background-color: #2ecc71;
+  padding: 0.5rem 7rem;
+  background-color: #238636;
   border: none;
   border-radius: 0.5rem;
-  color: #000;
+  color: #ffffff;
   font-weight: bold;
   cursor: pointer;
 }
-
-.files {
-  padding: 1rem 4rem;
+.files{
+  border: 0.6px solid #6B6E72;
+  border-radius: 12px;
+  padding: 1rem;
 }
 
 .files h2 {
   margin-bottom: 1rem;
+  color: #ffffff;
 }
 
 .files ul {
@@ -186,33 +185,37 @@ body {
   align-items: center; 
   border-bottom: 1px solid #333;
   padding: 0.75rem 0;
+  width: 600px;
 }
 
 .files li .file-name {
   color: #fff;
 }
 
-.files li .file-author {
-  color: #888;
-  text-align: center;
+.readme{
+  border: 0.6px solid #6B6E72;
+  border-radius: 12px;
+  padding: 1rem;
+
 }
 
-.files li a {
-  color: #4faaff;
-  text-decoration: none;
-}
-
-.readme {
-  margin: 2rem auto;
-  padding: 1rem 4rem;
-}
 
 .readme h2 {
   margin-bottom: 1rem;
+  color: #ffffff;
 }
 
 .readme p {
-  color: #ccc;
+  color: #ffffff;
   margin-bottom: 1rem;
   line-height: 1.6;
+}
+
+.secundary_info{
+  display:flex ;
+  padding: 0rem 4rem;
+  justify-content: space-between;
+  gap: 2rem;
+
+
 }
