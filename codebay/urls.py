@@ -20,21 +20,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
 urlpatterns = [
     path("admin/", admin.site.urls),
 
     # Rotas API
     path("api/market/", include("marketplace.urls")),
     path("api/accounts/", include("accounts.urls")),
+    path("api/payments/", include("payments.urls")),
 
-    # Rotas JWT para autenticação
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 # Arquivos estáticos e media no dev
