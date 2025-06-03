@@ -1,98 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product details</title>
-    <link rel="stylesheet" href="../components/css/header_logged_in.css">
-    <link rel="stylesheet" href="../components/css/footer.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-    <div id="head"></div>
 
-    <div class="product-page">
-        <div class="product-header">
-          <div class="product-image">
-            <img src="https://img.youtube.com/vi/7V5jdOjWVU4/maxresdefault.jpg" alt="Product Image">
-          </div>
-      
-          <div class="product-details">
-            <div class="author">
-              <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="Author" class="author-avatar">
-              <span class="author-name">John Doe</span>
-              <span class="verified">✔</span>
-            </div>
-      
-            <h1 class="product-title">Website Template</h1>
-            <p class="product-description">Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      
-            <div class="rating-price">
-              <div class="rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-value">5.0</span>
-                <span class="reviews">(40 reviews)</span>
-              </div>
-              <div class="price-box">
-                <span class="price-label">Current Price</span>
-                <span class="price">$315.26</span>
-                <button class="buy-btn">Buy</button>
-              </div>
-            </div>
-          </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product details</title>
+  <link rel="stylesheet" href="../components/css/header_logged_in.css">
+  <link rel="stylesheet" href="../components/css/footer.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div id="head"></div>
+
+  <div class="product-page">
+    <div class="product-header">
+      <div class="left-column">
+        <div class="product-image">
+          <img src="https://img.youtube.com/vi/7V5jdOjWVU4/maxresdefault.jpg" alt="Product Image">
         </div>
-      
-        <div class="buttons">
-          <button>Images</button>
-          <button>Videos</button>
+
+        <div class="button-group">
+          <div class="buttons-row">
+            <button>Images</button>
+            <button>Videos</button>
+          </div>
           <button class="github">GitHub Repository</button>
-        </div>
-      
-        <div class="files">
-          <h2>Files</h2>
-          <ul>
-            <li>
-              <span class="file-name">index.html</span>
-              <span class="file-author">By John Doe</span>
-              <a href="#">HTML</a>
-            </li>
-            <li>
-              <span class="file-name">main.py</span>
-              <span class="file-author">By John Doe</span>
-              <a href="#">Python</a>
-            </li>
-            <li>
-              <span class="file-name">styles.css</span>
-              <span class="file-author">By John Doe</span>
-              <a href="#">CSS</a>
-            </li>
-            <li>
-              <span class="file-name">main.js</span>
-              <span class="file-author">By John Doe</span>
-              <a href="#">JavaScript</a>
-            </li>
-            <li>
-              <span class="file-name">template.html</span>
-              <span class="file-author">By John Doe</span>
-              <a href="#">HTML</a>
-            </li>
-          </ul>
-          
-        </div>
-      
-        <div class="readme">
-          <h2>Readme</h2>
-          <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
       </div>
 
-      
-    <div id="foot"></div>  
+    </div>
+
+
+    <div class="product-details">
+      <div class="author">
+        <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="Author" class="author-avatar">
+        <span class="author-name">John Doe</span>
+        <span class="verified">✔</span>
+      </div>
+
+      <h1 class="product-title">Website Template</h1>
+      <p class="product-description">Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit
+        orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+      <div class="rating-price">
+        <div class="rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-value">5.0</span>
+          <span class="reviews">(40 reviews)</span>
+        </div>
+        <div class="price-box">
+          <span class="price-label">Current Price</span>
+          <span class="price">$315.26</span>
+          <button class="buy-btn">Buy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="files">
+    <h2>Files</h2>
+    <ul>
+      <li>
+        <span class="file-name">index.html</span>
+        <a href="#">HTML</a>
+      </li>
+      <li>
+        <span class="file-name">main.py</span>
+        <a href="#">Python</a>
+      </li>
+      <li>
+        <span class="file-name">styles.css</span>
+        <a href="#">CSS</a>
+      </li>
+      <li>
+        <span class="file-name">main.js</span>
+        <a href="#">JavaScript</a>
+      </li>
+      <li>
+        <span class="file-name">template.html</span>
+        <a href="#">HTML</a>
+      </li>
+    </ul>
+
+
+  </div>
+
+  <div class="readme">
+    <h2>Readme</h2>
+    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit.</p>
+    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit.</p>
+    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit.</p>
+    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit.</p>
+    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit.</p>
+  </div>
+  </div>
+
+
+  <div id="foot"></div>
 </body>
-    <script src="script.js"></script>
+<script src="script.js"></script>
+
 </html>
