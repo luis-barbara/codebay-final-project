@@ -1,3 +1,5 @@
+# marketplace/serializers.py
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import Product, Order, Message, Notification, Rating, Media, Wishlist
@@ -7,7 +9,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'is_seller']
+        fields = ['id', 'username', 'email']  # Remova is_seller se não existir
 
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,8 +19,8 @@ class MediaSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     seller = UserSerializer(read_only=True)
     media = MediaSerializer(many=True, read_only=True)
-    rating = serializers.FloatField(read_only=True)
-    wish_list_users = UserSerializer(many=True, read_only=True, source='wishlisted_by')
+    rating = serializers.SerializerMethodField()
+    wishlisted_by = UserSerializer(many=True, read_only=True)
 
     file = serializers.FileField(required=False, allow_null=True)
 
@@ -26,8 +28,11 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'seller', 'title', 'description', 'category', 'language',
-            'price', 'created_at', 'rating', 'media', 'wish_list_users', 'file'
+            'price', 'created_at', 'rating', 'media', 'wishlisted_by', 'file'
         ]
+
+    def get_rating(self, obj):
+        return obj.average_rating()
 
 class OrderSerializer(serializers.ModelSerializer):
     buyer = UserSerializer(read_only=True)
@@ -67,5 +72,4 @@ class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
         fields = ['id', 'user', 'products']
-
 

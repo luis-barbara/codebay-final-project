@@ -1,4 +1,7 @@
+# marketplace/views.py
+
 from rest_framework import viewsets, permissions
+from rest_framework.exceptions import PermissionDenied
 from .models import Product, Order, Message, Notification, Rating, Media, Wishlist  
 from .serializers import (
     ProductSerializer, OrderSerializer, MessageSerializer,
@@ -54,7 +57,28 @@ class RatingViewSet(viewsets.ModelViewSet):
 class MediaViewSet(viewsets.ModelViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        # Allow all users to view media (read-only)
+        return self.queryset
+
+    def perform_create(self, serializer):
+        product = serializer.validated_data.get('product')
+        if product.seller != self.request.user:
+            raise PermissionDenied("You do not have permission to add media for this product.")
+        serializer.save()
+
+    def perform_update(self, serializer):
+        media = self.get_object()
+        if media.product.seller != self.request.user:
+            raise PermissionDenied("You do not have permission to edit this media.")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if instance.product.seller != self.request.user:
+            raise PermissionDenied("You do not have permission to delete this media.")
+        instance.delete()
 
 class WishlistViewSet(viewsets.ModelViewSet):  
     queryset = Wishlist.objects.all()
@@ -66,4 +90,3 @@ class WishlistViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
