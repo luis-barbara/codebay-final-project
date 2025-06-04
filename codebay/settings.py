@@ -48,7 +48,10 @@ INSTALLED_APPS = [
     "social_django", 
     "allauth.socialaccount.providers.github", 
     "allauth.socialaccount.providers.google",
-    "marketplace"
+    "marketplace",
+    'accounts',
+    'payments'
+    
 ]
 
 
@@ -103,6 +106,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = "codebay.urls"
