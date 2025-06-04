@@ -23,11 +23,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
 
+    # Django Allauth - login social (Google, GitHub)
+    path("accounts/", include("allauth.urls")),
+
     # Rotas API
     path("api/market/", include("marketplace.urls")),
     path("api/accounts/", include("accounts.urls")),
     path("api/payments/", include("payments.urls")),
-
 ]
 
 # Arquivos estáticos e media no dev
