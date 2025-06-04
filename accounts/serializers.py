@@ -11,33 +11,29 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('full_name', 'username', 'email', 'password', 'confirm_password')
+        fields = ('full_name', 'email', 'password', 'confirm_password')  
 
     def validate(self, attrs):
-        # Validação: se as senhas coincidem
+        # Validação: se as pass coincidem
         if attrs['password'] != attrs['confirm_password']:
             raise serializers.ValidationError({"password": "Passwords must match."})
         
-        # Verificar se o email ja esta a ser usado
+        # Verificar se o email já está a ser usado
         if User.objects.filter(email=attrs['email']).exists():
             raise serializers.ValidationError({"email": "This email is already in use."})
-        
-        # Verificar se o nome de utilizador ja esta a ser usado
-        if User.objects.filter(username=attrs['username']).exists():
-            raise serializers.ValidationError({"username": "This username is already taken."})
         
         return attrs
 
     def create(self, validated_data):
         validated_data.pop('confirm_password')
+        
+        # Criar o utilizador com o email e password
         user = User.objects.create_user(
             email=validated_data['email'],
-            username=validated_data['username'],
             full_name=validated_data['full_name'],
             password=validated_data['password']
         )
         return user
-
 
 
 class UserSigninSerializer(serializers.Serializer):
@@ -51,7 +47,7 @@ class UserSigninSerializer(serializers.Serializer):
         if not email or not password:
             raise serializers.ValidationError("Both email and password are required.")
         
-        # Autenticação com o e-mail
+        # Autenticar usando o email
         user = authenticate(request=self.context.get('request'), username=email, password=password)
         
         if not user:
@@ -61,12 +57,11 @@ class UserSigninSerializer(serializers.Serializer):
         return attrs
 
 
-
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'full_name', 'username', 'email', 'avatar', 'description',
+            'full_name', 'email', 'username', 'avatar', 'description',
             'phone', 'position', 'location', 'website', 'github_account', 'rating'
         )
 
@@ -77,21 +72,20 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return value
 
     def validate_email(self, value):
-        # Verificar se o email esta disponivel
+        # Verificar se o email está disponível
         if self.instance and self.instance.email != value and User.objects.filter(email=value).exists():
             raise serializers.ValidationError("This email is already in use.")
         return value
 
     def validate_username(self, value):
-        # Verificar se o username ja esta a ser utilizado
-        if self.instance and self.instance.username != value and User.objects.filter(username=value).exists():
+        # Verificar se o username já está a ser utilizado no perfil 
+        if self.instance and self.instance.username != value and value and User.objects.filter(username=value).exists():
             raise serializers.ValidationError("This username is already taken.")
         return value
 
     def update(self, instance, validated_data):
-        # Atualiza os dados do utilizador
         instance.full_name = validated_data.get('full_name', instance.full_name)
-        instance.username = validated_data.get('username', instance.username)
+        instance.username = validated_data.get('username', instance.username)  # Opcional
         instance.email = validated_data.get('email', instance.email)
         instance.avatar = validated_data.get('avatar', instance.avatar)
         instance.description = validated_data.get('description', instance.description)
