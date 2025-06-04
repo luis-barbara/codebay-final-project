@@ -22,9 +22,10 @@ class SignupView(APIView):
 
 
 class PublicProfileView(APIView):
-    def get(self, request, username):
+    def get(self, request, email):
         try:
-            user = User.objects.get(username=username)
+            # Buscar o usuário pelo email, não pelo username
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
             return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
             
@@ -40,8 +41,8 @@ class SigninView(APIView):
         if not email or not password:
             return Response({"error": "Email and password are required."}, status=status.HTTP_400_BAD_REQUEST)
         
-        # autenticar com o e-mail
-        user = authenticate(request, username=email, password=password)  
+        # Autenticação com o email
+        user = authenticate(request, email=email, password=password)  
 
         if user is not None:
             login(request, user)
@@ -50,6 +51,3 @@ class SigninView(APIView):
             }, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-
