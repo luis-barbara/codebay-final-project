@@ -11,6 +11,16 @@ async function loadfooter() {
 
 }
 
+async function loadcard() {
+    const response = await fetch('../components/card.html');
+    const card = await response.text();
+    for (let i = 0; i < 5; i++) {
+        document.getElementById('product_card_' + i).innerHTML += card;
+    }
+
+}
+
+loadcard();
 loadfooter();
 loadheader();
 

@@ -7,6 +7,7 @@
   <title>Product details</title>
   <link rel="stylesheet" href="../components/css/header_logged_in.css">
   <link rel="stylesheet" href="../components/css/footer.css">
+  <link rel="stylesheet" href="../components/css/card.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -34,8 +35,9 @@
 
     <div class="product-details">
       <div class="author">
-        <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="Author" class="author-avatar">
-        <span class="author-name">John Doe</span>
+        <a href="#" style="text-decoration: none;"><img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png"
+            alt="Author" class="author-avatar"></a>
+        <a href="#" style="text-decoration: none;"><span class="author-name">John Doe</span></a>
         <span class="verified">✔</span>
       </div>
 
@@ -51,8 +53,8 @@
         </div>
         <div class="price-box">
           <div class="price-container">
-          <span class="price-label">Current Price</span>
-          <span class="price">$315.26</span>
+            <span class="price-label">Current Price</span>
+            <span class="price">$315.26</span>
           </div>
           <button class="buy-btn">Buy</button>
         </div>
@@ -62,47 +64,62 @@
 
 
   <div class="secundary_info">
-  <div class="files">
-    <h2>Files</h2>
-    <ul>
-      <li>
-        <span class="file-name">index.html</span>
-      </li>
-      <li>
-        <span class="file-name">main.py</span>
-      </li>
-      <li>
-        <span class="file-name">styles.css</span>
-      </li>
-      <li>
-        <span class="file-name">main.js</span>
-      </li>
-      <li>
-        <span class="file-name">template.html</span>
-      </li>
-    </ul>
+    <div class="files">
+      <h2>Files</h2>
+      <ul>
+        <li>
+          <span class="file-name">index.html</span>
+        </li>
+        <li>
+          <span class="file-name">main.py</span>
+        </li>
+        <li>
+          <span class="file-name">styles.css</span>
+        </li>
+        <li>
+          <span class="file-name">main.js</span>
+        </li>
+        <li>
+          <span class="file-name">template.html</span>
+        </li>
+      </ul>
 
+
+    </div>
+
+    <div class="readme">
+      <h2>Readme</h2>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget
+        suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget
+        suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget
+        suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+    </div>
 
   </div>
 
-  <div class="readme">
-    <h2>Readme</h2>
-    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit.</p>
-    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit.</p>
-    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit.</p>
-    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit.</p>
-    <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit.</p>
-  </div>
 
-</div>
+  <div class="suggestions"> 
+    <div class="cards-container">
+      <h2>Suggestions</h2>
+      <div id="product_card_0"></div>
+      <div id="product_card_1"></div>
+      <div id="product_card_2"></div>
+      <div id="product_card_3"></div>
+      <div id="product_card_4"></div>
+    </div>        
+  </div>
 
 
   <div id="foot"></div>

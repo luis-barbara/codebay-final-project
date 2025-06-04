@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../components/css/header_logged_out.css">
     <link rel="stylesheet" href="../components/css/header_logged_in.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../components/css/notifications.css/">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
@@ -90,48 +91,11 @@
 
     <div id="foot"></div>
 
-    <div id="sidebar-overlay" class="overlay hidden"></div>
-    <div id="sidebar" class="sidebar hidden">
-        <div class="sidebar-header">
-            <div class="logo-icon">
-                <img src="../components/images/logo.png" alt="Logo" class="logo-icon-img">
-            </div>
-            <button id="close-sidebar" class="close-btn">&times;</button>
-        </div>
-        <ul class="sidebar-menu">
-            <li><i class="fa-solid fa-store"></i> Market</li>
-            <li><i class="fa-solid fa-cart-shopping"></i> Cart</li>
-            <li class="has-submenu">
-                <div class="submenu-toggle"><i class="fa-solid fa-handshake"></i> My Sales <i class="fa-solid fa-chevron-down"></i></div>
-                <ul class="submenu hidden">
-                    <li class="marker-remove"><i class="fa-solid fa-box"></i> My Products</li>
-                    <li class="marker-remove"><i class="fa-solid fa-chart-column"></i> Analytics</li>
-                </ul>
-            </li>            
-            <li><i class="fa-solid fa-box-open" style="margin-left: -1px;"></i> My Orders</li>
-            <li><i class="fa-solid fa-bell"></i> Notifications</li>
-            <li><i class="fa-solid fa-message"></i> Messages</li>
-        </ul>
-    </div>
+    <div id="hamb"></div>
 
-    <div id="avatar-overlay" class="overlay hidden"></div>
-    <div id="avatar-sidebar" class="sidebar avatar-sidebar hidden">
-        <div class="sidebar-header">
-            <div class="logo-icon">
-                <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="avatar" class="avatar">
-                <span style="margin-left: 10px;">Jonh Doe</span>
-            </div>
-            <button id="close-avatar-sidebar" class="close-btn">&times;</button>
-        </div>
-        <ul class="sidebar-menu">
-            <li><i class="fa-solid fa-user"></i> My Profile</li>
-            <li><i class="fa-solid fa-star"></i> Wish List</li>
-            <li><i class="fa-solid fa-gear"></i> Settings</li>
-            <li><i class="fa-solid fa-right-from-bracket"></i> Sign out</li>
-        </ul>
-    </div>
+    <div id="avat"></div>
 
 </body>
-<script src="script.js"></script>
+<script src="../components/js/script.js"></script>
 
 </html>

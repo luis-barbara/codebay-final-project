@@ -28,11 +28,31 @@ async function loadcard() {
 
 }
 
+async function loadhamb() {
+    const response = await fetch('../components/hamb_menu.html');
+    const hamb = await response.text();
+    document.getElementById('hamb').innerHTML = hamb;
+
+    setupSidebar();
+    
+}
+
+async function loadavat() {
+    const response = await fetch('../components/avat_menu.html');
+    const avat = await response.text();
+    document.getElementById('avat').innerHTML = avat;
+    
+    setTimeout(setupAvatarSidebar, 0);
+
+}
+
+loadavat();
+loadhamb();
 loadfooter();
 loadheader();
 loadcard();
 
-function setupSidebar() {
+async function setupSidebar() {
     const hamburger = document.querySelector('.hamburger');
     const sidebar = document.getElementById('sidebar');
     const closeBtn = document.getElementById('close-sidebar');
@@ -61,13 +81,16 @@ function setupSidebar() {
     }
 }
 
-function setupAvatarSidebar() {
-
-
+async function setupAvatarSidebar() {
     const avatarSidebar = document.getElementById('avatar-sidebar');
     const avatarOverlay = document.getElementById('avatar-overlay');
     const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
     const avatarIcon = document.querySelector('.right-section .logo-circle');
+
+    if (!avatarSidebar || !avatarOverlay || !closeAvatarBtn || !avatarIcon) {
+        console.warn('Avatar sidebar elements not found');
+        return;
+    }
 
     avatarIcon.addEventListener('click', () => {
         avatarSidebar.classList.add('show');
@@ -87,4 +110,5 @@ function setupAvatarSidebar() {
         avatarOverlay.classList.add('hidden');
     });
 }
+
 
