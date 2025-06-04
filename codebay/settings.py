@@ -41,29 +41,56 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    'rest_framework_simplejwt',  # JWT Authentication
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "social_django", 
     "allauth.socialaccount.providers.github", 
     "allauth.socialaccount.providers.google",
     "marketplace"
 ]
 
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT for authentication
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  
     ),
 }
 
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Access token expiry time (default: 15 minutes)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Refresh token expiry time (default: 1 day)
+    'ROTATE_REFRESH_TOKENS': False,                   # Whether to rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,                 # Whether to blacklist tokens after rotation
+}
+
+
 AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    'allauth.account.auth_backends.AuthenticationBackend',  # Permite autenticação com o email
+    'social_core.backends.google.GoogleOAuth2',  # Autenticação via Google
+    'social_core.backends.github.GithubOAuth2',  # Autenticação via GitHub
 )
 
+
+# Configurações para autenticação via Google
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
+# Configurações para autenticação via GitHub
+SOCIAL_AUTH_GITHUB_KEY = os.getenv('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = os.getenv('SOCIAL_AUTH_GITHUB_SECRET')
+
 SITE_ID = 1
+
+
+
 
 AUTH_USER_MODEL = 'accounts.User'
 

@@ -5,33 +5,30 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
 
 class UserAdmin(BaseUserAdmin):
+    # Colunas no painel 
+    list_display = ('email', 'full_name', 'username', 'is_staff', 'is_active', 'last_login')  
     
-    # Colunas no painel de usuários
-    list_display = ('username', 'email', 'full_name', 'is_staff', 'is_active', 'last_login')
-    
-    # Filtros para facilitar a pesquisa
+   
     list_filter = ('is_staff', 'is_active', 'is_superuser')
-    
-    # Exibição detalhada das informações do utilizador
+
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('full_name', 'email', 'avatar', 'description', 'phone', 'position', 'location', 'website', 'github_account', 'rating')}),
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('full_name', 'username', 'avatar', 'description', 'phone', 'position', 'location', 'website', 'github_account', 'rating')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     
-    # Campos quando um novo utilizador for adicionado
+    # Campos quando um novo utilizador for adicionado (não inclui o 'username', pois o login será feito via 'email')
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'full_name', 'email', 'password1', 'password2', 'is_staff', 'is_active')
+            'fields': ('email', 'full_name', 'password1', 'password2', 'is_staff', 'is_active')
         }),
     )
     
-    search_fields = ('username', 'email', 'full_name')
+    search_fields = ('email', 'full_name', 'username')  
     
-    ordering = ('username',)
-
+    ordering = ('email',)  # Ordenar por email 
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
@@ -40,5 +37,3 @@ class UserAdmin(BaseUserAdmin):
         return form
 
 admin.site.register(User, UserAdmin)
-
-

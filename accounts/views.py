@@ -3,19 +3,20 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import NotFound
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSignupSerializer, UserProfileSerializer
 from .models import User
 
 class SignupView(APIView):
     def post(self, request):
+        """Handle user signup and create a new user."""
         serializer = UserSignupSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()  
+            user = serializer.save()  # Create the user
             return Response({
                 "message": "User created successfully.",
-                "user": serializer.data  
+                "user": serializer.data
             }, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -23,8 +24,8 @@ class SignupView(APIView):
 
 class PublicProfileView(APIView):
     def get(self, request, email):
+        """Fetch the public profile of a user by email."""
         try:
-            # Buscar o usuário pelo email, não pelo username
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
@@ -33,21 +34,25 @@ class PublicProfileView(APIView):
         return Response(serializer.data)
 
 
-class SigninView(APIView):
+class TokenObtainPairView(APIView):
     def post(self, request):
-        email = request.data.get('email')  
+        """Authenticate user and return JWT tokens."""
+        email = request.data.get('email')
         password = request.data.get('password')
-        
+
         if not email or not password:
             return Response({"error": "Email and password are required."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Autenticação com o email
-        user = authenticate(request, email=email, password=password)  
+
+        # Authenticate the user
+        user = authenticate(request, email=email, password=password)
 
         if user is not None:
-            login(request, user)
+            # Generate JWT tokens
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
             return Response({
-                "message": "Login successful."
+                "access": access_token,
+                "refresh": str(refresh)
             }, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)

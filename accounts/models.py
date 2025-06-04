@@ -3,16 +3,14 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.exceptions import ValidationError
-import base64
 from io import BytesIO
-from django.core.files.base import ContentFile
 from PIL import Image
+import base64
+import os
 
 class User(AbstractUser):
-    # username will be unique, but not required
     username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
-
     full_name = models.CharField(max_length=255)
     avatar = models.BinaryField(blank=True, null=True)  # Storing the image as binary data
     description = models.TextField(blank=True, null=True)
@@ -23,7 +21,6 @@ class User(AbstractUser):
     github_account = models.URLField(blank=True, null=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
 
-    # email as login, and username is no longer needed for login
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
 
@@ -42,23 +39,52 @@ class User(AbstractUser):
                 raise ValidationError({'username': 'This username is already in use.'})
 
     def save(self, *args, **kwargs):
-        """Override save method to store the avatar as binary data."""
+        """Override save method to store the avatar as binary data with validations."""
         if self.avatar:
-            # Convert image to binary data
+            # Image validations before saving
+            self.validate_image(self.avatar)
+            
+            # Convert image to binary format
             self.avatar = self.convert_image_to_binary(self.avatar)
-
+        
         super().save(*args, **kwargs)
 
     def convert_image_to_binary(self, image_field):
         """Converts the uploaded image to binary format."""
         image = Image.open(image_field)
         img_byte_arr = BytesIO()
-        image.save(img_byte_arr, format='PNG')  
-        img_byte_arr.seek(0)  
+        image.save(img_byte_arr, format='PNG')  # Saving as PNG
+        img_byte_arr.seek(0)  # Move the cursor to the beginning of the buffer
         return img_byte_arr.read()  # Return the binary data
 
+    def validate_image(self, image_field):
+        """Validates if the uploaded file is an image and meets the size and dimension requirements."""
+        try:
+            image = Image.open(image_field)
+            image.verify()  # Verifies if it's a valid image
+        except (IOError, ValueError):
+            raise ValidationError("The uploaded file is not a valid image.")
+
+        # Check the minimum and maximum dimensions
+        min_width, min_height = 100, 100
+        max_width, max_height = 1000, 1000
+        width, height = image.size
+
+        if width < min_width or height < min_height:
+            raise ValidationError(f"The image must be at least {min_width}x{min_height} pixels.")
+        if width > max_width or height > max_height:
+            raise ValidationError(f"The image cannot exceed {max_width}x{max_height} pixels.")
+
+        # Check the file size (e.g., maximum 5 MB)
+        image.seek(0, os.SEEK_END)  
+        image_size = image.tell()
+
+        max_size = 5 * 1024 * 1024  # 5 MB
+        if image_size > max_size:
+            raise ValidationError("The image cannot be larger than 5 MB.")
+
     def get_avatar_url(self):
-        """Method to retrieve the image URL (if needed)."""
-        return base64.b64encode(self.avatar).decode('utf-8') 
-
-
+        """Method to return the image encoded in base64"""
+        if self.avatar:
+            return base64.b64encode(self.avatar).decode('utf-8')
+        return None
