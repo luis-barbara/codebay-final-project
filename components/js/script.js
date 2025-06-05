@@ -15,9 +15,10 @@ async function loadheader() {
     const header = await response.text();
     document.getElementById('head').innerHTML = header;
 
-    setupSidebar();
-    setupAvatarSidebar();
+    await loadavat();
+    setupNotificationDropdown();
 }
+
 
 async function loadcard() {
     const response = await fetch('../components/card.html');
@@ -25,40 +26,33 @@ async function loadcard() {
     for (let i = 0; i < 9; i++) {
         document.getElementById('product_card_' + i).innerHTML += card;
     }
-
 }
 
 async function loadhamb() {
     const response = await fetch('../components/hamb_menu.html');
     const hamb = await response.text();
     document.getElementById('hamb').innerHTML = hamb;
-
-    setupSidebar();
-    
+    setTimeout(setupSidebar, 0);
 }
 
 async function loadavat() {
     const response = await fetch('../components/avat_menu.html');
     const avat = await response.text();
     document.getElementById('avat').innerHTML = avat;
-    
     setTimeout(setupAvatarSidebar, 0);
-
 }
 
-loadavat();
-loadhamb();
-loadfooter();
-loadheader();
-loadcard();
-
 async function setupSidebar() {
-    const hamburger = document.querySelector('.hamburger');
-    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.querySelector('.left-section .hamburger');
+    const sidebar = document.getElementById('hamburger-sidebar');
     const closeBtn = document.getElementById('close-sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
+    const overlay = document.getElementById('hamburger-overlay');
 
-    if (hamburger && sidebar && closeBtn && overlay) {
+    if (!hamburger || !sidebar || !closeBtn || !overlay) {
+        console.warn('Hamburger sidebar elements not found');
+        return;
+     } 
+
         hamburger.addEventListener('click', () => {
             sidebar.classList.remove('hidden');
             sidebar.classList.add('show');
@@ -76,10 +70,9 @@ async function setupSidebar() {
             sidebar.classList.add('hidden');
             overlay.classList.add('hidden');
         });
-    } else {
-        console.warn('Sidebar elements not found');
-    }
+   
 }
+
 
 async function setupAvatarSidebar() {
     const avatarSidebar = document.getElementById('avatar-sidebar');
@@ -111,4 +104,76 @@ async function setupAvatarSidebar() {
     });
 }
 
+function setupNotificationDropdown() {
+    const bell = document.getElementById('notificationToggle');
+    const dropdown = document.getElementById('notificationDropdown');
 
+    if (bell && dropdown) {
+        bell.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && e.target.id !== 'notificationToggle') {
+                dropdown.classList.remove('show');
+            }
+        });
+    }
+}
+
+document.querySelector(".toggle-filters").addEventListener("click", () => {
+    document.getElementById("filters-sidebar").classList.add("show");
+    document.getElementById("filters-overlay").classList.remove("hidden");
+});
+
+document.getElementById("close-filters-sidebar").addEventListener("click", () => {
+    document.getElementById("filters-sidebar").classList.remove("show");
+    document.getElementById("filters-overlay").classList.add("hidden");
+});
+
+document.getElementById("filters-overlay").addEventListener("click", () => {
+    document.getElementById("filters-sidebar").classList.remove("show");
+    document.getElementById("filters-overlay").classList.add("hidden");
+});
+
+(async () => {
+    await loadfooter();
+    await loadheader(); 
+    await loadhamb();   
+    await loadcard();
+})();
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toggleFiltersBtn = document.querySelector(".toggle-filters");
+    const filtersSidebar = document.getElementById("filters-sidebar");
+    const filtersOverlay = document.getElementById("filters-overlay");
+    const closeFiltersBtn = document.getElementById("close-filters-sidebar");
+
+    if (!toggleFiltersBtn || !filtersSidebar || !filtersOverlay || !closeFiltersBtn) {
+        console.warn("Filtro mobile: elementos não encontrados.");
+        return;
+    }
+
+    toggleFiltersBtn.addEventListener("click", () => {
+        filtersSidebar.classList.add("show");
+        filtersSidebar.classList.remove("hidden");
+        filtersOverlay.classList.add("show");
+        filtersOverlay.classList.remove("hidden");
+    });
+
+    closeFiltersBtn.addEventListener("click", () => {
+        filtersSidebar.classList.remove("show");
+        filtersSidebar.classList.add("hidden");
+        filtersOverlay.classList.remove("show");
+        filtersOverlay.classList.add("hidden");
+    });
+
+    filtersOverlay.addEventListener("click", () => {
+        filtersSidebar.classList.remove("show");
+        filtersSidebar.classList.add("hidden");
+        filtersOverlay.classList.remove("show");
+        filtersOverlay.classList.add("hidden");
+    });
+});

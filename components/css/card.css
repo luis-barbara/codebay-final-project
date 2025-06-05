@@ -2,7 +2,9 @@
   .card {
     background-color: #05071E;
     color: white;
-    width: 350px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     border-radius: 12px;
     border: 0.6px solid #6B6E72;
     overflow: hidden;
