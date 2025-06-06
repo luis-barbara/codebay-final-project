@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CodeBay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="settings-container">
+        <aside class="user-settings-sidebar">
+            <h2 class="sidebar-title">Settings</h2>
+            <ul class="settings-menu">
+                <li class="menu-item active">Public Profile</li>
+                <li class="menu-item">Account</li>
+                <li class="menu-item">Emails</li>
+                <li class="menu-item">Security</li>
+                <li class="menu-item">Log Out</li>
+            </ul>
+        </aside>
+
+        <main class="settings-main">
+            <h1 class="settings-heading">Public Profile</h1>
+            <hr>
+
+            <div class="profile-section">
+                <h2 class="section-title">Personal information</h2>
+                
+                <div class="form-row">
+                    <label>Full name</label>
+                    <input type="text" class="form-input" value="John Carter">
+                </div>
+                
+                <div class="form-row">
+                    <label>Email address</label>
+                    <input type="email" class="form-input" value="john@dashdark.com">
+                </div>
+                
+                <div class="form-row">
+                    <label>Photo</label>
+                    <div class="photo-upload">
+                        <button class="delete-photo">Delete</button>
+                        <div class="upload-area">
+                            <p>Click to upload or drag and drop</p>
+                            <p class="file-types">SVG, PNG, JPG or GIF (max. 300 x 400px)</p>
+                            <input type="file" accept=".svg,.png,.jpg,.jpeg,.gif" class="file-input" />
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <label>Short description</label>
+                    <textarea class="form-input form-textarea">Write a short bio about you...</textarea>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">Basic information</h2>
+                
+                <div class="form-row">
+                    <label>Phone</label>
+                    <input type="tel" class="form-input" value="(123) 456 - 7890">
+                </div>
+                
+                <div class="form-row">
+                    <label>Position</label>
+                    <input type="text" class="form-input" value="CEO & Founder">
+                </div>
+                
+                <div class="form-row">
+                    <label>Location</label>
+                    <input type="text" class="form-input" value="New York, NY">
+                </div>
+                
+                <div class="form-row">
+                    <label>Website</label>
+                    <input type="url" class="form-input" value="dashdark.com">
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="profile-section">
+                <h2 class="section-title">Profile Picture</h2>
+                <div class="form-row">
+                    <label>Username</label>
+                    <div class="form-value" file    ></div>
+                </div>
+            </div>
+
+            <button class="save-button">Save</button>
+
+           
+        </main>
+    </div>
+</body>
+
+</html>
