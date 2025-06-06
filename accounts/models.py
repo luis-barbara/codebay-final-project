@@ -3,6 +3,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.conf import settings
 from io import BytesIO
 from PIL import Image
 import base64
@@ -41,58 +42,52 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         """Override save method to store the avatar as binary data with validations."""
         if self.avatar:
-            # Image validations before saving
             self.validate_image(self.avatar)
-            
-            # Convert image to binary format
             self.avatar = self.convert_image_to_binary(self.avatar)
-        
         super().save(*args, **kwargs)
 
     def convert_image_to_binary(self, image_field):
-        """Converts the uploaded image to binary format."""
-        image = Image.open(image_field)
+        """Converts the uploaded image to binary format (WEBP)."""
+        image = Image.open(image_field).convert("RGBA")
         img_byte_arr = BytesIO()
-        image.save(img_byte_arr, format='PNG')  # Saving as PNG
-        img_byte_arr.seek(0)  # Move the cursor to the beginning of the buffer
-        return img_byte_arr.read()  # Return the binary data
+        image.save(img_byte_arr, format='WEBP')
+        img_byte_arr.seek(0)
+        return img_byte_arr.read()
 
     def validate_image(self, image_field):
         """Validates if the uploaded file is an image and meets the size and dimension requirements."""
         try:
             image = Image.open(image_field)
-            image.verify()  # Verifies if it's a valid image
+            image.verify()
         except (IOError, ValueError):
             raise ValidationError("The uploaded file is not a valid image.")
 
-        # Check the minimum and maximum dimensions
+        image = Image.open(image_field)
+        width, height = image.size
         min_width, min_height = 100, 100
         max_width, max_height = 1000, 1000
-        width, height = image.size
 
         if width < min_width or height < min_height:
             raise ValidationError(f"The image must be at least {min_width}x{min_height} pixels.")
         if width > max_width or height > max_height:
             raise ValidationError(f"The image cannot exceed {max_width}x{max_height} pixels.")
 
-        # Check the file size (maximum 5 MB)
-        image.seek(0, os.SEEK_END)  
-        image_size = image.tell()
-
+        image_field.seek(0, os.SEEK_END)
+        image_size = image_field.tell()
         max_size = 5 * 1024 * 1024  # 5 MB
+
         if image_size > max_size:
             raise ValidationError("The image cannot be larger than 5 MB.")
 
     def get_avatar_url(self):
-    if self.avatar:
-        return f"data:image/png;base64,{base64.b64encode(self.avatar).decode('utf-8')}"
+        """Returns the avatar as a base64-encoded webp data URI. Falls back to default avatar."""
+        if self.avatar:
+            return f"data:image/webp;base64,{base64.b64encode(self.avatar).decode('utf-8')}"
 
-    # path to default_avatar.png
-    default_path = os.path.join(settings.BASE_DIR, 'accounts', 'defaults', 'default_avatar.png')
-    
-    if os.path.exists(default_path):
-        with open(default_path, 'rb') as f:
-            default_avatar = f.read()
-            return f"data:image/png;base64,{base64.b64encode(default_avatar).decode('utf-8')}"
+        default_path = os.path.join(settings.BASE_DIR, 'accounts', 'defaults', 'default_avatar.webp')
+        if os.path.exists(default_path):
+            with open(default_path, 'rb') as f:
+                default_avatar = f.read()
+                return f"data:image/webp;base64,{base64.b64encode(default_avatar).decode('utf-8')}"
+        return None
 
-    return None
