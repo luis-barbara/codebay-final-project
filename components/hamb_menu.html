@@ -1,5 +1,5 @@
 <div id="hamburger-overlay" class="overlay hidden"></div>
-<div id="hamburger-sidebar" class="sidebar hamburger-sidebar hidden">
+<div id="hamburger-sidebar" class="sidebar">
 
     <div class="sidebar-header">
         <div class="logo-icon">
@@ -10,10 +10,13 @@
     <ul class="sidebar-menu">
         <li><i class="fa-solid fa-store"></i> Market</li>
         <li><i class="fa-solid fa-cart-shopping"></i> Cart</li>
-        <li class="has-submenu">
-            <div class="submenu-toggle"><i class="fa-solid fa-handshake"></i> My Sales <i
-                    class="fa-solid fa-chevron-down"></i></div>
-            <ul class="submenu hidden">
+        
+        <li class="hamb-sidebar__menu-item--has-submenu">
+            <div class="hamb-sidebar__submenu-toggle">
+                <span><i class="fa-solid fa-handshake"></i> My Sales</span>
+                <i class="fa-solid fa-chevron-down hamb-sidebar__submenu-chevron"></i>
+            </div>
+            <ul class="hamb-sidebar__submenu-list">
                 <li class="marker-remove"><i class="fa-solid fa-box"></i> My Products</li>
                 <li class="marker-remove"><i class="fa-solid fa-chart-column"></i> Analytics</li>
             </ul>

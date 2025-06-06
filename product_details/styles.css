@@ -5,6 +5,17 @@ body {
   color: #c8c9cd;
 }
 
+.logo-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-icon-img {
+  width: 150%;
+  height: 150%;
+  object-fit: cover;
+}
+
 .product-page {
   padding: 2rem 4rem;
   color: #fff;
