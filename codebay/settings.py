@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "marketplace",
     'accounts',
-    'payments'
+    'payments',
+    'storage'
     
 ]
 
@@ -192,6 +193,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = '/marketplace/'
 
 LOGOUT_REDIRECT_URL = "/"
+
+
+
+# AWS S3 keys 
+# AWS S3 Settings
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+
 
 
 

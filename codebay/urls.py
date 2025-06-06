@@ -30,6 +30,7 @@ urlpatterns = [
     path("api/market/", include("marketplace.urls")),
     path("api/accounts/", include("accounts.urls")),
     path("api/payments/", include("payments.urls")),
+    path('api/storage/', include('storage.urls')),
 ]
 
 # Arquivos estáticos e media no dev

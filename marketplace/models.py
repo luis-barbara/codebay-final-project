@@ -68,12 +68,14 @@ class Media(models.Model):
     def __str__(self):
         return f"{self.type} for {self.product.title}"
 
+
 class Wishlist(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wishlist')
     products = models.ManyToManyField(Product, related_name='wishlisted_by')
 
     def __str__(self):
         return f"Wishlist of {self.user.username}"
+
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -89,14 +91,6 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} by {self.buyer.username} - {self.status}"
 
-class Message(models.Model):
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_messages')
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='received_messages')
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Message from {self.sender.username} to {self.receiver.username} at {self.timestamp}"
 
 class Notification(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
@@ -106,6 +100,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.username} - Read: {self.is_read}"
+
 
 class Rating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='ratings')

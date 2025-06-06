@@ -4,7 +4,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     ProductViewSet, OrderViewSet, MessageViewSet,
-    RatingViewSet, NotificationViewSet, WishlistViewSet  
+    RatingViewSet, NotificationViewSet, WishlistViewSet,
+    ProductFilesView  
 )
 
 router = DefaultRouter()
@@ -15,6 +16,10 @@ router.register(r'ratings', RatingViewSet)
 router.register(r'notifications', NotificationViewSet, basename='notification')
 router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls)),
+    path('products/<int:product_id>/files/', ProductFilesView.as_view(), name='product-files'),  
+]
+
 
 
