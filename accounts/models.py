@@ -75,7 +75,7 @@ class User(AbstractUser):
         if width > max_width or height > max_height:
             raise ValidationError(f"The image cannot exceed {max_width}x{max_height} pixels.")
 
-        # Check the file size (e.g., maximum 5 MB)
+        # Check the file size (maximum 5 MB)
         image.seek(0, os.SEEK_END)  
         image_size = image.tell()
 
@@ -84,7 +84,15 @@ class User(AbstractUser):
             raise ValidationError("The image cannot be larger than 5 MB.")
 
     def get_avatar_url(self):
-        """Method to return the image encoded in base64"""
-        if self.avatar:
-            return base64.b64encode(self.avatar).decode('utf-8')
-        return None
+    if self.avatar:
+        return f"data:image/png;base64,{base64.b64encode(self.avatar).decode('utf-8')}"
+
+    # path to default_avatar.png
+    default_path = os.path.join(settings.BASE_DIR, 'accounts', 'defaults', 'default_avatar.png')
+    
+    if os.path.exists(default_path):
+        with open(default_path, 'rb') as f:
+            default_avatar = f.read()
+            return f"data:image/png;base64,{base64.b64encode(default_avatar).decode('utf-8')}"
+
+    return None
