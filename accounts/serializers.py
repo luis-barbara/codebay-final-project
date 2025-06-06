@@ -40,6 +40,8 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()  # Use get_avatar instead of direct field
+
     class Meta:
         model = User
         fields = (
@@ -47,28 +49,28 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'phone', 'position', 'location', 'website', 'github_account', 'rating'
         )
 
+    def get_avatar(self, obj):
+        """Returns the avatar as base64 data URI (webp)"""
+        return obj.get_avatar_url()
+
     def validate_phone(self, value):
-        """Validate that the phone number contains only digits"""
         if value and not value.isdigit():
             raise serializers.ValidationError("Phone number must contain only digits.")
         return value
 
     def validate_email(self, value):
-        """Ensure email is unique unless it's the user's current email"""
         if self.instance and self.instance.email != value and User.objects.filter(email=value).exists():
             raise serializers.ValidationError("This email is already in use.")
         return value
 
     def validate_username(self, value):
-        """Ensure username is unique unless it's the user's current username"""
         if self.instance and self.instance.username != value and value and User.objects.filter(username=value).exists():
             raise serializers.ValidationError("This username is already taken.")
         return value
 
     def update(self, instance, validated_data):
-        """Update the user profile with the validated data"""
         instance.full_name = validated_data.get('full_name', instance.full_name)
-        instance.username = validated_data.get('username', instance.username)  # Optional
+        instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
         instance.avatar = validated_data.get('avatar', instance.avatar)
         instance.description = validated_data.get('description', instance.description)
@@ -78,6 +80,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.website = validated_data.get('website', instance.website)
         instance.github_account = validated_data.get('github_account', instance.github_account)
         instance.rating = validated_data.get('rating', instance.rating)
-        
+
         instance.save()
         return instance
+
