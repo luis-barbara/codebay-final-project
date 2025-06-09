@@ -4,6 +4,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from django.conf import settings
 from .models import Product, Order, Notification, Rating, Media, Wishlist  
 from .serializers import (
@@ -34,10 +35,25 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+        # Compras feitas pelo user
         return self.queryset.filter(buyer=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(buyer=self.request.user)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def sales(self, request):
+        # Orders onde o produto é do user (vendas)
+        sales = self.queryset.filter(product__seller=request.user, payment_status='succeeded')
+        serializer = self.get_serializer(sales, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def pending_orders(self, request):
+        # Listar apenas os pedidos pendentes
+        pending_orders = self.queryset.filter(buyer=request.user, payment_status='pending')
+        serializer = self.get_serializer(pending_orders, many=True)
+        return Response(serializer.data)
 
 
 class NotificationViewSet(viewsets.ReadOnlyModelViewSet):
@@ -103,7 +119,7 @@ class ProductFilesView(APIView):
         user = request.user
 
         # Verifica se o utilizador comprou o produto
-        if not Order.objects.filter(product_id=product_id, buyer=user, status='paid').exists():
+        if not Order.objects.filter(product_id=product_id, buyer=user, payment_status='succeeded').exists():
             raise PermissionDenied("Access denied. You have not purchased this product.")
 
         # Procura arquivos relacionados ao produto

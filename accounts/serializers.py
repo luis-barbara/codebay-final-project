@@ -46,7 +46,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'full_name', 'email', 'username', 'avatar', 'description',
-            'phone', 'position', 'location', 'website', 'github_account', 'rating'
+            'phone', 'position', 'location', 'website', 'github_account', 'rating',
+            'stripe_account_id'  
         )
 
     def get_avatar(self, obj):
@@ -80,7 +81,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.website = validated_data.get('website', instance.website)
         instance.github_account = validated_data.get('github_account', instance.github_account)
         instance.rating = validated_data.get('rating', instance.rating)
+        instance.stripe_account_id = validated_data.get('stripe_account_id', instance.stripe_account_id)
 
         instance.save()
         return instance
-

@@ -6,7 +6,8 @@ from .models import (
     Order,
     Notification,
     Rating,
-    Media
+    Media,
+    Wishlist
 )
 from storage.models import ProjectFile
 
@@ -77,3 +78,13 @@ class ProjectFileAdmin(admin.ModelAdmin):
     list_filter = ('uploaded_at',)
     ordering = ('-uploaded_at',)
     list_per_page = 25
+
+
+@admin.register(Wishlist)
+class WishlistAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product_count')
+    search_fields = ('user__username',)
+
+    def product_count(self, obj):
+        return obj.products.count()
+    product_count.short_description = 'Number of Products'

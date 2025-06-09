@@ -134,8 +134,14 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # pagamento Stripe
+    stripe_payment_intent = models.CharField(max_length=255, blank=True, null=True)
+    payment_status = models.CharField(max_length=50, default='pending')  # ex: 'pending', 'succeeded', 'failed'
+    paid_at = models.DateTimeField(blank=True, null=True)
+
     def __str__(self):
         return f"Order #{self.id} by {self.buyer.username} - {self.status}"
+
 
 
 class Notification(models.Model):

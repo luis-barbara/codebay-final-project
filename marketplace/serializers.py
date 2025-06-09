@@ -7,10 +7,22 @@ from storage.models import ProjectFile
 
 User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'username', 'email']
+        model = Order
+        fields = [
+            'id',
+            'buyer',                  # Utilizador que comprou
+            'product',                # Produto comprado
+            'status',                 # Status da ordem (ex: pending, paid, delivered)
+            'created_at',             # Data da criação da ordem
+            'stripe_payment_intent',  # ID do PaymentIntent do Stripe 
+            'payment_status',         # Status do pagamento (ex: succeeded, failed)
+            'paid_at',                # Timestamp do pagamento
+        ]
+        read_only_fields = [
+            'buyer', 'status', 'created_at', 'payment_status', 'paid_at'
+        ]
 
 class ProjectFileSerializer(serializers.ModelSerializer):
     class Meta:

@@ -21,6 +21,7 @@ class User(AbstractUser):
     website = models.URLField(blank=True, null=True)
     github_account = models.URLField(blank=True, null=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    stripe_account_id = models.CharField(max_length=255, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']

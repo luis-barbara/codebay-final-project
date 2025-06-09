@@ -7,6 +7,10 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSignupSerializer, UserProfileSerializer
 from .models import User
+import stripe
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class SignupView(APIView):
     def post(self, request):
@@ -14,6 +18,24 @@ class SignupView(APIView):
         serializer = UserSignupSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()  # Create the user
+
+            # Criar conta Stripe Express para o utilizador
+            try:
+                account = stripe.Account.create(
+                    type="express",
+                    email=user.email,
+                    business_type="individual",
+                    capabilities={
+                        "transfers": {"requested": True},
+                    },
+                )
+                # Guardar stripe_account_id no user model
+                user.stripe_account_id = account.id
+                user.save()
+            except Exception as e:
+                # Se falhar, escolher o que fazer: login, continuar, etc.
+                print(f"Stripe account creation failed: {e}")
+
             return Response({
                 "message": "User created successfully.",
                 "user": serializer.data

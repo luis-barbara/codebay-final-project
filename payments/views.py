@@ -1,69 +1,197 @@
-# payments/views.py
+# payments/views
 
-
-from rest_framework import viewsets, permissions, status
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
-from .models import Product, UserProfile
-from .serializers import ProductSerializer
-from .stripe import create_stripe_account_and_link
+from rest_framework import status, permissions
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.decorators import api_view
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from django.http import HttpResponse
+from django.shortcuts import redirect
 import stripe
+import logging
+from .serializers import PaymentSerializer
+from .models import Product, Payment
+from .serializers import ProductSerializer
 
-# Certifica-te que a chave Stripe está configurada na stripe.py
-stripe.api_key = 'sk_test_...'  # Ou importa das settings
+logger = logging.getLogger(__name__)
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
-class ProductViewSet(viewsets.ModelViewSet):
+# View para listar os produtos
+class ProductListView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        products = Product.objects.filter(published=True)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+
+# View para detalhes do produto
+class ProductDetailView(RetrieveAPIView):
+    queryset = Product.objects.filter(published=True)
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        user_profile = UserProfile.objects.get(user=self.request.user)
-        return Product.objects.filter(owner=user_profile)
-
-    def perform_create(self, serializer):
-        user_profile = UserProfile.objects.get(user=self.request.user)
-
-        if not user_profile.stripe_account_id:
-            onboarding_url = create_stripe_account_and_link(user_profile)
-            # Levanta exceção com o link para o frontend tratar
-            from rest_framework.exceptions import APIException
-            raise APIException({'onboarding_url': onboarding_url})
-
-        serializer.save(owner=user_profile, published=True)
+    permission_classes = [AllowAny]
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_checkout_session_api(request, product_id):
-    user_profile = UserProfile.objects.get(user=request.user)
-    product = get_object_or_404(Product, id=product_id)
+# View para criar um PaymentIntent com Stripe
+class CreatePaymentIntentView(APIView):
+    permission_classes = [IsAuthenticated]
 
-    seller_account_id = product.owner.stripe_account_id
-    if not seller_account_id:
-        return Response({'error': 'Seller is not onboarded'}, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        product_id = request.data.get('product_id')
+        try:
+            product = Product.objects.get(id=product_id, published=True)
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        vendor = product.owner
+        if not vendor.stripe_account_id:
+            return Response({"error": "Vendor has no Stripe account"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verifique se o produto tem um preço válido
+        if product.price_cents <= 0:
+            return Response({"error": "Product price must be greater than 0."}, status=status.HTTP_400_BAD_REQUEST)
+
+        fee_cents = int(product.price_cents * 0.10)  # 10% comissão
+
+        try:
+            intent = stripe.PaymentIntent.create(
+                amount=product.price_cents,
+                currency="eur",
+                application_fee_amount=fee_cents,
+                transfer_data={"destination": vendor.stripe_account_id},
+                metadata={'product_id': product.id, 'user_id': request.user.id}
+            )
+
+            # Criar o pagamento na base de dados
+            payment = Payment.objects.create(
+                user=request.user,
+                product=product,
+                stripe_payment_intent_id=intent['id'],
+                amount_cents=product.price_cents,
+                succeeded=False,
+            )
+            return Response({'client_secret': intent['client_secret']})
+        except Exception as e:
+            logger.error(f"Error creating payment intent: {e}")
+            return Response({"error": "Error creating payment intent"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# View para confirmar o pagamento após o PaymentIntent ser aprovado
+class ConfirmPaymentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        payment_intent_id = request.data.get('payment_intent_id')
+        try:
+            payment = Payment.objects.get(stripe_payment_intent_id=payment_intent_id, user=request.user)
+        except Payment.DoesNotExist:
+            return Response({"error": "Payment not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+            if intent.status == 'succeeded':
+                payment.succeeded = True
+                payment.succeeded_at = timezone.now()
+                payment.save()
+                return Response({"message": "Payment confirmed successfully"})
+            else:
+                return Response({"message": "Payment not successful"}, status=status.HTTP_400_BAD_REQUEST)
+        except stripe.error.StripeError as e:
+            logger.error(f"Stripe error: {e}")
+            return Response({"error": "Stripe error during payment confirmation"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# View para detalhar o pagamento
+class PaymentDetailView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def get_object(self):
+        return Payment.objects.get(id=self.kwargs['pk'], user=self.request.user)
+
+
+# Webhook para o Stripe
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
     try:
-        session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
-                'price_data': {
-                    'currency': 'eur',
-                    'product_data': {'name': product.name},
-                    'unit_amount': product.price_cents,
-                },
-                'quantity': 1,
-            }],
-            mode='payment',
-            success_url=request.build_absolute_uri('/payments/success/'),
-            cancel_url=request.build_absolute_uri('/payments/cancel/'),
-            payment_intent_data={
-                'application_fee_amount': int(product.price_cents * 0.1),  # 10% fee
-                'transfer_data': {'destination': seller_account_id},
-            },
-        )
-        return Response({'checkout_url': session.url})
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+    except ValueError:
+        logger.error("Invalid payload")
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError:
+        logger.error("Invalid signature")
+        return HttpResponse(status=400)
 
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    if event['type'] == 'payment_intent.succeeded':
+        payment_intent = event['data']['object']
+        intent_id = payment_intent['id']
+        try:
+            payment = Payment.objects.get(stripe_payment_intent_id=intent_id)
+            payment.succeeded = True
+            payment.succeeded_at = timezone.now()
+            payment.save()
+            logger.info(f"Payment {intent_id} succeeded.")
+        except Payment.DoesNotExist:
+            logger.warning(f"Payment with intent ID {intent_id} not found on webhook payment_intent.succeeded")
+
+    elif event['type'] == 'payment_intent.payment_failed':
+        payment_intent = event['data']['object']
+        intent_id = payment_intent['id']
+        try:
+            payment = Payment.objects.get(stripe_payment_intent_id=intent_id)
+            payment.succeeded = False
+            payment.save()
+            logger.info(f"Payment {intent_id} failed.")
+        except Payment.DoesNotExist:
+            logger.warning(f"Payment with intent ID {intent_id} not found on webhook payment_intent.payment_failed")
+
+    return HttpResponse(status=200)
+
+
+# View para iniciar o onboarding do Stripe Connect
+class StripeConnectOnboardingView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+
+        if not user.stripe_account_id:
+            account = stripe.Account.create(
+                type="express",
+                country="PT",
+                email=user.email,
+                capabilities={"transfers": {"requested": True}},
+            )
+            user.stripe_account_id = account.id
+            user.save()
+
+        account_link = stripe.AccountLink.create(
+            account=user.stripe_account_id,
+            refresh_url="https://localhost:8000/payments/stripe/onboarding/refresh/",
+            return_url="https://localhost:8000/payments/stripe/onboarding/return/",
+            type="account_onboarding",
+        )
+
+        return Response({"url": account_link.url})
+
+
+# Endpoint para quando o onboarding for necessário ser atualizado
+@api_view(['GET'])
+def stripe_onboarding_refresh(request):
+    return redirect('https://seu-frontend.com/onboarding')  # Ajustar URL conforme necessário
+
+
+# Endpoint para quando o onboarding for bem-sucedido
+@api_view(['GET'])
+def stripe_onboarding_return(request):
+    return redirect('https://seu-frontend.com/dashboard')  # Ajustar URL conforme necessário
