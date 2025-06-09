@@ -4,11 +4,11 @@ from django.contrib import admin
 from .models import (
     Product,
     Order,
-    Message,
     Notification,
     Rating,
     Media
 )
+from storage.models import ProjectFile
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -18,6 +18,16 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
 
+    # Inline para mostrar arquivos relacionados diretamente no admin do produto
+    class ProjectFileInline(admin.TabularInline):
+        model = ProjectFile
+        extra = 0
+        readonly_fields = ('file_url', 'uploaded_at')
+        fields = ('title', 'description', 'file_url', 'uploaded_at')
+
+    inlines = [ProjectFileInline]
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('product', 'buyer', 'status', 'created_at')
@@ -26,12 +36,6 @@ class OrderAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
 
-@admin.register(Message)
-class MessageAdmin(admin.ModelAdmin):
-    list_display = ('sender', 'receiver', 'timestamp')
-    search_fields = ('sender__username', 'receiver__username', 'content')
-    ordering = ('-timestamp',)
-    list_per_page = 25
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
@@ -51,8 +55,25 @@ class RatingAdmin(admin.ModelAdmin):
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ('product', 'type', 'file')
+    list_display = ('product', 'type', 'has_media')
     list_filter = ('type',)
     search_fields = ('product__title',)
     ordering = ('-id',)
+    list_per_page = 25
+
+    def has_media(self, obj):
+        if obj.type == obj.IMAGE:
+            return bool(obj.image_data)
+        else:
+            return bool(obj.video_url)
+    has_media.boolean = True
+    has_media.short_description = 'Media Present'
+
+
+@admin.register(ProjectFile)
+class ProjectFileAdmin(admin.ModelAdmin):
+    list_display = ('title', 'user', 'product', 'uploaded_at')
+    search_fields = ('title', 'user__username', 'product__title')
+    list_filter = ('uploaded_at',)
+    ordering = ('-uploaded_at',)
     list_per_page = 25

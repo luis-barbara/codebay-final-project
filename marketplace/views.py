@@ -102,16 +102,15 @@ class ProductFilesView(APIView):
     def get(self, request, product_id):
         user = request.user
 
-        # Check if user has purchased the product
+        # Verifica se o utilizador comprou o produto
         if not Order.objects.filter(product_id=product_id, buyer=user, status='paid').exists():
             raise PermissionDenied("Access denied. You have not purchased this product.")
 
-        # Retrieve project files uploaded by the seller
-        files = ProjectFile.objects.filter(user__products__id=product_id)
+        # Procura arquivos relacionados ao produto
+        files = ProjectFile.objects.filter(product_id=product_id)
         if not files.exists():
             raise NotFound("No files found for this product.")
 
-        # Generate presigned S3 URLs
         s3_client = boto3.client(
             's3',
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -125,7 +124,7 @@ class ProductFilesView(APIView):
             presigned_url = s3_client.generate_presigned_url(
                 ClientMethod='get_object',
                 Params={'Bucket': settings.AWS_STORAGE_BUCKET_NAME, 'Key': key},
-                ExpiresIn=3600,
+                ExpiresIn=3600,  # 1 hora
             )
             file_urls.append({
                 'title': f.title,

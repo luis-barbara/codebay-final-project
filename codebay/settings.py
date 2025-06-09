@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     "marketplace",
     'accounts',
     'payments',
-    'storage'
+    'storage',
+    'messages'
     
 ]
 

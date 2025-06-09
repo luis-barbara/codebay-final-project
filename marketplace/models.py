@@ -4,6 +4,12 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Avg
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+from io import BytesIO
+from PIL import Image
+import os
+
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
@@ -42,15 +48,18 @@ class Product(models.Model):
     language = models.CharField(max_length=50, choices=LANGUAGE_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(upload_to='products/files/', blank=True, null=True)
+    # file removido para usar ProjectFile do storage
 
     def average_rating(self):
         avg = self.ratings.aggregate(Avg('score'))['score__avg']
         return round(avg, 2) if avg else None
 
+    @property
+    def main_file(self):
+        return self.files.filter(is_main_file=True).first()
+
     def __str__(self):
         return f"{self.title} by {self.seller.username}"
-
 
 
 class Media(models.Model):
@@ -61,12 +70,49 @@ class Media(models.Model):
         (VIDEO, 'Video'),
     ]
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='media')
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='media')
     type = models.CharField(max_length=10, choices=MEDIA_TYPE_CHOICES)
-    file = models.FileField(upload_to='products/media/')
+
+    # Para imagens, armazenar os bytes
+    image_data = models.BinaryField(blank=True, null=True)
+
+    # Para vídeo, armazenar URL (ex: YouTube)
+    video_url = models.URLField(blank=True, null=True, validators=[URLValidator()])
 
     def __str__(self):
         return f"{self.type} for {self.product.title}"
+
+    def clean(self):
+        # Validação customizada para garantir campos corretos conforme tipo
+        if self.type == self.IMAGE:
+            if not self.image_data:
+                raise ValidationError("Image data is required for media type image.")
+            if self.video_url:
+                raise ValidationError("Video URL should be empty for media type image.")
+        elif self.type == self.VIDEO:
+            if not self.video_url:
+                raise ValidationError("Video URL is required for media type video.")
+            if self.image_data:
+                raise ValidationError("Image data should be empty for media type video.")
+
+    def save(self, *args, **kwargs):
+        # Caso seja imagem, validar e converter (similar a accounts.models.User.avatar)
+        if self.type == self.IMAGE and self.image_data:
+            # Convert bytes to PIL Image for validation
+            try:
+                image = Image.open(BytesIO(self.image_data))
+                image.verify()
+            except Exception:
+                raise ValidationError("Invalid image data.")
+
+            # Re-open to convert to webp and normalize format
+            image = Image.open(BytesIO(self.image_data)).convert("RGBA")
+            img_byte_arr = BytesIO()
+            image.save(img_byte_arr, format='WEBP')
+            img_byte_arr.seek(0)
+            self.image_data = img_byte_arr.read()
+
+        super().save(*args, **kwargs)
 
 
 class Wishlist(models.Model):
