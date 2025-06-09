@@ -17,7 +17,7 @@ body {
 }
 
 .product-page {
-  padding: 2rem 4rem;
+  padding: 2rem 4rem 1rem;
   color: #fff;
   font-family: sans-serif;
   display:flex ;
@@ -240,23 +240,16 @@ body {
 .suggestions{
   padding: 1rem 4rem;
   margin-bottom: 1rem;
-  margin-top: 4rem; 
+  margin-top: 4rem;
 }
 
-.cards-container h2 {
-  margin-bottom: 1rem;
+.suggestions h2 {
   color: #ffffff;
   width: 100%;
 }
 
 .cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  border: 0.6px solid #6B6E72;
-  border-radius: 12px;
-  padding: 1rem;
-  background-color: #1e245a;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
 }
-
-

@@ -1,240 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeBay Dashboard - CSS Puro</title>
-    
-    <!-- Chart.js para os gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Google Fonts para a fonte "Inter" -->
+    <title>CodeBay Dashboard</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* ============== Reset Básico e Estilos Globais ============== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0F172A; /* Cor de fundo principal (slate-900) */
-            color: #E2E8F0; /* Cor de texto principal (slate-200) */
-            padding: 1rem; /* p-4 */
-        }
-
-        /* ============== Estrutura Principal e Layout ============== */
-        .dashboard-container {
-            max-width: 1280px; /* max-w-7xl */
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem; /* mb-8 */
-        }
-
-        .header-title {
-            font-size: 1.875rem; /* text-3xl */
-            font-weight: 700; /* font-bold */
-            color: #ffffff;
-        }
-
-        .header-date-range {
-            background-color: #1E293B; /* bg-slate-800 */
-            border: 1px solid #334155; /* border-slate-700 */
-            border-radius: 0.5rem; /* rounded-lg */
-            padding: 0.5rem 1rem; /* px-4 py-2 */
-            font-size: 0.875rem; /* text-sm */
-            color: #CBD5E1; /* text-slate-300 */
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Padrão para mobile */
-            gap: 1.5rem; /* gap-6 */
-        }
-
-        .main-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .sidebar-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* ============== Estilos dos Cards ============== */
-        .card {
-            background-color: #1E293B; /* Cor de fundo para os cards (slate-800) */
-            padding: 1.5rem; /* p-6 */
-            border-radius: 0.75rem; /* rounded-xl */
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem; /* mb-4 */
-        }
-
-        .card-title {
-            color: #94A3B8; /* text-slate-400 */
-            font-size: 0.875rem; /* text-sm */
-        }
-
-        .card-value {
-            font-size: 1.875rem; /* text-3xl */
-            font-weight: 700; /* font-bold */
-            color: #ffffff;
-            margin-top: 0.25rem; /* mt-1 */
-        }
-        
-        .card-value .percentage {
-            font-size: 1rem; /* text-base */
-            font-weight: 500; /* font-medium */
-        }
-
-        .percentage.positive { color: #34D399; } /* text-emerald-400 */
-        .percentage.negative { color: #F87171; } /* text-red-400 */
-
-        .card-legend {
-            display: flex;
-            align-items: center;
-            gap: 1rem; /* gap-4 */
-            font-size: 0.875rem; /* text-sm */
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem; /* gap-2 */
-        }
-
-        .legend-dot {
-            width: 0.5rem; /* w-2 */
-            height: 0.5rem; /* h-2 */
-            border-radius: 9999px; /* rounded-full */
-        }
-        
-        .chart-container-large { height: 20rem; } /* h-80 */
-        .chart-container-small { height: 7rem; margin-top: 1rem; } /* h-28 mt-4 */
-
-        /* ============== Tabela de Pedidos ============== */
-        .table-container {
-            overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
-        }
-
-        .orders-table {
-            width: 100%;
-            text-align: left;
-            border-collapse: collapse; /* Para as bordas funcionarem corretamente */
-        }
-
-        .orders-table th {
-            color: #94A3B8; /* text-slate-400 */
-            font-size: 0.875rem; /* text-sm */
-            font-weight: normal;
-            border-bottom: 1px solid #334155; /* border-b border-slate-700 */
-            padding: 0.75rem 0.5rem; /* py-3 px-2 */
-        }
-        
-        .orders-table td {
-             color: #E2E8F0; /* text-slate-200 */
-             border-bottom: 1px solid #334155; /* divide-y divide-slate-700 */
-             padding: 0.75rem 0.5rem; /* py-3 px-2 */
-        }
-        .orders-table tr:last-child td {
-            border-bottom: none;
-        }
-        .orders-table .font-mono { font-family: monospace; }
-        .orders-table .font-medium { font-weight: 500; }
-        
-        .status-pill {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem; /* text-xs */
-            border-radius: 9999px; /* rounded-full */
-        }
-
-        .status-delivered { background-color: rgba(16, 185, 129, 0.2); color: #34D399; }
-        .status-pending { background-color: rgba(245, 158, 11, 0.2); color: #FBBF24; }
-        .status-canceled { background-color: rgba(239, 68, 68, 0.2); color: #F87171; }
-
-
-        /* ============== Stats Rápidos ============== */
-        .quick-stats-card {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem; /* space-y-5 */
-        }
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .stat-item-value {
-             font-size: 1.25rem; /* text-xl */
-             font-weight: 700; /* font-bold */
-             color: #ffffff;
-        }
-        .stat-item-value .percentage { font-size: 0.875rem; } /* text-sm */
-
-        /* ============== Media Queries para Responsividade ============== */
-        @media (min-width: 640px) { /* sm: */
-            body { padding: 1.5rem; }
-        }
-
-        @media (min-width: 1024px) { /* lg: */
-            body { padding: 2rem; }
-            .dashboard-grid {
-                grid-template-columns: repeat(3, 1fr); /* lg:grid-cols-3 */
-            }
-            .main-column {
-                grid-column: span 2 / span 2; /* lg:col-span-2 */
-            }
-            .sidebar-column {
-                grid-column: span 1 / span 1; /* lg:col-span-1 */
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-
+    <div id="head"></div>
     <div class="dashboard-container">
-        <!-- Cabeçalho Principal -->
-        <header class="dashboard-header">
+        <div class="dashboard-header">
             <h1 class="header-title">Dashboard</h1>
-            <div class="header-date-range">
-                Jan 2024 - Dec 2024
+            <div class="dash-date-picker" id="datePicker">
+                <button class="dash-date-picker__button" id="datePickerButton">
+                    <span id="datePickerLabel"></span>
+                    <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div class="dash-date-picker__dropdown" id="datePickerDropdown">
+                    </div>
             </div>
-        </header>
+        </div>
 
-        <!-- Grid Principal do Dashboard -->
         <div class="dashboard-grid">
 
-            <!-- Coluna Principal (Gráficos Maiores) -->
             <div class="main-column">
-                <!-- Card: Total Revenue -->
                 <div class="card">
                     <div class="card-header">
                         <div>
                             <h2 class="card-title">Total revenue</h2>
-                            <p class="card-value">$240.8K <span class="percentage positive">24.6% ↑</span></p>
+                            <p class="card-value" id="total-revenue-value">$0 <span class="percentage" id="total-revenue-perc">0%</span></p>
                         </div>
                         <div class="card-legend">
                             <span class="legend-item"><span class="legend-dot" style="background-color: #C475E8;"></span>Revenue</span>
-                            <span class="legend-item"><span class="legend-dot" style="background-color: #5AB2F7;"></span>Expenses</span>
                         </div>
                     </div>
                     <div class="chart-container-large">
@@ -242,8 +50,7 @@
                     </div>
                 </div>
 
-                <!-- Card: Tabela de Pedidos -->
-                <div class="card">
+                <div class="card card-fill-height">
                     <h2 class="card-value" style="font-size: 1.25rem; margin-bottom: 1rem;">Last Orders</h2>
                     <div class="table-container">
                         <table class="orders-table">
@@ -257,226 +64,66 @@
                                     <th>Date</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="font-mono">#5351</td>
-                                    <td>Mohamed Salah</td>
-                                    <td class="font-medium">$1932.5</td>
-                                    <td>Discord Bot</td>
-                                    <td><span class="status-pill status-delivered">Delivered</span></td>
-                                    <td>31/12/2025</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-mono">#5352</td>
-                                    <td>LeBron James</td>
-                                    <td class="font-medium">$850.0</td>
-                                    <td>Web App</td>
-                                    <td><span class="status-pill status-pending">Pending</span></td>
-                                    <td>30/12/2025</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-mono">#5353</td>
-                                    <td>Serena Williams</td>
-                                    <td class="font-medium">$2400.0</td>
-                                    <td>Mobile App</td>
-                                    <td><span class="status-pill status-canceled">Canceled</span></td>
-                                    <td>29/12/2025</td>
-                                </tr>
-                            </tbody>
+                            <tbody id="orders-table-body">
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Coluna da Direita (Stats e Gráficos Menores) -->
             <div class="sidebar-column">
-                <!-- Card: Total Orders -->
                 <div class="card">
                     <h2 class="card-title">Total orders</h2>
-                    <p class="card-value">144.6K <span class="percentage positive">28.5% ↑</span></p>
+                    <p class="card-value" id="total-orders-value">0 <span class="percentage" id="total-orders-perc">0%</span></p>
                     <div class="chart-container-small">
-                         <canvas id="ordersChart"></canvas>
+                        <canvas id="ordersChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Card: Total Clients -->
                 <div class="card">
                     <h2 class="card-title">Total clients</h2>
-                    <p class="card-value">400 <span class="percentage negative">10.3% ↓</span></p>
-                     <div class="chart-container-small">
-                         <canvas id="clientsChart"></canvas>
+                    <p class="card-value" id="total-clients-value">0 <span class="percentage" id="total-clients-perc">0%</span></p>
+                    <div class="chart-container-small">
+                        <canvas id="clientsChart"></canvas>
                     </div>
                 </div>
-                
-                <!-- Card: Stats Rápidos -->
+
                 <div class="card quick-stats-card">
                     <div class="stat-item">
                         <div>
                             <h3 class="card-title">New clients</h3>
-                            <p class="stat-item-value">236 <span class="percentage positive">12.4% ↑</span></p>
+                            <p class="stat-item-value" id="new-clients-value">0 <span class="percentage" id="new-clients-perc">0%</span></p>
                         </div>
-                        <div style="color: #94A3B8;">→</div>
                     </div>
-                     <div class="stat-item">
+                    <div class="stat-item">
                         <div>
                             <h3 class="card-title">Regular clients</h3>
-                            <p class="stat-item-value">36 <span class="percentage negative">12.8% ↓</span></p>
+                            <p class="stat-item-value" id="regular-clients-value">0 <span class="percentage" id="regular-clients-perc">0%</span></p>
                         </div>
-                        <div style="color: #94A3B8;">→</div>
                     </div>
-                     <div class="stat-item">
+                    <div class="stat-item">
                         <div>
                             <h3 class="card-title">Different products sold</h3>
-                            <p class="stat-item-value">6 <span class="percentage positive">2.1% ↑</span></p>
+                            <p class="stat-item-value" id="products-sold-value">0 <span class="percentage" id="products-sold-perc">0%</span></p>
                         </div>
-                        <div style="color: #94A3B8;">→</div>
                     </div>
-                     <div class="stat-item">
+                    <div class="stat-item">
                         <div>
                             <h3 class="card-title">Money per order</h3>
-                            <p class="stat-item-value">2.3K <span class="percentage positive">11.3% ↑</span></p>
+                            <p class="stat-item-value" id="money-per-order-value">$0 <span class="percentage" id="money-per-order-perc">0%</span></p>
                         </div>
-                        <div style="color: #94A3B8;">→</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // O CÓDIGO JAVASCRIPT PARA OS GRÁFICOS PERMANECE EXATAMENTE O MESMO
-        
-        // ============== Configuração Geral dos Gráficos ==============
-        const defaultFontColor = '#94A3B8'; // slate-400
-        const gridColor = 'rgba(255, 255, 255, 0.1)';
+    <div id="foot"></div>
+    <div id="hamb"></div>
+    <div id="avat"></div>
 
-        // ============== 1. Gráfico de Revenue (Área) ==============
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        
-        const revenueGradient = revenueCtx.createLinearGradient(0, 0, 0, 300);
-        revenueGradient.addColorStop(0, 'rgba(196, 117, 232, 0.5)');
-        revenueGradient.addColorStop(1, 'rgba(196, 117, 232, 0)');
-        
-        const expensesGradient = revenueCtx.createLinearGradient(0, 0, 0, 300);
-        expensesGradient.addColorStop(0, 'rgba(90, 178, 247, 0.5)');
-        expensesGradient.addColorStop(1, 'rgba(90, 178, 247, 0)');
-
-        new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [
-                    {
-                        label: 'Revenue',
-                        data: [15000, 35000, 20000, 70000, 100000, 105000, 150000, 130000, 190000, 210000, 200000, 240800],
-                        borderColor: '#C475E8',
-                        backgroundColor: revenueGradient,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#C475E8',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#C475E8',
-                    },
-                    {
-                        label: 'Expenses',
-                        data: [25000, 10000, 15000, 50000, 80000, 125200, 90000, 160000, 70000, 50000, 100000, 120000],
-                        borderColor: '#5AB2F7',
-                        backgroundColor: expensesGradient,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#5AB2F7',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#5AB2F7',
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#0F172A',
-                        titleColor: '#E2E8F0',
-                        bodyColor: '#94A3B8',
-                        borderColor: '#334155',
-                        borderWidth: 1,
-                        padding: 10,
-                        callbacks: {
-                           label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) { label += ': '; }
-                                if (context.parsed.y !== null) {
-                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: defaultFontColor,
-                            callback: function(value) { return value / 1000 + 'K'; }
-                        },
-                        grid: { color: gridColor, drawBorder: false }
-                    },
-                    x: {
-                        ticks: { color: defaultFontColor },
-                        grid: { display: false }
-                    }
-                },
-                interaction: { intersect: false, mode: 'index' },
-            }
-        });
-        
-        // ============== 2. Gráfico de Orders (Barras) ==============
-        const ordersCtx = document.getElementById('ordersChart').getContext('2d');
-        new Chart(ordersCtx, {
-            type: 'bar',
-            data: {
-                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                datasets: [{
-                    label: 'Orders',
-                    data: [30, 40, 45, 50, 49, 60, 70, 91, 125, 100, 80, 110],
-                    backgroundColor: '#5AB2F7',
-                    borderRadius: 4,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { display: false }, x: { display: false } }
-            }
-        });
-
-        // ============== 3. Gráfico de Clients (Linha) ==============
-        const clientsCtx = document.getElementById('clientsChart').getContext('2d');
-        new Chart(clientsCtx, {
-            type: 'line',
-            data: {
-                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                datasets: [{
-                    label: 'Clients',
-                    data: [20, 40, 35, 60, 40, 80, 50, 90, 40, 60, 55, 75],
-                    borderColor: '#C475E8',
-                    fill: false,
-                    tension: 0.4,
-                    pointRadius: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { display: false }, x: { display: false } }
-            }
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

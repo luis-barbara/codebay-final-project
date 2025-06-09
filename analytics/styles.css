@@ -1,0 +1,316 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0D1116; 
+    color: #E2E8F0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-icon-img {
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+}
+
+.dashboard-container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.header-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ============== ESTILOS ESPECÍFICOS PARA O SELETOR DE DATA E ANO ============== */
+.dash-date-picker {
+    position: relative;
+    display: inline-block;
+}
+
+.dash-date-picker__button {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #CBD5E1;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background-color 0.2s;
+}
+
+.dash-date-picker__button:hover {
+    background-color: #334155;
+}
+
+.dash-date-picker__button .fa-caret-down {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dash-date-picker__button.dash-dp-open .fa-caret-down {
+    transform: rotate(180deg);
+}
+
+.dash-date-picker__dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    z-index: 10;
+    width: 180px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dash-date-picker__dropdown.dash-dp-show {
+    display: block;
+}
+
+/* Navegação do Ano */
+.dash-dp__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #334155;
+}
+
+.dash-dp__arrow {
+    background: none;
+    border: none;
+    color: #94A3B8;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+.dash-dp__arrow:hover {
+    background-color: #334155;
+}
+.dash-dp__arrow--disabled {
+    color: #475569;
+    cursor: not-allowed;
+}
+.dash-dp__arrow--disabled:hover {
+    background-color: transparent;
+}
+
+.dash-dp__year {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Lista de Meses */
+.dash-dp__months-list {
+    max-height: 240px; /* Aumentado para acomodar a nova opção */
+    overflow-y: auto;
+}
+
+.dash-date-picker__item {
+    padding: 0.5rem 0.75rem;
+    color: #CBD5E1;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.875rem;
+}
+
+.dash-date-picker__item:hover {
+    background-color: #334155;
+}
+
+.dash-date-picker__item--active {
+    background-color: #4f46e5;
+    color: #ffffff;
+}
+
+.dash-date-picker__item--disabled {
+    color: #64748b;
+    cursor: not-allowed;
+    background-color: transparent;
+}
+
+.dash-date-picker__item--disabled:hover {
+    background-color: transparent;
+}
+
+.dash-dp__separator {
+    height: 1px;
+    background-color: #334155;
+    margin: 0.5rem 0;
+}
+
+
+/* ============== RESTANTE DOS ESTILOS ============== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.main-column, .sidebar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: #1E293B;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    color: #94A3B8;
+    font-size: 0.875rem;
+}
+
+.card-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 0.25rem;
+}
+
+.card-value .percentage {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.percentage.positive { color: #34D399; }
+.percentage.negative { color: #F87171; }
+
+.card-legend {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.875rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+}
+
+.chart-container-large { height: 20rem; }
+.chart-container-small { height: 7rem; margin-top: 1rem; }
+
+.card-fill-height {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-fill-height .table-container {
+    flex-grow: 1;
+}
+
+.table-container { overflow-x: auto; }
+
+.orders-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.orders-table th {
+    color: #94A3B8;
+    font-size: 0.875rem;
+    font-weight: normal;
+    border-bottom: 1px solid #334155;
+    padding: 0.75rem 0.5rem;
+}
+
+.orders-table td {
+     color: #E2E8F0;
+     border-bottom: 1px solid #334155;
+     padding: 0.75rem 0.5rem;
+}
+.orders-table tr:last-child td {
+    border-bottom: none;
+}
+.orders-table .font-mono { font-family: monospace; }
+.orders-table .font-medium { font-weight: 500; }
+
+.status-pill {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 9999px;
+}
+
+.status-delivered { background-color: rgba(16, 185, 129, 0.2); color: #34D399; }
+.status-pending { background-color: rgba(245, 158, 11, 0.2); color: #FBBF24; }
+.status-canceled { background-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+.quick-stats-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;   
+}
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.stat-item-value {
+     font-size: 1.25rem;
+     font-weight: 700;
+     color: #ffffff;
+}
+.stat-item-value .percentage { font-size: 0.875rem; }
+
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: stretch; 
+    }
+    .main-column { grid-column: span 2 / span 2; }
+    .sidebar-column { grid-column: span 1 / span 1; }
+}
