@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - CodeBay</title>
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/card.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="../MyOrders/orders.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="head"></div>
+
+    <div class="orders-container">
+        <div class="orders-header">
+            <h1>My Orders</h1>
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search orders...">
+                </div>
+                <select class="filter-dropdown">
+                    <option>All Status</option>
+                    <option>Processing</option>
+                    <option>Shipped</option>
+                    <option>Delivered</option>
+                    <option>Canceled</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="orders-table-container">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Seller</th>
+                        <th>Phone</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Seller" class="seller-avatar">
+                                <span>JohnDoe</span>
+                            </div>
+                        </td>
+                        <td>Web Development Course</td>
+                        <td>1</td>
+                        <td>$99.99</td>
+                        <td><span class="status-badge shipped">Shipped</span></td>
+                        <td>(414) 907-1274</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="Seller" class="seller-avatar">
+                                <span>JaneSmith</span>
+                            </div>
+                        </td>
+                        <td>JavaScript Book</td>
+                        <td>2</td>
+                        <td>$39.99</td>
+                        <td><span class="status-badge processing">Processing</span></td>
+                        <td>(414) 555-1234</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Seller" class="seller-avatar">
+                                <span>MikeJohnson</span>
+                            </div>
+                        </td>
+                        <td>React Template</td>
+                        <td>1</td>
+                        <td>$49.99</td>
+                        <td><span class="status-badge delivered">Delivered</span></td>
+                        <td>(414) 222-5678</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="Seller" class="seller-avatar">
+                                <span>SarahWilliams</span>
+                            </div>
+                        </td>
+                        <td>CSS Framework</td>
+                        <td>1</td>
+                        <td>$29.99</td>
+                        <td><span class="status-badge shipped">Shipped</span></td>
+                        <td>(414) 333-9012</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/men/5.jpg" alt="Seller" class="seller-avatar">
+                                <span>DavidBrown</span>
+                            </div>
+                        </td>
+                        <td>Node.js Course</td>
+                        <td>1</td>
+                        <td>$89.99</td>
+                        <td><span class="status-badge cancelled">Cancelled</span></td>
+                        <td>(414) 444-3456</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="hamb"></div>
+    <div id="avat"></div>
+</body>
+<script src="../MyOrders/orders.js"></script>
+</html>
