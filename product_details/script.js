@@ -28,10 +28,19 @@ async function loadcard() {
     }
 }
 
+// Alterei a função loadhamb para remover o 'hidden' do sidebar, pois o CSS já cuida disso.
 async function loadhamb() {
     const response = await fetch('../components/hamb_menu.html');
     const hamb = await response.text();
     document.getElementById('hamb').innerHTML = hamb;
+    
+    // Adiciona o sidebar ao DOM mas mantém-no fora da tela. 
+    // A classe .sidebar já o posiciona com transform: translateX(-100%);
+    const sidebar = document.getElementById('hamburger-sidebar');
+    if (sidebar) {
+        sidebar.classList.remove('hidden'); 
+    }
+    
     setTimeout(setupSidebar, 0);
 }
 
@@ -42,93 +51,12 @@ async function loadavat() {
     setTimeout(setupAvatarSidebar, 0);
 }
 
-
 (async () => {
     await loadfooter();
     await loadheader(); 
     await loadhamb();   
     await loadcard();
 })();
-
-async function setupSidebar() {
-    const hamburger = document.querySelector('.left-section .hamburger');
-    const sidebar = document.getElementById('hamburger-sidebar');
-    const closeBtn = document.getElementById('close-sidebar');
-    const overlay = document.getElementById('hamburger-overlay');
-
-    if (!hamburger || !sidebar || !closeBtn || !overlay) {
-        console.warn('Hamburger sidebar elements not found');
-        return;
-     } 
-
-        hamburger.addEventListener('click', () => {
-            sidebar.classList.remove('hidden');
-            sidebar.classList.add('show');
-            overlay.classList.remove('hidden');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.remove('show');
-            sidebar.classList.add('hidden');
-            overlay.classList.add('hidden');
-        });
-
-        overlay.addEventListener('click', () => {
-            sidebar.classList.remove('show');
-            sidebar.classList.add('hidden');
-            overlay.classList.add('hidden');
-        });
-   
-}
-
-
-async function setupAvatarSidebar() {
-    const avatarSidebar = document.getElementById('avatar-sidebar');
-    const avatarOverlay = document.getElementById('avatar-overlay');
-    const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
-    const avatarIcon = document.querySelector('.right-section .logo-circle');
-
-    if (!avatarSidebar || !avatarOverlay || !closeAvatarBtn || !avatarIcon) {
-        console.warn('Avatar sidebar elements not found');
-        return;
-    }
-
-    avatarIcon.addEventListener('click', () => {
-        avatarSidebar.classList.add('show');
-        avatarSidebar.classList.remove('hidden');
-        avatarOverlay.classList.remove('hidden');
-    });
-
-    closeAvatarBtn.addEventListener('click', () => {
-        avatarSidebar.classList.remove('show');
-        avatarSidebar.classList.add('hidden');
-        avatarOverlay.classList.add('hidden');
-    });
-
-    avatarOverlay.addEventListener('click', () => {
-        avatarSidebar.classList.remove('show');
-        avatarSidebar.classList.add('hidden');
-        avatarOverlay.classList.add('hidden');
-    });
-}
-
-function setupNotificationDropdown() {
-    const bell = document.getElementById('notificationToggle');
-    const dropdown = document.getElementById('notificationDropdown');
-
-    if (bell && dropdown) {
-        bell.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdown.classList.toggle('show');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target) && e.target.id !== 'notificationToggle') {
-                dropdown.classList.remove('show');
-            }
-        });
-    }
-}
 
 async function setupSidebar() {
     const hamburger = document.querySelector('.left-section .hamburger');
@@ -180,21 +108,50 @@ async function setupSidebar() {
 }
 
 
-// ... (resto do seu código JS, como setupAvatarSidebar, etc.) ...
+async function setupAvatarSidebar() {
+    const avatarSidebar = document.getElementById('avatar-sidebar');
+    const avatarOverlay = document.getElementById('avatar-overlay');
+    const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
+    const avatarIcon = document.querySelector('.right-section .logo-circle');
 
-
-// Alterei a função loadhamb para remover o 'hidden' do sidebar, pois o CSS já cuida disso.
-async function loadhamb() {
-    const response = await fetch('../components/hamb_menu.html');
-    const hamb = await response.text();
-    document.getElementById('hamb').innerHTML = hamb;
-    
-    // Adiciona o sidebar ao DOM mas mantém-no fora da tela. 
-    // A classe .sidebar já o posiciona com transform: translateX(-100%);
-    const sidebar = document.getElementById('hamburger-sidebar');
-    if (sidebar) {
-        sidebar.classList.remove('hidden'); 
+    if (!avatarSidebar || !avatarOverlay || !closeAvatarBtn || !avatarIcon) {
+        console.warn('Avatar sidebar elements not found');
+        return;
     }
-    
-    setTimeout(setupSidebar, 0);
+
+    avatarIcon.addEventListener('click', () => {
+        avatarSidebar.classList.add('show');
+        avatarSidebar.classList.remove('hidden');
+        avatarOverlay.classList.remove('hidden');
+    });
+
+    closeAvatarBtn.addEventListener('click', () => {
+        avatarSidebar.classList.remove('show');
+        avatarSidebar.classList.add('hidden');
+        avatarOverlay.classList.add('hidden');
+    });
+
+    avatarOverlay.addEventListener('click', () => {
+        avatarSidebar.classList.remove('show');
+        avatarSidebar.classList.add('hidden');
+        avatarOverlay.classList.add('hidden');
+    });
+}
+
+function setupNotificationDropdown() {
+    const bell = document.getElementById('notificationToggle');
+    const dropdown = document.getElementById('notificationDropdown');
+
+    if (bell && dropdown) {
+        bell.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && e.target.id !== 'notificationToggle') {
+                dropdown.classList.remove('show');
+            }
+        });
+    }
 }

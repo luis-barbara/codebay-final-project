@@ -30,9 +30,96 @@ async function loadavat() {
     document.getElementById('avat').innerHTML = avat;
     setTimeout(setupAvatarSidebar, 0);
 }
-async function setupSidebar() { /* ... Lógica do sidebar ... */ }
-async function setupAvatarSidebar() { /* ... Lógica do sidebar do avatar ... */ }
-function setupNotificationDropdown() { /* ... Lógica das notificações ... */ }
+async function setupSidebar() { 
+    const hamburger = document.querySelector('.left-section .hamburger');
+    const sidebar = document.getElementById('hamburger-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('hamburger-overlay');
+    
+    // Seleciona todos os itens de menu que podem ser abertos
+    const submenuToggles = document.querySelectorAll('.hamb-sidebar__submenu-toggle');
+
+    if (!hamburger || !sidebar || !closeBtn || !overlay) {
+        console.warn('Hamburger sidebar elements not found');
+        return;
+    }
+
+    hamburger.addEventListener('click', () => {
+        sidebar.classList.remove('hidden');
+        sidebar.classList.add('show');
+        overlay.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        sidebar.classList.remove('show');
+        // A transição do CSS precisa de tempo, por isso usamos um timeout
+        // para adicionar 'hidden' apenas depois da animação de saída.
+        setTimeout(() => sidebar.classList.add('hidden'), 600); // 600ms = transition duration
+        overlay.classList.add('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('show');
+        setTimeout(() => sidebar.classList.add('hidden'), 600);
+        overlay.classList.add('hidden');
+    });
+
+    // --- LÓGICA DO SUBMENU ADICIONADA AQUI ---
+    submenuToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            // Encontra o elemento <li> pai
+            const parentMenuItem = toggle.closest('.hamb-sidebar__menu-item--has-submenu');
+            
+            // Adiciona ou remove a classe que controla o estado (aberto/fechado)
+            if (parentMenuItem) {
+                parentMenuItem.classList.toggle('submenu-is-open');
+            }
+        });
+    });
+    // --- FIM DA LÓGICA DO SUBMENU ---
+ }
+async function setupAvatarSidebar() {const avatarSidebar = document.getElementById('avatar-sidebar');
+    const avatarOverlay = document.getElementById('avatar-overlay');
+    const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
+    const avatarIcon = document.querySelector('.right-section .logo-circle');
+
+    if (!avatarSidebar || !avatarOverlay || !closeAvatarBtn || !avatarIcon) {
+        console.warn('Avatar sidebar elements not found');
+        return;
+    }
+
+    avatarIcon.addEventListener('click', () => {
+        avatarSidebar.classList.add('show');
+        avatarSidebar.classList.remove('hidden');
+        avatarOverlay.classList.remove('hidden');
+    });
+
+    closeAvatarBtn.addEventListener('click', () => {
+        avatarSidebar.classList.remove('show');
+        avatarSidebar.classList.add('hidden');
+        avatarOverlay.classList.add('hidden');
+    });
+
+    avatarOverlay.addEventListener('click', () => {
+        avatarSidebar.classList.remove('show');
+        avatarSidebar.classList.add('hidden');
+        avatarOverlay.classList.add('hidden');
+    });}
+function setupNotificationDropdown() {    const bell = document.getElementById('notificationToggle');
+    const dropdown = document.getElementById('notificationDropdown');
+
+    if (bell && dropdown) {
+        bell.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && e.target.id !== 'notificationToggle') {
+                dropdown.classList.remove('show');
+            }
+        });
+    } }
 
 (async () => {
     await loadfooter();
@@ -106,8 +193,23 @@ document.addEventListener('DOMContentLoaded', () => {
         populateDatePicker(selectedYear);
 
         button.addEventListener('click', () => { dropdown.classList.toggle('dash-dp-show'); button.classList.toggle('dash-dp-open'); });
-        document.getElementById('prevYear').addEventListener('click', () => { if (selectedYear > FOUNDATION_YEAR) { selectedYear--; populateDatePicker(selectedYear); updateDashboard(selectedYear, -1); } });
-        document.getElementById('nextYear').addEventListener('click', () => { if (selectedYear < currentRealYear) { selectedYear++; populateDatePicker(selectedYear); updateDashboard(selectedYear, -1); } });
+        
+        document.getElementById('prevYear').addEventListener('click', () => { 
+            if (selectedYear > FOUNDATION_YEAR) { 
+                selectedYear--; 
+                selectedMonthIndex = -1;
+                populateDatePicker(selectedYear); 
+                updateDashboard(selectedYear, selectedMonthIndex); 
+            } 
+        });
+        document.getElementById('nextYear').addEventListener('click', () => { 
+            if (selectedYear < currentRealYear) { 
+                selectedYear++; 
+                selectedMonthIndex = -1;
+                populateDatePicker(selectedYear); 
+                updateDashboard(selectedYear, selectedMonthIndex);
+            } 
+        });
 
         document.getElementById('monthsList').addEventListener('click', (e) => {
             const target = e.target;
@@ -117,6 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 dropdown.querySelector('.dash-date-picker__item--active')?.classList.remove('dash-date-picker__item--active');
                 target.classList.add('dash-date-picker__item--active');
+                
+                document.getElementById('datePickerLabel').textContent = target.textContent;
                 
                 dropdown.classList.remove('dash-dp-show');
                 button.classList.remove('dash-dp-open');
@@ -139,7 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         monthsList.innerHTML = '';
         
-        // Adiciona "Ano Inteiro"
         const allYearEl = document.createElement('div');
         allYearEl.classList.add('dash-date-picker__item');
         allYearEl.textContent = `Ano Inteiro ${year}`;
@@ -151,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
         monthsList.appendChild(allYearEl);
         monthsList.innerHTML += `<div class="dash-dp__separator"></div>`;
 
-        // Adiciona os meses
         monthNames.forEach((name, index) => {
             const monthEl = document.createElement('div');
             monthEl.classList.add('dash-date-picker__item');
@@ -223,62 +325,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function updateStat(valueEl, percEl, currentValue, prevValue, formatType) { /* ... Função inalterada ... */ }
     function updateOrdersTable(orders, year) { /* ... Função inalterada ... */ }
-    function createCharts() { /* ... Função inalterada ... */ }
 
-    function aggregateYearData(year) {
-        if (!allDashboardData[year]) {
-            return { stats: { totalRevenue: 0, totalOrders: 0, totalClients: 0, newClients: 0, regularClients: 0, productsSold: 0, moneyPerOrder: 0 }, charts: { monthlyTotals: { revenue: [], orders: [], clients: [] } } };
-        }
+    function createCharts() {
+        const defaultFontColor = '#94A3B8';
+        const gridColor = 'rgba(255, 255, 255, 0.1)';
+        const newColor = '#aa40c0';
+        const newColorClients = '#C475E8'; // Cor original para o gráfico de clientes, para diferenciação
+
+        const revenueGradient = document.getElementById('revenueChart').getContext('2d').createLinearGradient(0, 0, 0, 300);
+        revenueGradient.addColorStop(0, 'rgba(170, 64, 192, 0.5)');
+        revenueGradient.addColorStop(1, 'rgba(170, 64, 192, 0)');
+
+        const commonOptions = { responsive: true, maintainAspectRatio: false, animation: { duration: 500 } };
         
-        const aggregated = {
-            stats: { totalRevenue: 0, totalOrders: 0, totalClients: 0, newClients: 0, regularClients: 0, productsSold: 0 },
-            charts: { monthlyTotals: { revenue: [], orders: [], clients: [] } }
-        };
+        const revenueDataset = { label: 'Revenue', borderColor: newColor, backgroundColor: revenueGradient, fill: true, tension: 0.4, pointBackgroundColor: newColor, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: newColor, };
 
-        const monthsToAggregate = year < currentRealYear ? 12 : currentRealMonthIndex + 1;
-
-        for (let i = 0; i < 12; i++) {
-            if (i < monthsToAggregate) {
-                const monthData = allDashboardData[year][i];
-                aggregated.stats.totalRevenue += monthData.stats.totalRevenue;
-                aggregated.stats.totalOrders += monthData.stats.totalOrders;
-                aggregated.stats.totalClients += monthData.stats.totalClients;
-                aggregated.stats.newClients += monthData.stats.newClients;
-                aggregated.stats.regularClients += monthData.stats.regularClients;
-                aggregated.stats.productsSold += monthData.stats.productsSold;
-                
-                aggregated.charts.monthlyTotals.revenue.push(monthData.stats.totalRevenue);
-                aggregated.charts.monthlyTotals.orders.push(monthData.stats.totalOrders);
-                aggregated.charts.monthlyTotals.clients.push(monthData.stats.totalClients);
-            } else {
-                aggregated.charts.monthlyTotals.revenue.push(0);
-                aggregated.charts.monthlyTotals.orders.push(0);
-                aggregated.charts.monthlyTotals.clients.push(0);
-            }
-        }
-        aggregated.stats.moneyPerOrder = aggregated.stats.totalOrders > 0 ? aggregated.stats.totalRevenue / aggregated.stats.totalOrders : 0;
-        return aggregated;
+        revenueChart = new Chart('revenueChart', { type: 'line', data: { datasets: [revenueDataset] }, options: { ...commonOptions, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => formatCurrency(ctx.parsed.y) }}}, scales: { y: { beginAtZero: true, ticks: { color: defaultFontColor, callback: (v) => formatCurrency(v/1000) + 'K' }, grid: { color: gridColor, drawBorder: false }}, x: { ticks: { color: defaultFontColor }, grid: { display: false }} } } });
+        
+        ordersChart = new Chart('ordersChart', { type: 'bar', data: { datasets: [{ label: 'Orders', backgroundColor: '#5AB2F7', borderRadius: 4 }] }, options: { ...commonOptions, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => `${formatInteger(ctx.parsed.y)} encomendas` }}}, scales: { y: { display: false }, x: { display: true, ticks: { color: defaultFontColor }, grid: { display: false } } } } });
+        
+        clientsChart = new Chart('clientsChart', { type: 'line', data: { datasets: [{ label: 'Clients', borderColor: newColorClients, tension: 0.4, pointRadius: 0 }] }, options: { ...commonOptions, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => `${formatInteger(ctx.parsed.y)} clientes` }}}, scales: { y: { display: false }, x: { display: true, ticks: { color: defaultFontColor }, grid: { display: false } } } } });
     }
 
-    function generateFakeDataForYear(year) {
-        let yearGrowthFactor = 1 + ((year - FOUNDATION_YEAR) * 0.15);
-        let baseRevenue = 40000 * yearGrowthFactor;
-        let baseOrders = 400 * yearGrowthFactor;
-
-        return monthNames.map((month, index) => {
-            baseRevenue += (Math.sin(index / 2) * 15000 * yearGrowthFactor) + (Math.random() * 5000 - 2500);
-            baseOrders += (Math.sin(index / 2) * 150 * yearGrowthFactor) + (Math.random() * 20 - 10);
-            const revenue = Math.max(20000, baseRevenue);
-            const orders = Math.max(150, baseOrders);
-            return {
-                stats: { totalRevenue: revenue, totalOrders: Math.floor(orders), totalClients: Math.floor(orders * (0.8 + Math.random() * 0.1)), newClients: Math.floor(orders * (0.1 + Math.random() * 0.05)), regularClients: Math.floor(orders * (0.7 + Math.random() * 0.05)), productsSold: 5 + Math.floor(Math.random() * 3), moneyPerOrder: revenue / orders, },
-                lastOrders: [ {id: `#${8351 + index}`, customer: 'Ana Silva', amount: 1500 + Math.random() * 1000, product: 'Website', status: 'Delivered', date: `15/${index+1}/YYYY`}, {id: `#${8350 + index}`, customer: 'Bruno Costa', amount: 500 + Math.random() * 500, product: 'Logo Design', status: 'Pending', date: `12/${index+1}/YYYY`}, {id: `#${8349 + index}`, customer: 'Carla Dias', amount: 2500 + Math.random() * 1500, product: 'Mobile App', status: 'Delivered', date: `05/${index+1}/YYYY`}, ],
-                charts: { dailyData: { revenue: Array.from({ length: 31 }, () => 1000 + Math.random() * 4000), orders: Array.from({ length: 31 }, () => 10 + Math.floor(Math.random() * 30)), clients: Array.from({ length: 31 }, () => 5 + Math.floor(Math.random() * 15)), }}
-            };
-        });
-    }
+    function aggregateYearData(year) { /* ... Função inalterada ... */ }
+    function generateFakeDataForYear(year) { /* ... Função inalterada ... */ }
     
-    // Recopying utility functions to avoid reference errors in the final script
+    // Recopying utility functions to avoid reference errors
     updateStat = function(valueEl, percEl, currentValue, prevValue, formatType) {
         const percentage = (prevValue && prevValue > 0) ? ((currentValue - prevValue) / prevValue) * 100 : 0;
         const formattedValue = formatType === 'currency' ? formatCurrency(currentValue) : formatInteger(currentValue);
@@ -308,17 +380,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    createCharts = function() {
-        const defaultFontColor = '#94A3B8';
-        const gridColor = 'rgba(255, 255, 255, 0.1)';
-        const revenueGradient = document.getElementById('revenueChart').getContext('2d').createLinearGradient(0, 0, 0, 300);
-        revenueGradient.addColorStop(0, 'rgba(196, 117, 232, 0.5)');
-        revenueGradient.addColorStop(1, 'rgba(196, 117, 232, 0)');
-        const commonOptions = { responsive: true, maintainAspectRatio: false, animation: { duration: 500 } };
-        revenueChart = new Chart('revenueChart', { type: 'line', data: { datasets: [{ label: 'Revenue', borderColor: '#C475E8', backgroundColor: revenueGradient, fill: true, tension: 0.4 }] }, options: { ...commonOptions, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => formatCurrency(ctx.parsed.y) }}}, scales: { y: { beginAtZero: true, ticks: { color: defaultFontColor, callback: (v) => formatCurrency(v/1000) + 'K' }, grid: { color: gridColor, drawBorder: false }}, x: { ticks: { color: defaultFontColor }, grid: { display: false }} } } });
-        ordersChart = new Chart('ordersChart', { type: 'bar', data: { datasets: [{ label: 'Orders', backgroundColor: '#5AB2F7', borderRadius: 4 }] }, options: { ...commonOptions, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { display: true, ticks: { color: defaultFontColor }, grid: { display: false } } } } });
-        clientsChart = new Chart('clientsChart', { type: 'line', data: { datasets: [{ label: 'Clients', borderColor: '#C475E8', tension: 0.4, pointRadius: 0 }] }, options: { ...commonOptions, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { display: true, ticks: { color: defaultFontColor }, grid: { display: false } } } } });
+    aggregateYearData = function(year) {
+        if (!allDashboardData[year]) { return { stats: { totalRevenue: 0, totalOrders: 0, totalClients: 0, newClients: 0, regularClients: 0, productsSold: 0, moneyPerOrder: 0 }, charts: { monthlyTotals: { revenue: [], orders: [], clients: [] } } }; }
+        const aggregated = { stats: { totalRevenue: 0, totalOrders: 0, totalClients: 0, newClients: 0, regularClients: 0, productsSold: 0 }, charts: { monthlyTotals: { revenue: [], orders: [], clients: [] } } };
+        const monthsToAggregate = year < currentRealYear ? 12 : currentRealMonthIndex + 1;
+        for (let i = 0; i < 12; i++) {
+            if (i < monthsToAggregate) {
+                const monthData = allDashboardData[year][i];
+                aggregated.stats.totalRevenue += monthData.stats.totalRevenue;
+                aggregated.stats.totalOrders += monthData.stats.totalOrders;
+                aggregated.stats.totalClients += monthData.stats.totalClients;
+                aggregated.stats.newClients += monthData.stats.newClients;
+                aggregated.stats.regularClients += monthData.stats.regularClients;
+                aggregated.stats.productsSold += monthData.stats.productsSold;
+                aggregated.charts.monthlyTotals.revenue.push(monthData.stats.totalRevenue);
+                aggregated.charts.monthlyTotals.orders.push(monthData.stats.totalOrders);
+                aggregated.charts.monthlyTotals.clients.push(monthData.stats.totalClients);
+            } else {
+                aggregated.charts.monthlyTotals.revenue.push(0);
+                aggregated.charts.monthlyTotals.orders.push(0);
+                aggregated.charts.monthlyTotals.clients.push(0);
+            }
+        }
+        aggregated.stats.moneyPerOrder = aggregated.stats.totalOrders > 0 ? aggregated.stats.totalRevenue / aggregated.stats.totalOrders : 0;
+        return aggregated;
     }
 
+    generateFakeDataForYear = function(year) {
+        let yearGrowthFactor = 1 + ((year - FOUNDATION_YEAR) * 0.15);
+        let baseRevenue = 40000 * yearGrowthFactor;
+        let baseOrders = 400 * yearGrowthFactor;
+        return monthNames.map((month, index) => {
+            baseRevenue += (Math.sin(index / 2) * 15000 * yearGrowthFactor) + (Math.random() * 5000 - 2500);
+            baseOrders += (Math.sin(index / 2) * 150 * yearGrowthFactor) + (Math.random() * 20 - 10);
+            const revenue = Math.max(20000, baseRevenue);
+            const orders = Math.max(150, baseOrders);
+            return {
+                stats: { totalRevenue: revenue, totalOrders: Math.floor(orders), totalClients: Math.floor(orders * (0.8 + Math.random() * 0.1)), newClients: Math.floor(orders * (0.1 + Math.random() * 0.05)), regularClients: Math.floor(orders * (0.7 + Math.random() * 0.05)), productsSold: 5 + Math.floor(Math.random() * 3), moneyPerOrder: revenue / orders, },
+                lastOrders: [ {id: `#${8351 + index}`, customer: 'Ana Silva', amount: 1500 + Math.random() * 1000, product: 'Website', status: 'Delivered', date: `15/${index+1}/YYYY`}, {id: `#${8350 + index}`, customer: 'Bruno Costa', amount: 500 + Math.random() * 500, product: 'Logo Design', status: 'Pending', date: `12/${index+1}/YYYY`}, {id: `#${8349 + index}`, customer: 'Carla Dias', amount: 2500 + Math.random() * 1500, product: 'Mobile App', status: 'Delivered', date: `05/${index+1}/YYYY`},  {id: `#${8351 + index}`, customer: 'Ana Silva', amount: 1500 + Math.random() * 1000, product: 'Website', status: 'Delivered', date: `15/${index+1}/YYYY`}, ],
+                charts: { dailyData: { revenue: Array.from({ length: 31 }, () => 1000 + Math.random() * 4000), orders: Array.from({ length: 31 }, () => 10 + Math.floor(Math.random() * 30)), clients: Array.from({ length: 31 }, () => 5 + Math.floor(Math.random() * 15)), }}
+            };
+        });
+    }
+    
     init();
 });

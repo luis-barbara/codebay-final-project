@@ -53,22 +53,22 @@ body {
 }
 
 .dash-date-picker__button {
-    background-color: #1E293B;
-    border: 1px solid #334155;
+    background-color: #238636;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    color: #CBD5E1;
+    color: #ffffff;
     font-family: 'Inter', sans-serif;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    border: none;
     transition: background-color 0.2s;
 }
 
 .dash-date-picker__button:hover {
-    background-color: #334155;
+        background-color: #62A468;
 }
 
 .dash-date-picker__button .fa-caret-down {
@@ -84,8 +84,8 @@ body {
     position: absolute;
     top: 100%;
     right: 0;
-    background-color: #1E293B;
-    border: 1px solid #334155;
+    background-color: #282B2E;
+    border: 1px solid #6B6E72;
     border-radius: 0.5rem;
     margin-top: 0.5rem;
     padding: 0.5rem;
@@ -140,7 +140,7 @@ body {
 
 .dash-date-picker__item {
     padding: 0.5rem 0.75rem;
-    color: #CBD5E1;
+    color: #ffffff;
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -152,7 +152,7 @@ body {
 }
 
 .dash-date-picker__item--active {
-    background-color: #4f46e5;
+    background-color: #5A69EA;
     color: #ffffff;
 }
 
@@ -188,7 +188,7 @@ body {
 }
 
 .card {
-    background-color: #1E293B;
+    border: 0.6px solid #6B6E72;
     padding: 1.5rem;
     border-radius: 0.75rem;
 }
@@ -217,8 +217,8 @@ body {
     font-weight: 500;
 }
 
-.percentage.positive { color: #34D399; }
-.percentage.negative { color: #F87171; }
+.percentage.positive { color: #238636; }
+.percentage.negative { color: #B72324; }
 
 .card-legend {
     display: flex;
@@ -285,9 +285,9 @@ body {
     border-radius: 9999px;
 }
 
-.status-delivered { background-color: rgba(16, 185, 129, 0.2); color: #34D399; }
-.status-pending { background-color: rgba(245, 158, 11, 0.2); color: #FBBF24; }
-.status-canceled { background-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+.status-delivered { background-color: rgba(16, 185, 129, 0.2); color: #238636; }
+.status-pending { background-color: rgba(245, 158, 11, 0.2); color: #E2B243; }
+.status-canceled { background-color: rgba(239, 68, 68, 0.2); color: #B72324; }
 
 .quick-stats-card {
     display: flex;
