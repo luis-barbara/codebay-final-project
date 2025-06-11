@@ -2,28 +2,7 @@
 const wishlistManager = {
     wishlist: JSON.parse(localStorage.getItem('wishlist')) || {},
   
-    init: function() {
-      this.loadComponents();
-      this.setupEventListeners();
-    },
-  
-    loadComponents: async function() {
-      await this.loadHeader();
-      await this.loadCards();
-      await this.loadFooter();
-      await this.loadMenu();
-    },
-  
-    loadHeader: async function() {
-      try {
-        const response = await fetch('../components/header_logged_in.html');
-        const header = await response.text();
-        document.getElementById('head').innerHTML = header;
-        this.setupAvatarSidebar();
-      } catch (error) {
-        console.error('Error loading header:', error);
-      }
-    },
+
   
     loadCards: async function() {
       try {
@@ -126,91 +105,107 @@ const wishlistManager = {
       }
     },
   
-    loadFooter: async function() {
-      try {
-        const response = await fetch('../components/footer.html');
-        const footer = await response.text();
-        document.getElementById('foot').innerHTML = footer;
-        this.updateCopyright();
-      } catch (error) {
-        console.error('Error loading footer:', error);
-      }
-    },
-  
-    updateCopyright: function() {
-      const year = new Date().getFullYear();
-      document.getElementById('copyright-year').innerHTML = `© ${year} CodeBay - all rights reserved`;
-    },
-  
-    loadMenu: async function() {
-      try {
-        const [hambResponse, avatResponse] = await Promise.all([
-          fetch('../components/hamb_menu.html'),
-          fetch('../components/avat_menu.html')
-        ]);
-        
-        document.getElementById('hamb').innerHTML = await hambResponse.text();
-        document.getElementById('avat').innerHTML = await avatResponse.text();
-        
-        this.setupSidebar();
-        setTimeout(() => this.setupAvatarSidebar(), 0);
-      } catch (error) {
-        console.error('Error loading menus:', error);
-      }
-    },
-  
-    setupSidebar: function() {
-      const hamburger = document.querySelector('.hamburger');
-      const sidebar = document.getElementById('sidebar');
-      const closeBtn = document.getElementById('close-sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
-  
-      if (hamburger && sidebar && closeBtn && overlay) {
-        hamburger.addEventListener('click', () => {
-          sidebar.classList.remove('hidden');
-          sidebar.classList.add('show');
-          overlay.classList.remove('hidden');
-        });
-  
-        closeBtn.addEventListener('click', () => {
-          sidebar.classList.remove('show');
-          sidebar.classList.add('hidden');
-          overlay.classList.add('hidden');
-        });
-  
-        overlay.addEventListener('click', () => {
-          sidebar.classList.remove('show');
-          sidebar.classList.add('hidden');
-          overlay.classList.add('hidden');
-        });
-      }
-    },
-  
-    setupAvatarSidebar: function() {
-      const avatarSidebar = document.getElementById('avatar-sidebar');
-      const avatarOverlay = document.getElementById('avatar-overlay');
-      const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
-      const avatarIcon = document.querySelector('.right-section .logo-circle');
-  
-      if (avatarSidebar && avatarOverlay && closeAvatarBtn && avatarIcon) {
-        avatarIcon.addEventListener('click', () => {
-          avatarSidebar.classList.add('show');
-          avatarOverlay.classList.remove('hidden');
-        });
-  
-        closeAvatarBtn.addEventListener('click', () => {
-          avatarSidebar.classList.remove('show');
-          avatarOverlay.classList.add('hidden');
-        });
-  
-        avatarOverlay.addEventListener('click', () => {
-          avatarSidebar.classList.remove('show');
-          avatarOverlay.classList.add('hidden');
-        });
-      }
-    }
   };
   
+  async function loadcopyright() {
+    const year = new Date().getFullYear();
+    document.getElementById('copyright-year').innerHTML = `© ${year} CodeBay - all rights reserved`;
+}
+
+async function loadfooter() {
+    const response = await fetch('../components/footer.html');
+    const footer = await response.text();
+    document.getElementById('foot').innerHTML = footer;
+    loadcopyright();
+}
+
+async function loadheader() {
+    const response = await fetch('../components/header_logged_in.html');
+    const header = await response.text();
+    document.getElementById('head').innerHTML = header;
+
+    setupSidebar();
+    setupAvatarSidebar();
+    loadNotifications();
+}
+
+
+async function loadNotifications() {
+    const response = await fetch('../components/notifications/notifications.js');
+    if (response.ok) {
+        const html = await response.text();
+        const notificationArea = document.getElementById('notification-area');
+        if (notificationArea) {
+            notificationArea.innerHTML = html;
+        } else {
+            console.error('Element with ID "notification-area" not found.');
+        }
+    } else {
+        console.error('Failed to fetch notifications HTML:', response.status);
+    }
+}
+
+
+loadfooter();
+loadheader();
+
+
+function setupSidebar() {
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (hamburger && sidebar && closeBtn && overlay) {
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.remove('hidden');
+            sidebar.classList.add('show');
+            overlay.classList.remove('hidden');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            sidebar.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            sidebar.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
+    } else {
+        console.warn('Sidebar elements not found');
+    }
+}
+
+function setupAvatarSidebar() {
+
+
+    const avatarSidebar = document.getElementById('avatar-sidebar');
+    const avatarOverlay = document.getElementById('avatar-overlay');
+    const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
+    const avatarIcon = document.querySelector('.right-section .logo-circle');
+
+    avatarIcon.addEventListener('click', () => {
+        avatarSidebar.classList.add('show');
+        avatarSidebar.classList.remove('hidden');
+        avatarOverlay.classList.remove('hidden');
+    });
+
+    closeAvatarBtn.addEventListener('click', () => {
+        avatarSidebar.classList.remove('show');
+        avatarSidebar.classList.add('hidden');
+        avatarOverlay.classList.add('hidden');
+    });
+
+    avatarOverlay.addEventListener('click', () => {
+        avatarSidebar.classList.remove('show');
+        avatarSidebar.classList.add('hidden');
+        avatarOverlay.classList.add('hidden');
+    });
+}
+
   // Initialize the wishlist manager when DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
     wishlistManager.init();

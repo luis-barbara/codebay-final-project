@@ -3,6 +3,7 @@ body {
     margin: 0;
     font-family: sans-serif;
     color: #c8c9cd;
+    height: 100vh;
 }
 
 
@@ -361,8 +362,4 @@ body {
   .favorite-heart.active {
     color: #ff4757;
   }
-
-
-
-
 
