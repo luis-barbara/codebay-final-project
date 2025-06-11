@@ -71,14 +71,6 @@ class MediaAdmin(admin.ModelAdmin):
     has_media.short_description = 'Media Present'
 
 
-@admin.register(ProjectFile)
-class ProjectFileAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user', 'product', 'uploaded_at')
-    search_fields = ('title', 'user__username', 'product__title')
-    list_filter = ('uploaded_at',)
-    ordering = ('-uploaded_at',)
-    list_per_page = 25
-
 
 @admin.register(Wishlist)
 class WishlistAdmin(admin.ModelAdmin):

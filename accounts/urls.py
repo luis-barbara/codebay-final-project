@@ -7,9 +7,10 @@ from .views import SignupView, PublicProfileView, TokenObtainPairView
 urlpatterns = [
     path('signup/', SignupView.as_view(), name='signup'),
     path('profile/<str:email>/', PublicProfileView.as_view(), name='public_profile'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
 
 
 

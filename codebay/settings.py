@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'accounts',
     'payments',
     'storage',
-    'messages'
+    'chat'
     
 ]
 
@@ -212,4 +212,10 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazo
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
+
+# getstream keys 
+STREAM_API_KEY = os.getenv("STREAM_API_KEY")
+STREAM_API_SECRET = os.getenv("STREAM_API_SECRET")
+STREAM_APP_ID = os.getenv("STREAM_APP_ID")
 
