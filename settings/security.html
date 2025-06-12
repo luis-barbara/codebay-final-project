@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Settings</title>
+  <link rel="stylesheet" href="../styles/settings.css" />
+</head>
+<body>
+  <div class="settings-container">
+    <h1 class="section-title">Security Settings</h1>
+    <form class="form-section">
+      <label>Two-Factor Authentication</label>
+      <select>
+        <option value="enabled">Enabled</option>
+        <option value="disabled">Disabled</option>
+      </select>
+
+      <label>Security Questions</label>
+      <input type="text" placeholder="What was your first pet’s name?" />
+
+      <label>Backup Email</label>
+      <input type="email" value="backup@example.com" />
+
+      <button type="submit" class="submit-button">Save Security Settings</button>
+    </form>
+  </div>
+  <script src="../scripts/settings.js"></script>
+</body>
+</html>

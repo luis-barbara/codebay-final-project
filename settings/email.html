@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Settings</title>
+  <link rel="stylesheet" href="../styles/settings.css" />
+</head>
+<body>
+  <div class="settings-container">
+    <h1 class="section-title">Email Preferences</h1>
+    <form class="form-section">
+      <label>Email address</label>
+      <input type="email" value="john@dashdark.com" />
+
+      <label>Notification Preferences</label>
+      <textarea placeholder="Describe your notification preferences...">Weekly project updates, security alerts</textarea>
+
+      <label>Receive Marketing Emails</label>
+      <select>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+
+      <button type="submit" class="submit-button">Update Email Settings</button>
+    </form>
+  </div>
+  <script src="../scripts/settings.js"></script>
+</body>
+</html>

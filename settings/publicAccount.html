@@ -1,100 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>CodeBay</title>
+    <title>Account Settings - CodeBay</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../settings/css/styles.css">
 </head>
 
 <body>
     <div class="settings-container">
-        <aside class="user-settings-sidebar">
-            <h2 class="sidebar-title">Settings</h2>
-            <ul class="settings-menu">
-                <li class="menu-item active">Public Profile</li>
-                <li class="menu-item">Account</li>
-                <li class="menu-item">Emails</li>
-                <li class="menu-item">Security</li>
-                <li class="menu-item">Log Out</li>
-            </ul>
+        <aside class="settings-sidebar">
+            <div class="sidebar-header">
+                <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="User avatar" class="sidebar-avatar">
+                <div class="sidebar-user-info">
+                    <strong>John Carter</strong>
+                    <span>@johncarter</span>
+                </div>
+            </div>
+            <nav class="settings-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="publicAccount.html">
+                            <i class="fas fa-user"></i> Public profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="account.html">
+                            <i class="fas fa-cog"></i> Account
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="email.html">
+                            <i class="fas fa-envelope"></i> Emails
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="security.html">
+                            <i class="fas fa-shield-alt"></i> Security
+                        </a>
+                    </li>
+                    <li class="nav-item logout">
+                        <a href="Logout.html">
+                            <i class="fas fa-sign-out-alt"></i> Sign out
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </aside>
 
-        <main class="settings-main">
-            <h1 class="settings-heading">Public Profile</h1>
-            <hr>
+        <main class="settings-content">
+            <div class="settings-header">
+                <h1>Public profile</h1>
+                <p>This information will appear on your public profile.</p>
+            </div>
 
-            <div class="profile-section">
+            <div class="settings-section">
                 <h2 class="section-title">Personal information</h2>
                 
-                <div class="form-row">
-                    <label>Full name</label>
-                    <input type="text" class="form-input" value="John Carter">
+                <div class="form-group">
+                    <label for="fullname">Full name</label>
+                    <input type="text" id="fullname" value="John Carter">
                 </div>
                 
-                <div class="form-row">
-                    <label>Email address</label>
-                    <input type="email" class="form-input" value="john@dashdark.com">
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" value="john@dashdark.com">
+                    <p class="form-note">This is your primary email address</p>
                 </div>
                 
-                <div class="form-row">
-                    <label>Photo</label>
-                    <div class="photo-upload">
-                        <button class="delete-photo">Delete</button>
-                        <div class="upload-area">
-                            <p>Click to upload or drag and drop</p>
-                            <p class="file-types">SVG, PNG, JPG or GIF (max. 300 x 400px)</p>
-                            <input type="file" accept=".svg,.png,.jpg,.jpeg,.gif" class="file-input" />
+                <div class="form-group">
+                    <label>Profile picture</label>
+                    <div class="avatar-upload">
+                        <div class="avatar-preview">
+                            <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="Current avatar" class="current-avatar">
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                        <div class="upload-box">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload or drag and drop</p>
+                                <p class="upload-hint">SVG, PNG, JPG or GIF (max. 300×400px)</p>
+                            </div>
+                            <input type="file" id="avatar-upload" accept="image/*">
                         </div>
                     </div>
                 </div>
                 
-                <div class="form-row">
-                    <label>Short description</label>
-                    <textarea class="form-input form-textarea">Write a short bio about you...</textarea>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" rows="4">Write a short bio about you...</textarea>
+                    <p class="form-note">Tell us a little about yourself</p>
                 </div>
             </div>
 
-            <div class="profile-section">
+            <div class="settings-section">
                 <h2 class="section-title">Basic information</h2>
                 
-                <div class="form-row">
-                    <label>Phone</label>
-                    <input type="tel" class="form-input" value="(123) 456 - 7890">
+                <div class="form-group">
+                    <label for="phone">Phone number</label>
+                    <input type="tel" id="phone" value="(123) 456-7890">
                 </div>
                 
-                <div class="form-row">
-                    <label>Position</label>
-                    <input type="text" class="form-input" value="CEO & Founder">
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" id="position" value="CEO & Founder">
                 </div>
                 
-                <div class="form-row">
-                    <label>Location</label>
-                    <input type="text" class="form-input" value="New York, NY">
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" value="New York, NY">
                 </div>
                 
-                <div class="form-row">
-                    <label>Website</label>
-                    <input type="url" class="form-input" value="dashdark.com">
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" id="website" value="https://dashdark.com">
                 </div>
             </div>
 
-            <hr class="section-divider">
-
-            <div class="profile-section">
-                <h2 class="section-title">Profile Picture</h2>
-                <div class="form-row">
-                    <label>Username</label>
-                    <div class="form-value" file    ></div>
-                </div>
+            <div class="settings-footer">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save changes
+                </button>
+                <button class="btn btn-outline">
+                    Cancel
+                </button>
             </div>
-
-            <button class="save-button">Save</button>
-
-           
         </main>
     </div>
 </body>
-
 </html>
