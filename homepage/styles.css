@@ -122,7 +122,10 @@ body {
   border-radius: 6px;
   margin-bottom: 20px;
   box-sizing: border-box;
+  transition: border-color 0.3s ease;
 }
+
+
 
 .card-grid {
   display: grid;
