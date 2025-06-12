@@ -1,27 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Account Settings</title>
-  <link rel="stylesheet" href="../settings/css/styles.css" />
+    <meta charset="UTF-8">
+    <title>Account Settings - CodeBay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../settings/css/styles.css">
 </head>
+
 <body>
-  <div class="settings-container">
-    <h1 class="section-title">Account Settings</h1>
-    <form class="form-section">
-      <label>Username</label>
-      <input type="text" value="johncarter" />
+    <div class="settings-container">
+        <aside class="settings-sidebar">
+            <div class="sidebar-header">
+                <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="" class="sidebar-avatar">
+                <div class="sidebar-user-info">
+                    <strong>John Carter</strong>
+                    <span>@johncarter</span>
+                </div>
+            </div>
+            <nav class="settings-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="publicAccount.html">
+                            <i class="fas fa-user"></i> Public profile
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="account.html">
+                            <i class="fas fa-cog"></i> Account
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="email.html">
+                            <i class="fas fa-envelope"></i> Emails
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="security.html">
+                            <i class="fas fa-shield-alt"></i> Security
+                        </a>
+                    </li>
+                    <li class="nav-item logout">
+                        <a href="Logout.html">
+                            <i class="fas fa-sign-out-alt"></i> Sign out
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
 
-      <label>Change Password</label>
-      <input type="password" placeholder="Enter new password" />
+        <main class="settings-content">
+            <div class="settings-header">
+                <h1>Account Settings</h1>
+                <p>Manage your account details and preferences</p>
+            </div>
 
-      <label>Confirm Password</label>
-      <input type="password" placeholder="Confirm new password" />
+            <div class="settings-section">
+                <h2 class="section-title">Account Information</h2>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" value="johncarter">
+                    <p class="form-note">This is your unique identifier on CodeBay</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="account-email">Email address</label>
+                    <input type="email" id="account-email" value="john@dashdark.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="timezone">Timezone</label>
+                    <select id="timezone">
+                        <option value="GMT-12">(GMT-12:00) International Date Line West</option>
+                        <option value="GMT-5" selected>(GMT-05:00) Eastern Time (US & Canada)</option>
+                        <option value="GMT">(GMT) Greenwich Mean Time</option>
+                        <option value="GMT+1">(GMT+01:00) Central European Time</option>
+                    </select>
+                </div>
+            </div>
 
-      <button type="submit" class="submit-button">Update Account</button>
-    </form>
-  </div>
-  <script src="../settings/js/script.js"></script>
+            <div class="settings-section">
+                <h2 class="section-title">Change Password</h2>
+                
+                <div class="form-group">
+                    <label for="current-password">Current password</label>
+                    <input type="password" id="current-password" placeholder="Enter current password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-password">New password</label>
+                    <input type="password" id="new-password" placeholder="Enter new password">
+                    <p class="form-note">Minimum 8 characters with at least one number and one special character</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">Confirm new password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm new password">
+                </div>
+            </div>
+
+            <div class="settings-footer">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update account
+                </button>
+                <button class="btn btn-outline">
+                    Cancel
+                </button>
+            </div>  
+        </main>
+    </div>
+    <script src="../components/js/scripts.js"></script>
+    <script src="../scripts/settings.js"></script>
 </body>
 </html>

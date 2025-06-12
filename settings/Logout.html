@@ -1,21 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logout</title>
-  <link rel="stylesheet" href="../styles/settings.css" />
+    <meta charset="UTF-8">
+    <title>Sign Out - CodeBay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../settings/css/styles.css">
 </head>
+
 <body>
-  <div class="settings-container">
-    <h1 class="section-title">Logout</h1>
-    <p>Are you sure you want to log out from your account?</p>
-    <form class="form-section">
-      <button type="submit" class="submit-button" style="background-color: var(--error-color);">
-        Confirm Logout
-      </button>
-    </form>
-  </div>
-  <script src="../scripts/settings.js"></script>
+    <div class="settings-container">
+        <aside class="settings-sidebar">
+            <div class="sidebar-header">
+                <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="" class="sidebar-avatar">
+                <div class="sidebar-user-info">
+                    <strong>John Carter</strong>
+                    <span>@johncarter</span>
+                </div>
+            </div>
+            <nav class="settings-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="publicAccount.html">
+                            <i class="fas fa-user"></i> Public profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="account.html">
+                            <i class="fas fa-cog"></i> Account
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="email.html">
+                            <i class="fas fa-envelope"></i> Emails
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="security.html">
+                            <i class="fas fa-shield-alt"></i> Security
+                        </a>
+                    </li>
+                    <li class="nav-item logout">
+                        <a href="Logout.html">
+                            <i class="fas fa-sign-out-alt"></i> Sign out
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="settings-content">
+            <div class="settings-header">
+                <h1>Sign Out</h1>
+                <p>Are you sure you want to sign out of your account?</p>
+            </div>
+
+            <div class="settings-section">
+                <div class="logout-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>You will need to sign in again to access your account.</p>
+                </div>
+            </div>
+
+            <div class="settings-footer">
+                <button class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </button>
+                <button class="btn btn-outline">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

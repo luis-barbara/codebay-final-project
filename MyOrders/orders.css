@@ -1,21 +1,22 @@
 :root {
-    --primary-color: #6366f1;       /* Indigo-500 */
-    --primary-hover: #4f46e5;       /* Indigo-600 */
-    --secondary-color: #10b981;     /* Emerald-500 */
-    --dark-bg: #0f172a;             /* Slate-900 */
-    --darker-bg: #020617;           /* Slate-950 */
-    --card-bg: #1e293b;             /* Slate-800 */
-    --text-primary: #f8fafc;        /* Slate-50 */
-    --text-secondary: #94a3b8;      /* Slate-400 */
-    --border-color: #334155;        /* Slate-700 */
-    --error-color: #ef4444;         /* Red-500 */
-    --success-color: #22c55e;       /* Green-500 */
+    --primary-color: #5A69EA;
+    --primary-hover: #7E91F3;
+    --primary-active: #1E245A;
+    --secondary-color: #10b981;
+    --dark-bg: #0f172a;
+    --darker-bg: #0d1116;
+    --card-bg: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #6B6E72;
+    --error-color: #ef4444;
+    --success-color: #238636;
 }
 
 body {
     margin: 0;
     font-family: 'Segoe UI', system-ui, sans-serif;
-    background-color: var(--dark-bg);
+    background-color: var(--darker-bg);
     color: var(--text-primary);
     padding: 2rem;
 }
@@ -30,6 +31,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    
 }
 
 .orders-header h1 {
@@ -110,7 +112,7 @@ body {
 
 .orders-table td {
     padding: 1rem;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 0.6px solid var(--border-color);
     font-size: 0.875rem;
     vertical-align: middle;
 }
@@ -156,7 +158,7 @@ body {
 }
 
 .status-badge.cancelled {
-    background-color: rgba(239, 68, 68, 0.1);
+    background-color: rgba(251, 3, 3, 0.1);
     color: var(--error-color);
 }
 
