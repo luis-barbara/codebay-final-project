@@ -11,6 +11,7 @@ services:
       - .env
     volumes:
       - ./:/app/
+      - /app/.venv
     depends_on:
       - db
     
