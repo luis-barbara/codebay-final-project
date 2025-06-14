@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeBay - Sign In</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="/components/logo.png" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-wrapper">
+                    <img src="/components/logo.png" alt="Logo" class="logo" />
+                </div>
+                <span class="brand">CodeBay</span>
+            </div>
+            <div class="auth-buttons">
+                <a href="#" class="signin">Signin</a>
+                <a href="#" class="signup">Signup</a>
+            </div>
+        </div>
+    </header>
+
+    <div id="signInModal" class="modal" style="display: block;">
+        <div class="modal-content form-card">
+            <span class="close">&times;</span> 
+            <h2 class="form-title">Sign in to CodeBay</h2>
+
+            <form id="signInForm">
+                <div class="form-group">
+                    <label for="signInEmail">Email</label>
+                    <input type="email" id="signInEmail" placeholder="Type here..." required />
+                </div>
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" placeholder="Type here..." required />
+                </div>
+                <div class="forgot-password">
+                    <a href="#" id="forgotPassword" class="forgot-password-link">Forgot the password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">Sign In</button>
+
+                <p class="form-footer-text">
+                    New in CodeBay? <a href="#" class="switch-link">Create an account</a>
+                </p>
+              
+                <div class="social-divider">
+                    <hr><span>OR</span>
+                    <hr>
+                </div>
+
+                <div class="social-buttons">
+                    <button type="button" class="btn-social github">Continuar com Github</button>
+                    <button type="button" class="btn-social google">Continuar com Google</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
