@@ -2,68 +2,67 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeBay - Sign In</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="/components/logo.png" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="CodeBay is a digital asset marketplace where developers, makers, and agencies sell ready-to-use bots, APIs, microSaaS, and automations. Discover plug-and-play solutions to launch faster, cut costs, and scale without building from scratch.">
+    <title>CodeBay — Buy & Sell Ready-to-Use Digital Assets | APIs, Bots, MicroSaaS & More</title>
+    <link rel="icon" type="image/png" href="../codebay-favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- CSS Paths -->
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/card.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="signin.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+
+    <!-- Other -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
+
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo-wrapper">
-                    <img src="/components/logo.png" alt="Logo" class="logo" />
+    <div id="head"></div>
+
+    <main>
+        <div class="container">
+            <div class="login-box">
+                <div class="upper-text">
+                    <h1>Signin to CodeBay</h1>
                 </div>
-                <span class="brand">CodeBay</span>
-            </div>
-            <div class="auth-buttons">
-                <a href="#" class="signin">Signin</a>
-                <a href="#" class="signup">Signup</a>
+                <form>
+                    <div class="form-group icon-input">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="text" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group icon-input">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" placeholder="Your Password" required>
+                        <i class="fa-solid fa-eye" id="togglePassword"></i>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="login-btn">Sign in</button>
+                </form>
+                <div class="signup-link">
+                    New to CodeBay? <a href="signup.html">Create an account</a>
+                </div>
             </div>
         </div>
-    </header>
+    </main>
 
-    <div id="signInModal" class="modal" style="display: block;">
-        <div class="modal-content form-card">
-            <span class="close">&times;</span> 
-            <h2 class="form-title">Sign in to CodeBay</h2>
+        <div id="foot"></div>
 
-            <form id="signInForm">
-                <div class="form-group">
-                    <label for="signInEmail">Email</label>
-                    <input type="email" id="signInEmail" placeholder="Type here..." required />
-                </div>
-                <div class="form-group">
-                    <label for="signInPassword">Password</label>
-                    <input type="password" id="signInPassword" placeholder="Type here..." required />
-                </div>
-                <div class="forgot-password">
-                    <a href="#" id="forgotPassword" class="forgot-password-link">Forgot the password?</a>
-                </div>
-
-                <button type="submit" class="btn-primary">Sign In</button>
-
-                <p class="form-footer-text">
-                    New in CodeBay? <a href="#" class="switch-link">Create an account</a>
-                </p>
-              
-                <div class="social-divider">
-                    <hr><span>OR</span>
-                    <hr>
-                </div>
-
-                <div class="social-buttons">
-                    <button type="button" class="btn-social github">Continuar com Github</button>
-                    <button type="button" class="btn-social google">Continuar com Google</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <script src="../components/js/shared-components.js"></script>
 </body>
 
 </html>
