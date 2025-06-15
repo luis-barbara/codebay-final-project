@@ -21,17 +21,22 @@ async function loadFooter() {
     }
 }
 
-// Load header and initialize avatar and notifications
-async function loadHeader() {
+// Carregar a navbar conforme o estado de login
+async function loadHeaderBasedOnAuth() {
+  const headEl = document.getElementById('head');
+  if (!headEl) return;
+
+  if (localStorage.getItem('access_token')) {
     const response = await fetch('../components/header_logged_in.html');
-    const header = await response.text();
-    const headEl = document.getElementById('head');
-    if (headEl) {
-        headEl.innerHTML = header;
-        await loadAvatar();
-        setupNotificationDropdown();
-    }
+    headEl.innerHTML = await response.text();
+    await loadAvatar();
+    setupNotificationDropdown();
+  } else {
+    const response = await fetch('../components/header_logged_out.html');
+    headEl.innerHTML = await response.text();
+  }
 }
+
 
 // Load product cards
 async function loadCard() {
@@ -117,6 +122,7 @@ async function setupAvatarSidebar() {
     const avatarOverlay = document.getElementById('avatar-overlay');
     const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
     const avatarIcon = document.querySelector('.right-section .logo-circle');
+    const logoutBtn = document.getElementById('logout-btn');  // botão logout
 
     if (!avatarSidebar || !avatarOverlay || !closeAvatarBtn || !avatarIcon) {
         console.warn('Avatar sidebar elements not found');
@@ -138,7 +144,16 @@ async function setupAvatarSidebar() {
     avatarIcon.addEventListener('click', showAvatarSidebar);
     closeAvatarBtn.addEventListener('click', hideAvatarSidebar);
     avatarOverlay.addEventListener('click', hideAvatarSidebar);
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '/signin.html';
+        });
+    }
 }
+
 
 // Setup notifications dropdown
 function setupNotificationDropdown() {
@@ -194,12 +209,12 @@ function setupFilters() {
 
 // Main initialization on DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadFooter();
-    await loadHeader();
-    await loadHamb();
-    await loadCard();
+  await loadFooter();
+  await loadHeaderBasedOnAuth();
+  await loadHamb();
+  await loadCard();
 
-    if (document.querySelector(".toggle-filters")) {
-        setupFilters();
-    }
+  if (document.querySelector(".toggle-filters")) {
+    setupFilters();
+  }
 });

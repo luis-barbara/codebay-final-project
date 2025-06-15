@@ -1,0 +1,145 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #0D1116;
+  display: flex;
+  flex-direction: column;
+}
+
+#head, footer {
+  flex-shrink: 0; 
+}
+
+main {
+  flex: 1; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 70px;
+  padding-bottom: 40px;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+}
+
+/* === SIGNUP FORM === */
+.signup-box {
+    background-color: #05071E;
+    padding: 50px;
+    border-radius: 8px;
+    border: 0.6px solid #6b6e72;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
+    margin: 0 auto;
+    color: white;
+}
+
+.upper-text h1 {
+    margin-top: 0;
+    margin-bottom: 50px; 
+    text-align: center;
+    font-size: 30px;
+    color: white;
+}
+
+.signup-box .form-group {
+    margin-bottom: 18px;
+}
+
+.signup-box label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.signup-box input[type="text"],
+.signup-box input[type="password"] {
+    width: 100%;
+    padding: 12px 35px 12px 40px;
+    border: 0.6px solid #6b6e72;
+    border-radius: 6px;
+    background-color: #0D1116;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signup-box input[type="text"]:focus,
+.signup-box input[type="password"]:focus {
+    border: 2px solid #5A69EA;
+    box-shadow: 0 0 8px #5A69EA;
+    outline: none;
+}
+
+.signup-btn {
+    width: 100%;
+    background-color: #5A69EA;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 25px;
+}
+
+.signup-btn:hover {
+    background-color: #7E91F3;
+}
+
+.signin-link {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.signin-link a {
+    color: #7E91F3;
+    text-decoration: none;
+}
+
+.signin-link a:hover {
+    text-decoration: underline;
+    color: #D2DBFD;
+}
+
+/* === ICONS INPUT === */
+.icon-input {
+    position: relative;
+}
+
+.icon-input .fa-user,
+.icon-input .fa-envelope,
+.icon-input .fa-lock {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #6B6E72;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.icon-input #togglePassword,
+.icon-input #toggleConfirmPassword {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #6B6E72;
+    font-size: 18px;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 2;
+}
