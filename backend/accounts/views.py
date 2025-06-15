@@ -9,10 +9,14 @@ from .serializers import UserSignupSerializer, UserProfileSerializer
 from .models import User
 import stripe
 from django.conf import settings
+from rest_framework.permissions import AllowAny
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class SignupView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         """Handle user signup and create a new user."""
         serializer = UserSignupSerializer(data=request.data)
@@ -57,6 +61,8 @@ class PublicProfileView(APIView):
 
 
 class TokenObtainPairView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         """Authenticate user and return JWT tokens."""
         email = request.data.get('email')

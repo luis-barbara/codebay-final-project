@@ -81,6 +81,7 @@ SIMPLE_JWT = {
 
 
 AUTHENTICATION_BACKENDS = (
+    'accounts.auth_backend.EmailBackend',  # Custom backend for email authentication
     'django.contrib.auth.backends.ModelBackend',  
     'allauth.account.auth_backends.AuthenticationBackend',  # Para allauth
     'social_core.backends.google.GoogleOAuth2',
@@ -112,18 +113,18 @@ SITE_ID = 1
 
 AUTH_USER_MODEL = 'accounts.User'
 
+
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",   
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware", # for serving static files in production (DEBUG False)
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    "django.middleware.common.CommonMiddleware",  
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'allauth.account.middleware.AccountMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  
-    'django.middleware.common.CommonMiddleware',
 ]
 
 

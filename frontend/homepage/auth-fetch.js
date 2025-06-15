@@ -1,13 +1,13 @@
 // frontend/homepage/auth-fetch.js
 
-// Verifica se o token está presente e válido (pode expandir para verificar expiração)
-function isAuthenticated() {
-  return !!localStorage.getItem('access_token');
+// Verifica se o token está presente e válido (expiração não implementada aqui)
+export function isAuthenticated() {
+  return !!localStorage.getItem('accessToken');
 }
 
 // Requisição fetch com token JWT no header Authorization
-async function fetchWithAuth(url, options = {}) {
-  const token = localStorage.getItem('access_token');
+export async function fetchWithAuth(url, options = {}) {
+  const token = localStorage.getItem('accessToken');
 
   if (!token) {
     throw new Error('No access token found. User may not be logged in.');
@@ -33,9 +33,9 @@ async function fetchWithAuth(url, options = {}) {
   return response;
 }
 
-// Logout: remove tokens e redireciona
-function handleLogout() {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
-  window.location.href = '/frontend/registrations/signin.html';
+// Logout: remove tokens e redireciona para login
+export function handleLogout() {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  window.location.href = '../registrations/signin.html';
 }

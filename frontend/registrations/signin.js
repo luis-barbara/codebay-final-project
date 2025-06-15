@@ -2,8 +2,10 @@
 // Só para login, armazenar tokens e redirecionar
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (typeof loadHeader === 'function') {
-    loadHeader();
+  // Se já tiver token, redireciona para a página principal
+  if (localStorage.getItem('access_token')) {
+    window.location.href = '/index.html';
+    return;  
   }
 
   const form = document.querySelector('form');
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.disabled = true;
 
     try {
-      const response = await fetch('/api/accounts/token/', {
+      const response = await fetch('http://localhost:8000/api/accounts/token/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -49,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = await response.json();
 
-      localStorage.setItem('access_token', data.access);
-      localStorage.setItem('refresh_token', data.refresh);
+      localStorage.setItem('accessToken', data.access);
+      localStorage.setItem('refreshToken', data.refresh);
 
       window.location.href = '/index.html';
 
