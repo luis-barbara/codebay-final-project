@@ -5,7 +5,8 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     ProductViewSet, OrderViewSet,
     RatingViewSet, NotificationViewSet, WishlistViewSet,
-    ProductFilesView  
+    ProductFilesView,
+    CreateStripeCheckoutSession,  
 )
 
 router = DefaultRouter()
@@ -17,7 +18,8 @@ router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('products/<int:product_id>/files/', ProductFilesView.as_view(), name='product-files'),  
+    path('products/<int:product_id>/files/', ProductFilesView.as_view(), name='product-files'),
+    path('create-checkout-session/', CreateStripeCheckoutSession.as_view(), name='create-checkout-session'),  # nova rota
 ]
 
 
