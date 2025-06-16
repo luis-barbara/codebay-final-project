@@ -1,13 +1,14 @@
 // frontend/stripe/checkout.js
 
-import { authFetch, getAccessToken } from './auth.js';
+
+import { authFetch } from './auth.js';
 
 // Use your publishable Stripe key here (you can hardcode or inject dynamically)
 const stripe = Stripe('pk_test_your_publishable_key_here'); 
 
 async function createCheckoutSession(productId) {
   try {
-    const response = await authFetch('/api/create-checkout-session/', {
+    const response = await authFetch('http://localhost:8000/api/create-checkout-session/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
