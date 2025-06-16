@@ -19,7 +19,6 @@ router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 urlpatterns = [
     path('', include(router.urls)),
     path('products/<int:product_id>/files/', ProductFilesView.as_view(), name='product-files'),
-    path('create-checkout-session/', CreateStripeCheckoutSession.as_view(), name='create-checkout-session'),  # nova rota
 ]
 
 
