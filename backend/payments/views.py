@@ -46,34 +46,46 @@ class CreateCheckoutSessionView(APIView):
         try:
             product = Product.objects.get(id=product_id, published=True)
         except Product.DoesNotExist:
-            return Response({"error": "Produto não encontrado"}, status=404)
+            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if not product.owner.stripe_account_id:
+            return Response({"error": "Vendor has no Stripe account"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            session = stripe.checkout.Session.create(
+            checkout_session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
+                mode='payment',
                 line_items=[{
                     'price_data': {
                         'currency': 'eur',
                         'unit_amount': product.price_cents,
                         'product_data': {
                             'name': product.title,
-                            'description': product.description,
                         },
                     },
                     'quantity': 1,
                 }],
-                mode='payment',
-                success_url='https://teusite.com/success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url='https://teusite.com/cancel',
-                metadata={
-                    'product_id': str(product.id),
-                    'user_id': str(request.user.id),
-                }
+                payment_intent_data={
+                    'application_fee_amount': int(product.price_cents * 0.10),
+                    'transfer_data': {
+                        'destination': product.owner.stripe_account_id,
+                    },
+                    'metadata': {
+                        'product_id': product.id,
+                        'user_id': request.user.id,
+                    }
+                },
+                success_url='https://localhost:3000/success',  # <- ajusta para o teu frontend
+                cancel_url='https://localhost:3000/cancel',    # <- ajusta para o teu frontend
             )
-            return Response({'sessionId': session.id})
+
+            # (Opcional: salvar info no modelo Payment, se quiser)
+
+            return Response({'sessionId': checkout_session.id})
         except Exception as e:
-            logger.error(f"Erro ao criar sessão de checkout: {e}")
-            return Response({"error": "Erro ao criar sessão"}, status=500)
+            logger.error(f"Error creating checkout session: {e}")
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 # ------------------ Webhook Stripe ------------------
 
