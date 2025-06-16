@@ -6,7 +6,6 @@ from .views import (
     ProductViewSet, OrderViewSet,
     RatingViewSet, NotificationViewSet, WishlistViewSet,
     ProductFilesView,
-    CreateStripeCheckoutSession,  
 )
 
 router = DefaultRouter()

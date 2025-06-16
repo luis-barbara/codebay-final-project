@@ -1,6 +1,6 @@
 // frontend/homepage/auth-fetch.js
 
-// Verifica se o token está presente e válido (expiração não implementada aqui)
+// Verifica se o token está presente e válido 
 export function isAuthenticated() {
   return !!localStorage.getItem('accessToken');
 }

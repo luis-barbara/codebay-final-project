@@ -3,17 +3,28 @@
 
 import { authFetch } from './auth.js';
 
-// Use your publishable Stripe key here (you can hardcode or inject dynamically)
-const stripe = Stripe('pk_test_your_publishable_key_here'); 
+let stripePromise = null;
 
-async function createCheckoutSession(productId) {
+// Função para buscar a chave pública do backend e criar instância Stripe
+async function getStripe() {
+  if (!stripePromise) {
+    const response = await fetch('http://localhost:8000/api/stripe/publishable-key/');
+    const data = await response.json();
+    stripePromise = Stripe(data.publishableKey);
+  }
+  return stripePromise;
+}
+
+export async function createCheckoutSession(productId) {
   try {
+    const stripe = await getStripe();  
+
     const response = await authFetch('http://localhost:8000/api/create-checkout-session/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ product_id: productId })
+      body: JSON.stringify({ product_id: productId }),
     });
 
     if (!response.ok) {
@@ -24,7 +35,6 @@ async function createCheckoutSession(productId) {
     const data = await response.json();
     const sessionId = data.sessionId;
 
-    // Redirect to Stripe Checkout
     const { error } = await stripe.redirectToCheckout({ sessionId });
     if (error) {
       console.error('Stripe checkout error:', error.message);

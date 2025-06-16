@@ -7,15 +7,29 @@
 
 
 
-
 import { isAuthenticated, fetchWithAuth, handleLogout } from './auth-fetch.js';
 
-if (!isAuthenticated()) {
-  window.location.href = '../registrations/signin.html';
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const logoutBtn = document.getElementById('logoutBtn');
+  const dataDisplay = document.getElementById('dataDisplay');
 
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  handleLogout();
+  if (isAuthenticated()) {
+    // Show logout button if user is authenticated
+    logoutBtn.style.display = 'inline-block';
+
+    logoutBtn.addEventListener('click', handleLogout);
+
+    // Load protected data
+    loadProtectedData();
+  } else {
+    // Hide logout button if user is not authenticated
+    logoutBtn.style.display = 'none';
+
+    // Show message for unauthenticated users
+    if (dataDisplay) {
+      dataDisplay.textContent = 'Welcome! Please log in to see protected content.';
+    }
+  }
 });
 
 async function loadProtectedData() {
@@ -27,5 +41,3 @@ async function loadProtectedData() {
     alert(error.message);
   }
 }
-
-loadProtectedData();

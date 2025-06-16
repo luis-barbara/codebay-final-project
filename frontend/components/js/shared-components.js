@@ -26,7 +26,7 @@ async function loadHeaderBasedOnAuth() {
   const headEl = document.getElementById('head');
   if (!headEl) return;
 
-  if (localStorage.getItem('access_token')) {
+  if (localStorage.getItem('accessToken')) {
     const response = await fetch('../components/header_logged_in.html');
     headEl.innerHTML = await response.text();
     await loadAvatar();
@@ -147,8 +147,8 @@ async function setupAvatarSidebar() {
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
             window.location.href = '/signin.html';
         });
     }

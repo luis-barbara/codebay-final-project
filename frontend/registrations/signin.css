@@ -240,15 +240,12 @@ main {
   padding: 12px;
   font-size: 15px;
   font-weight: 500;
+  background-color: #404348;
   color: white;
-  background-color: transparent;
-  border: 1px solid #3B459F;
   border-radius: 8px;
+  border: none;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.oauth-btn:hover {
-  background-color:#C8C9CD;
-  color:#0D1116;
-}
+

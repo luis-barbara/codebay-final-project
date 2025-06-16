@@ -3,7 +3,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Se já tiver token, redireciona para a página principal
-  if (localStorage.getItem('access_token')) {
+  if (localStorage.getItem('accessToken')) {
     window.location.href = '/index.html';
     return;  
   }
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   togglePassword.addEventListener('click', () => {
     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
     passwordInput.setAttribute('type', type);
+    togglePassword.classList.toggle('fa-eye');
     togglePassword.classList.toggle('fa-eye-slash');
   });
 
