@@ -1,0 +1,207 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #020408;
+    color: #c8c9cd;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-right: 0.6px solid #c8c9cd;
+}
+
+.sidebar.show {
+    transform: translateX(0);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #c8c9cd;
+    cursor: pointer;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-menu li {
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.sidebar-menu li > i {
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+.has-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.submenu {
+    padding-left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.marker-remove {
+    display: block;
+    color: #9a9c9f;
+}
+
+.has-submenu div {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Sidebar da direita */
+.avatar-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 280px;
+    height: 100%;
+    background-color: #020408;
+    color: #c8c9cd;
+    z-index: 999;
+    transform: translateX(100%);
+    transition: transform 0.6s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-left: 0.6px solid #c8c9cd;
+}
+
+.avatar-sidebar.show {
+    transform: translateX(0);
+}
+
+.avatar-sidebar .logo-icon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-sidebar .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#filters-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #020408;
+    color: #c8c9cd;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-right: 0.6px solid #c8c9cd;
+}
+
+#filters-sidebar.show {
+    transform: translateX(0);
+}
+
+
+.hamb-sidebar__menu-item--has-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Remove o espaçamento padrão se houver */
+    cursor: pointer;
+}
+
+/* Estiliza a área clicável que abre/fecha o submenu */
+.hamb-sidebar__submenu-toggle {
+    display: flex;
+    justify-content: space-between; /* Coloca a seta na ponta direita */
+    align-items: center;
+    width: 100%;
+}
+
+/* Estiliza o ícone da seta (chevron) */
+.hamb-sidebar__submenu-chevron {
+    transition: transform 0.3s ease-in-out; /* Animação suave na rotação */
+    font-size: 14px;
+}
+
+/* Estiliza a lista do submenu (inicialmente escondida) */
+.hamb-sidebar__submenu-list {
+    list-style: none;
+    padding-left: 24px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    /* Truque para animação de altura (slide down) */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+
+/* --- ESTADOS QUANDO O SUBMENU ESTÁ ABERTO --- */
+
+/* Gira a seta para cima quando o submenu está aberto */
+.hamb-sidebar__menu-item--has-submenu.submenu-is-open .hamb-sidebar__submenu-chevron {
+    transform: rotate(180deg);
+}
+
+/* Mostra a lista do submenu quando está aberto */
+.hamb-sidebar__menu-item--has-submenu.submenu-is-open .hamb-sidebar__submenu-list {
+    max-height: 200px; /* Altura suficiente para mostrar os itens */
+    margin-top: 15px; /* Adiciona um espaço quando o menu abre */
+}

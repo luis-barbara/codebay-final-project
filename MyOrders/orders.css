@@ -18,12 +18,12 @@ body {
     font-family: 'Segoe UI', system-ui, sans-serif;
     background-color: var(--darker-bg);
     color: var(--text-primary);
-    padding: 2rem;
 }
 
 .orders-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 2rem;
 }
 
 .orders-header {
@@ -45,19 +45,19 @@ body {
     gap: 1rem;
 }
 
-.search-box {
+.search-bar {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.search-box i {
+.search-bar i {
     position: absolute;
     left: 12px;
     color: var(--text-secondary);
 }
 
-.search-box input {
+.search-bar input {
     padding: 0.5rem 1rem 0.5rem 2.5rem;
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -67,9 +67,11 @@ body {
     width: 200px;
 }
 
-.search-box input:focus {
+
+.search-bar:focus {
+    border: 2px solid #5A69EA;
+    box-shadow: 0 0 8px #5A69EA;
     outline: none;
-    border-color: var(--primary-color);
 }
 
 .filter-dropdown {

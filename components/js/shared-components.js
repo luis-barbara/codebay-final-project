@@ -1,3 +1,6 @@
+// frontend/components/js/shared-components.js
+
+
 // Update copyright year
 async function loadCopyright() {
     const year = new Date().getFullYear();
@@ -18,7 +21,7 @@ async function loadFooter() {
     }
 }
 
-// Load navbar based on auth state
+// Carregar a navbar conforme o estado de login
 async function loadHeaderBasedOnAuth() {
   const headEl = document.getElementById('head');
   if (!headEl) return;
@@ -33,6 +36,7 @@ async function loadHeaderBasedOnAuth() {
     headEl.innerHTML = await response.text();
   }
 }
+
 
 // Load product cards
 async function loadCard() {
@@ -53,6 +57,7 @@ async function loadHamb() {
     const hambEl = document.getElementById('hamb');
     if (hambEl) {
         hambEl.innerHTML = hamb;
+        // Remove 'hidden' since CSS controls visibility
         const sidebar = document.getElementById('hamburger-sidebar');
         if (sidebar) {
             sidebar.classList.remove('hidden');
@@ -93,7 +98,7 @@ async function setupSidebar() {
 
     function hideSidebar() {
         sidebar.classList.remove('show');
-        setTimeout(() => sidebar.classList.add('hidden'), 600);
+        setTimeout(() => sidebar.classList.add('hidden'), 600); // wait for animation to finish
         overlay.classList.add('hidden');
     }
 
@@ -117,7 +122,7 @@ async function setupAvatarSidebar() {
     const avatarOverlay = document.getElementById('avatar-overlay');
     const closeAvatarBtn = document.getElementById('close-avatar-sidebar');
     const avatarIcon = document.querySelector('.right-section .logo-circle');
-    const logoutBtn = document.getElementById('logout-btn');
+    const logoutBtn = document.getElementById('logout-btn');  // botão logout
 
     if (!avatarSidebar || !avatarOverlay || !closeAvatarBtn || !avatarIcon) {
         console.warn('Avatar sidebar elements not found');
@@ -149,6 +154,7 @@ async function setupAvatarSidebar() {
     }
 }
 
+
 // Setup notifications dropdown
 function setupNotificationDropdown() {
     const bell = document.getElementById('notificationToggle');
@@ -171,60 +177,44 @@ function setupNotificationDropdown() {
     });
 }
 
+// Setup filters sidebar and overlay
+function setupFilters() {
+    const toggleFiltersBtn = document.querySelector(".toggle-filters");
+    const filtersSidebar = document.getElementById("filters-sidebar");
+    const filtersOverlay = document.getElementById("filters-overlay");
+    const closeFiltersBtn = document.getElementById("close-filters-sidebar");
 
-function setupSearchAndFilter() {
-    const searchInput = document.querySelector('.search-bar input');
-    const filterDropdown = document.querySelector('.filter-dropdown');
-    const tableRows = document.querySelectorAll('.orders-table tbody tr');
-
-    if (!searchInput || !filterDropdown || !tableRows.length) return;
-
-
-    function applyOriginalColors() {
-        tableRows.forEach((row, index) => {
-            if (row.style.display !== 'none') {
-                row.style.backgroundColor = index % 2 === 0 ? 'var(--darker-bg)' : 'var(--primary-active)';
-            }
-        });
+    if (!toggleFiltersBtn || !filtersSidebar || !filtersOverlay || !closeFiltersBtn) {
+        console.warn("Mobile filters: elements not found.");
+        return;
     }
 
-    function filterTable() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filterValue = filterDropdown.value.toLowerCase();
+    toggleFiltersBtn.addEventListener("click", () => {
+        filtersSidebar.classList.add("show");
+        filtersSidebar.classList.remove("hidden");
+        filtersOverlay.classList.add("show");
+        filtersOverlay.classList.remove("hidden");
+    });
 
-        tableRows.forEach((row, index) => {
-            const rowText = row.textContent.toLowerCase();
-            const status = row.querySelector('.status-badge')?.textContent.toLowerCase();
-            
-            const matchesSearch = rowText.includes(searchTerm);
-            const matchesFilter = filterValue === 'all status' || status === filterValue;
-            
-            if (matchesSearch && matchesFilter) {
-                row.style.display = '';
-                row.style.backgroundColor = index % 2 === 0 ? 'var(--darker-bg)' : 'var(--primary-active)';
-            } else {
-                row.style.display = 'none';
-            }
-        });
+    function closeFilters() {
+        filtersSidebar.classList.remove("show");
+        filtersSidebar.classList.add("hidden");
+        filtersOverlay.classList.remove("show");
+        filtersOverlay.classList.add("hidden");
     }
 
-    // Apply colors initially
-    applyOriginalColors();
-
-    // Set up event listeners
-    searchInput.addEventListener('input', filterTable);
-    filterDropdown.addEventListener('change', filterTable);
+    closeFiltersBtn.addEventListener("click", closeFilters);
+    filtersOverlay.addEventListener("click", closeFilters);
 }
 
-// Main initialization
+// Main initialization on DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadFooter();
-    await loadHeaderBasedOnAuth();
-    await loadHamb();
-    await loadCard();
-    setupSearchAndFilter();
-    
-    if (document.querySelector(".toggle-filters")) {
-        setupFilters();
-    }
+  await loadFooter();
+  await loadHeaderBasedOnAuth();
+  await loadHamb();
+  await loadCard();
+
+  if (document.querySelector(".toggle-filters")) {
+    setupFilters();
+  }
 });
