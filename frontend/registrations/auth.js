@@ -1,5 +1,5 @@
 // frontend/registrations/auth.js
-// Funções para validar token, logout, pegar token do storage, etc.
+// Funções para validar token, logout, ir buscar token do storage, etc.
 
 
 export function saveTokens(access, refresh) {
