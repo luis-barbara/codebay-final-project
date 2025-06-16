@@ -1,42 +1,36 @@
 // frontend/stripe/checkout.js
 
-// frontend/stripe/checkout.js
+import { authFetch, getAccessToken } from './auth.js';
 
-const API_CREATE_CHECKOUT_SESSION_URL = '/api/create-checkout-session/';
-const stripePublicKey = 'pk_test_XXXXXXXXXXXXXXXXXXXXXXXX'; // Replace with your Stripe public key
-const stripe = Stripe(stripePublicKey);
+// Use your publishable Stripe key here (you can hardcode or inject dynamically)
+const stripe = Stripe('pk_test_your_publishable_key_here'); 
 
-/**
- * Create a Stripe Checkout session for the given product ID
- * Sends a POST request to your backend with token authentication,
- * then redirects the user to the Stripe Checkout page.
- * 
- * @param {string} productId - ID of the product to buy
- * @param {string} token - User's authentication token
- */
-async function createCheckoutSession(productId, token) {
+async function createCheckoutSession(productId) {
   try {
-    const response = await fetch(API_CREATE_CHECKOUT_SESSION_URL, {
+    const response = await authFetch('/api/create-checkout-session/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${token}`,  // Adjust prefix if you use 'Bearer'
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ product_id: productId }),
+      body: JSON.stringify({ product_id: productId })
     });
 
-    const data = await response.json();
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to create checkout session');
+    }
 
-    if (response.ok) {
-      // Redirect to Stripe Checkout page using the session ID received from the backend
-      await stripe.redirectToCheckout({ sessionId: data.sessionId });
-    } else {
-      alert('Error creating payment session: ' + data.error);
+    const data = await response.json();
+    const sessionId = data.sessionId;
+
+    // Redirect to Stripe Checkout
+    const { error } = await stripe.redirectToCheckout({ sessionId });
+    if (error) {
+      console.error('Stripe checkout error:', error.message);
+      alert('Error redirecting to checkout: ' + error.message);
     }
   } catch (error) {
-    console.error('Error:', error);
-    alert('Communication error with the server.');
+    console.error('Checkout session creation failed:', error);
+    alert('Failed to start checkout: ' + error.message);
   }
 }
-
-export { createCheckoutSession };
