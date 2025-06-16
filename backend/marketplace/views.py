@@ -1,9 +1,10 @@
 # marketplace/views.py
 
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from django.conf import settings
 from .models import Product, Order, Notification, Rating, Media, Wishlist  
@@ -13,6 +14,61 @@ from .serializers import (
 )
 from storage.models import ProjectFile
 import boto3
+import stripe
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+class CreateStripeCheckoutSession(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        product_id = request.data.get('product_id')
+        if not product_id:
+            return Response({"error": "Product ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Criar a sessão Stripe Checkout
+        try:
+            session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': 'usd',  # ou tua moeda
+                        'product_data': {
+                            'name': product.title,
+                        },
+                        'unit_amount': int(product.price * 100),  # em centavos
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+                success_url=request.build_absolute_uri('/success?session_id={CHECKOUT_SESSION_ID}'),
+                cancel_url=request.build_absolute_uri('/cancel'),
+                metadata={
+                    'product_id': str(product.id),
+                    'user_id': str(request.user.id),
+                }
+            )
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Opcional: criar uma Order pendente localmente
+        Order.objects.create(
+            buyer=request.user,
+            product=product,
+            status='pending',
+            stripe_payment_intent=session.payment_intent,
+            payment_status='pending',
+        )
+
+        return Response({'sessionId': session.id})
+
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
