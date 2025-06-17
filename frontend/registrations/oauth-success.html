@@ -1,33 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>OAuth Success</title>
-  <script>
-    // Function to get the value of a URL parameter
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description"
+        content="CodeBay is a digital asset marketplace where developers, makers, and agencies sell ready-to-use bots, APIs, microSaaS, and automations. Discover plug-and-play solutions to launch faster, cut costs, and scale without building from scratch." />
+    <title>CodeBay — OAuth Success</title>
+    <link rel="icon" type="image/png" href="../codebay-favicon.png" />
 
-    // Save tokens in localStorage and redirect
-    window.onload = function() {
-      const accessToken = getQueryParam('access');
-      const refreshToken = getQueryParam('refresh');
-
-      if (accessToken && refreshToken) {
-        localStorage.setItem('access_token', accessToken);
-        localStorage.setItem('refresh_token', refreshToken);
-
-        // Redirect to the main page after saving tokens
-        window.location.href = '/index.html'; // adjust the path according to your frontend
-      } else {
-        // If tokens are missing, redirect to the login page
-        window.location.href = '/signin.html';
+    <script>
+      // Save tokens in localStorage and redirect
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
       }
-    }
-  </script>
+
+      // Ao carregar a página, salvar tokens e redirecionar
+      window.onload = function () {
+        const accessToken = getQueryParam('access');
+        const refreshToken = getQueryParam('refresh');
+
+        if (accessToken && refreshToken) {
+          localStorage.setItem('access_token', accessToken);
+          localStorage.setItem('refresh_token', refreshToken);
+
+          // Redireciona para a página principal do frontend
+          window.location.href = '/index.html';
+        } else {
+          // Se faltar token, volta para o login
+          window.location.href = '/signin.html';
+        }
+      }
+    </script>
 </head>
+
 <body>
-  <p>Logging in...</p>
+    <p>Logging in, please wait...</p>
 </body>
+
 </html>
