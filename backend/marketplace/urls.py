@@ -18,6 +18,7 @@ router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 urlpatterns = [
     path('', include(router.urls)),
     path('products/<int:product_id>/files/', ProductFilesView.as_view(), name='product-files'),
+    path('stripe/onboarding/complete/', CompleteOnboardingView.as_view(), name='stripe_onboarding_complete'),
 ]
 
 
