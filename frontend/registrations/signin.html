@@ -39,19 +39,26 @@
                     <h1>Signin to CodeBay</h1>
                 </div>
                 <form>
-                    <div class="form-group icon-input">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="text" id="email" placeholder="you@example.com" required>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="icon-input">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="text" id="email" placeholder="you@example.com" required>
+                            <div class="error-message"></div>
+                        </div>
                     </div>
-                    <div class="form-group icon-input">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="password" placeholder="Your Password" required>
-                        <i class="fa-solid fa-eye" id="togglePassword"></i>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="icon-input">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" placeholder="Your Password" required>
+                            <i class="fa-solid fa-eye" id="togglePassword"></i>
+                            <div class="error-message"></div>
+                        </div>
                     </div>
-                    <div class="forgot-password">
-                        <a href="#">Forgot password?</a>
-                    </div>
-                    <button type="submit" class="login-btn">Sign in</button>
+
+                    <button type="submit" class="signin-btn" disabled>Sign in</button>
                 </form>
                 <div class="divider">
                     <span>or</span>
@@ -69,7 +76,7 @@
         </div>
     </main>
 
-        <div id="foot"></div>
+    <div id="foot"></div>
 
     <script src="../components/js/shared-components.js"></script>
     <script type="module" src="api.js"></script>

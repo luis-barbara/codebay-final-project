@@ -29,6 +29,7 @@ main {
   width: 100%;
 }
 
+
 /* === SIGNUP FORM === */
 .signup-box {
     background-color: #05071E;
@@ -50,14 +51,14 @@ main {
 }
 
 .signup-box .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 40px;
 }
 
 .signup-box label {
     display: block;
     font-size: 16px;
     margin-bottom: 8px;
-    color: white;
+    color:#C8C9CD;
 }
 
 .signup-box input[type="text"],
@@ -98,6 +99,14 @@ main {
     background-color: #7E91F3;
 }
 
+
+.signup-btn:disabled {
+  background-color: #D2DBFD; 
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
 .signin-link {
     margin-top: 30px;
     text-align: center;
@@ -115,31 +124,68 @@ main {
 }
 
 /* === ICONS INPUT === */
-.icon-input {
-    position: relative;
+.form-group {
+  margin-bottom: 18px;
 }
 
-.icon-input .fa-user,
-.icon-input .fa-envelope,
-.icon-input .fa-lock {
-    position: absolute;
-    top: 50%;
-    left: 12px;
-    transform: translateY(-50%);
-    color: #6B6E72;
-    font-size: 16px;
-    pointer-events: none;
+.icon-input {
+  position: relative;
+  width: 100%;
+  height: 44px; 
+}
+
+.icon-input input {
+  width: 100%;
+  height: 100%;
+  padding-left: 40px;  
+  padding-right: 40px; 
+  box-sizing: border-box;
+  border: 0.6px solid #6b6e72;
+  border-radius: 6px;
+  background-color: #0D1116;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.icon-input input:focus {
+  border: 2px solid #5A69EA;
+  box-shadow: 0 0 8px #5A69EA;
+}
+
+.icon-input i.fa-user,
+.icon-input i.fa-envelope,
+.icon-input i.fa-lock {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #6B6E72;
+  font-size: 16px;
+  pointer-events: none;
 }
 
 .icon-input #togglePassword,
 .icon-input #toggleConfirmPassword {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    color: #6B6E72;
-    font-size: 18px;
-    cursor: pointer;
-    pointer-events: auto;
-    z-index: 2;
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: #6B6E72;
+  font-size: 18px;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+
+
+/* === FORM VALIDATION === */
+
+.error-message {
+  color: #B72324;
+  font-size: 13px;
+  margin-top: 4px;
+  min-height: 16px; 
 }
