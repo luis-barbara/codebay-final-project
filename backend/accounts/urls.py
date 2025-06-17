@@ -12,6 +12,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('oauth/google/', RedirectView.as_view(url='/accounts/google/login/'), name='google_login_redirect'),
     path('oauth/github/', RedirectView.as_view(url='/accounts/github/login/'), name='github_login_redirect'),
+    path('oauth/callback/', OAuthRedirectView.as_view(), name='oauth_callback'),
 ]
 
 
