@@ -42,7 +42,7 @@ class PublishProductView(APIView):
             return Response({"detail": "Product already published."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Define o código do país, default "PT"
-        country_code = user.country if hasattr(user, 'country') and user.country else "PT"
+        country_code = getattr(user, 'country', None) or "PT"
 
         # Se o user não tem conta Stripe, cria uma
         if not user.stripe_account_id:
