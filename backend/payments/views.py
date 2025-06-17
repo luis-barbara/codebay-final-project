@@ -130,7 +130,7 @@ class StripeConnectOnboardingView(APIView):
         if not user.stripe_account_id:
             account = stripe.Account.create(
                 type="express",
-                country="PT",
+                country=getattr(user, 'country', 'PT'),  
                 email=user.email,
                 capabilities={"transfers": {"requested": True}},
             )
@@ -139,20 +139,9 @@ class StripeConnectOnboardingView(APIView):
 
         account_link = stripe.AccountLink.create(
             account=user.stripe_account_id,
-            refresh_url="https://localhost:8000/payments/stripe/onboarding/refresh/",
-            return_url="https://localhost:8000/payments/stripe/onboarding/return/",
+            refresh_url=f"{settings.FRONTEND_URL}/onboarding-refresh.html",
+            return_url=f"{settings.FRONTEND_URL}/onboarding-return.html",
             type="account_onboarding",
         )
 
         return Response({"url": account_link.url})
-
-
-@api_view(['GET'])
-def stripe_onboarding_refresh(request):
-    return redirect('https://seu-frontend.com/onboarding')
-
-
-@api_view(['GET'])
-def stripe_onboarding_return(request):
-    return redirect('https://seu-frontend.com/dashboard')
-
