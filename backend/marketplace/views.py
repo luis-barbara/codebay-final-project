@@ -1,19 +1,17 @@
 # marketplace/views.py
 
-from rest_framework import viewsets, permissions
-from rest_framework.exceptions import PermissionDenied, NotFound
+from rest_framework import viewsets, permissions, status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
-from .models import Product, Order, Notification, Rating, Media, Wishlist  
-from .serializers import (
-    ProductSerializer, OrderSerializer,
-    NotificationSerializer, RatingSerializer, MediaSerializer, WishlistSerializer
-)
-from storage.models import ProjectFile
-import boto3
-from payments.models import Payment
+import stripe
+from .models import Product
+from .serializers import ProductSerializer
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -23,12 +21,49 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
-        max_products = 10  # Limit per seller
+        max_products = 10  # Limite por vendedor
 
         if user.products.count() >= max_products:
             raise PermissionDenied(f"You have reached the limit of {max_products} products.")
 
-        serializer.save(seller=user)
+        serializer.save(owner=user)  
+
+
+class PublishProductView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        user = request.user
+        product = get_object_or_404(Product, pk=pk, owner=user)
+
+        if product.published:
+            return Response({"detail": "Product already published."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Cria conta Stripe Connect Express se não existir
+        if not user.stripe_account_id:
+            account = stripe.Account.create(
+                type="express",
+                country="PT",
+                email=user.email,
+                capabilities={"transfers": {"requested": True}},
+            )
+            user.stripe_account_id = account.id
+            user.save()
+
+        # Cria link de onboarding Stripe
+        account_link = stripe.AccountLink.create(
+            account=user.stripe_account_id,
+            refresh_url=f"{settings.FRONTEND_URL}/onboarding-refresh.html",
+            return_url=f"{settings.FRONTEND_URL}/onboarding-return.html?product_id={product.id}",
+            type="account_onboarding",
+        )
+
+        product.pending_publication = True
+        product.save()
+
+        return Response({"onboarding_url": account_link.url}, status=status.HTTP_200_OK)
+
+
 
 
 class OrderViewSet(viewsets.ModelViewSet):
