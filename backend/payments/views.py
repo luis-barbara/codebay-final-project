@@ -75,11 +75,9 @@ class CreateCheckoutSessionView(APIView):
                         'user_id': request.user.id,
                     }
                 },
-                success_url='https://localhost:3000/success',  # <- ajusta para o teu frontend
-                cancel_url='https://localhost:3000/cancel',    # <- ajusta para o teu frontend
+                success_url='http://localhost:5500/payment-success.html?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url='http://localhost:5500/payment-cancel.html',
             )
-
-            # (Opcional: salvar info no modelo Payment, se quiser)
 
             return Response({'sessionId': checkout_session.id})
         except Exception as e:
