@@ -49,7 +49,7 @@ class User(AbstractUser):
     description = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     position = models.CharField(max_length=100, blank=True, null=True)
-    location = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=2, blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     github_account = models.URLField(blank=True, null=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
