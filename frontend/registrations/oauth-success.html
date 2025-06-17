@@ -1,0 +1,14 @@
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const access = params.get("access");
+  const refresh = params.get("refresh");
+
+  if (access && refresh) {
+    localStorage.setItem("accessToken", access);
+    localStorage.setItem("refreshToken", refresh);
+    window.location.href = "/index.html";  
+  } else {
+    alert("Erro ao fazer login social.");
+    window.location.href = "/signin.html";
+  }
+</script>
