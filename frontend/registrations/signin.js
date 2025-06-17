@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Se já tiver token, redireciona para a página principal
   if (localStorage.getItem('accessToken')) {
     window.location.href = '/index.html';
-    return;  
+    return;
   }
 
   const form = document.querySelector('form');
@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     validateForm();
   });
 
+  // Submeter o formulário
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
         const message = errData.error || 'Invalid email or password';
-        // Mostrar erro no campo de email ou senha
+        
         if (message.toLowerCase().includes('email')) {
           emailError.textContent = message;
           emailError.style.display = 'block';
@@ -103,30 +104,40 @@ document.addEventListener('DOMContentLoaded', () => {
           passwordError.textContent = message;
           passwordError.style.display = 'block';
         } else {
-          // Se não for possível determinar, mostra nos dois
           emailError.textContent = message;
           emailError.style.display = 'block';
           passwordError.textContent = message;
           passwordError.style.display = 'block';
         }
+
         throw new Error(message);
       }
 
       const data = await response.json();
-
       localStorage.setItem('accessToken', data.access);
       localStorage.setItem('refreshToken', data.refresh);
 
       window.location.href = '/index.html';
 
     } catch (err) {
-      // O erro já é exibido nos campos, aqui só desabilita o botão
       console.error(err.message);
     } finally {
       submitBtn.disabled = false;
     }
   });
 
-  // Inicializa o estado do botão e mensagens
+  // Login Social
+  const googleLoginBtn = document.querySelector('.oauth-btn.google');
+  const githubLoginBtn = document.querySelector('.oauth-btn.github');
+
+  googleLoginBtn?.addEventListener('click', () => {
+    window.location.href = 'http://localhost:8000/api/accounts/oauth/google/';
+  });
+
+  githubLoginBtn?.addEventListener('click', () => {
+    window.location.href = 'http://localhost:8000/api/accounts/oauth/github/';
+  });
+
+  // Inicializa
   validateForm();
 });
