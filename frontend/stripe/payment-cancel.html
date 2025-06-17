@@ -1,1 +1,55 @@
-// frontend/stripe/cancel.html
+// frontend/stripe/payment-cancel.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment Cancelled | CodeBay</title>
+  <link rel="icon" type="image/png" href="../codebay-favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      background-color: #0D1116;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: #E74C3C; /* vermelho erro */
+    }
+
+    .crossmark {
+      font-size: 60px;
+      margin-bottom: 30px;
+      color: #E74C3C;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="crossmark">✗</div>
+  <h1>Payment Cancelled</h1>
+  <p>Your payment was not completed.</p>
+
+  <script>
+    // Redirecionar para a página de checkout ou login após 5 segundos
+    setTimeout(() => {
+      window.location.href = 'http://localhost:5500/checkout.html'; 
+    }, 5000);
+  </script>
+</body>
+
+</html>
+
