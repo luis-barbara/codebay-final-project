@@ -48,6 +48,8 @@ class Product(models.Model):
     language = models.CharField(max_length=50, choices=LANGUAGE_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
+    published = models.BooleanField(default=False)  # controla se aparece no marketplace
+    pending_publication = models.BooleanField(default=False)  # usado quando o onboarding Stripe ainda está incompleto
     # file removido para usar ProjectFile do storage
 
     def average_rating(self):
