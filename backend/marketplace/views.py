@@ -70,6 +70,35 @@ class PublishProductView(APIView):
         return Response({"onboarding_url": account_link.url}, status=status.HTTP_200_OK)
 
 
+class CompleteOnboardingView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        product_id = request.query_params.get('product_id')
+        if not product_id:
+            return Response({"detail": "Product ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            product = Product.objects.get(id=product_id, owner=user)
+        except Product.DoesNotExist:
+            return Response({"detail": "Product not found or not owned by user."}, status=status.HTTP_404_NOT_FOUND)
+
+        if product.published:
+            return Response({"detail": "Product already published."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validação do status da conta Stripe
+        stripe_account = stripe.Account.retrieve(user.stripe_account_id)
+        if not stripe_account['charges_enabled']:
+            return Response({"detail": "Stripe account is not fully enabled yet."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Publicação do produto
+        product.published = True
+        product.pending_publication = False
+        product.save()
+
+        return Response({"detail": "Product published successfully."})
+
 
 
 class OrderViewSet(viewsets.ModelViewSet):
