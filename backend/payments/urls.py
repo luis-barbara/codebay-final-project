@@ -17,7 +17,6 @@ from .views import (
 urlpatterns = [
     path('products/', ProductListView.as_view(), name='product_list'),
     path('products/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
-    path('create-payment-intent/', CreatePaymentIntentView.as_view(), name='create_payment_intent'),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create_checkout_session'),  
     path('confirm-payment/', ConfirmPaymentView.as_view(), name='confirm_payment'),
     path('stripe-webhook/', stripe_webhook, name='stripe_webhook'),
