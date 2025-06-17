@@ -34,23 +34,28 @@ class PublishProductView(APIView):
 
     def post(self, request, pk):
         user = request.user
+        # Procura o produto, garantindo que pertence ao user
         product = get_object_or_404(Product, pk=pk, owner=user)
 
+        # Verifica se o produto já está publicado
         if product.published:
             return Response({"detail": "Product already published."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Cria conta Stripe Connect Express se não existir
+        # Define o código do país, default "PT"
+        country_code = user.country if hasattr(user, 'country') and user.country else "PT"
+
+        # Se o user não tem conta Stripe, cria uma
         if not user.stripe_account_id:
             account = stripe.Account.create(
                 type="express",
-                country="PT",
+                country=country_code,
                 email=user.email,
                 capabilities={"transfers": {"requested": True}},
             )
             user.stripe_account_id = account.id
             user.save()
 
-        # Cria link de onboarding Stripe
+        # Cria link de onboarding para completar conta no Stripe
         account_link = stripe.AccountLink.create(
             account=user.stripe_account_id,
             refresh_url=f"{settings.FRONTEND_URL}/onboarding-refresh.html",
@@ -58,6 +63,7 @@ class PublishProductView(APIView):
             type="account_onboarding",
         )
 
+        # Marca produto como pendente para publicação
         product.pending_publication = True
         product.save()
 
