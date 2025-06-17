@@ -10,6 +10,7 @@ from .models import User
 import stripe
 from django.conf import settings
 from rest_framework.permissions import AllowAny
+from django.shortcuts import redirect
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -84,3 +85,23 @@ class TokenObtainPairView(APIView):
             }, status=status.HTTP_200_OK)
         
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class OAuthRedirectView(APIView):
+    """
+    View que trata o redirecionamento após login social,
+    gerando os JWT tokens e enviando-os para o frontend.
+    """
+    def get(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return redirect('http://localhost:5500/signin.html')  
+
+        # Gerar tokens JWT
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+
+        # Redirecionar para o frontend com os tokens
+        frontend_url = f"http://localhost:5500/oauth-success.html?access={access_token}&refresh={refresh_token}"
+        return redirect(frontend_url)
