@@ -1,14 +1,33 @@
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const access = params.get("access");
-  const refresh = params.get("refresh");
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OAuth Success</title>
+  <script>
+    // Function to get the value of a URL parameter
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
 
-  if (access && refresh) {
-    localStorage.setItem("accessToken", access);
-    localStorage.setItem("refreshToken", refresh);
-    window.location.href = "/index.html";  
-  } else {
-    alert("Erro ao fazer login social.");
-    window.location.href = "/signin.html";
-  }
-</script>
+    // Save tokens in localStorage and redirect
+    window.onload = function() {
+      const accessToken = getQueryParam('access');
+      const refreshToken = getQueryParam('refresh');
+
+      if (accessToken && refreshToken) {
+        localStorage.setItem('access_token', accessToken);
+        localStorage.setItem('refresh_token', refreshToken);
+
+        // Redirect to the main page after saving tokens
+        window.location.href = '/index.html'; // adjust the path according to your frontend
+      } else {
+        // If tokens are missing, redirect to the login page
+        window.location.href = '/signin.html';
+      }
+    }
+  </script>
+</head>
+<body>
+  <p>Logging in...</p>
+</body>
+</html>
