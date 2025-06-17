@@ -2,41 +2,74 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description"
-        content="CodeBay is a digital asset marketplace where developers, makers, and agencies sell ready-to-use bots, APIs, microSaaS, and automations. Discover plug-and-play solutions to launch faster, cut costs, and scale without building from scratch." />
-    <title>CodeBay — OAuth Success</title>
-    <link rel="icon" type="image/png" href="../codebay-favicon.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Logging in… | CodeBay</title>
+  <link rel="icon" type="image/png" href="../codebay-favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      background-color: #0D1116;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+    }
 
-    <script>
-      // Save tokens in localStorage and redirect
-      function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
+    h1 {
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+
+    .spinner {
+      border: 4px solid #444;
+      border-top: 4px solid #5A69EA;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 30px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
       }
-
-      // Ao carregar a página, salvar tokens e redirecionar
-      window.onload = function () {
-        const accessToken = getQueryParam('access');
-        const refreshToken = getQueryParam('refresh');
-
-        if (accessToken && refreshToken) {
-          localStorage.setItem('access_token', accessToken);
-          localStorage.setItem('refresh_token', refreshToken);
-
-          // Redireciona para a página principal do frontend
-          window.location.href = '/index.html';
-        } else {
-          // Se faltar token, volta para o login
-          window.location.href = '/signin.html';
-        }
-      }
-    </script>
+    }
+  </style>
 </head>
 
 <body>
-    <p>Logging in, please wait...</p>
+  <div class="spinner"></div>
+  <h1>Logging you in…</h1>
+  <p>Please wait a moment.</p>
+
+  <script>
+    // Pega os tokens da URL e salva no localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const access = urlParams.get('access');
+    const refresh = urlParams.get('refresh');
+
+    if (access && refresh) {
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+
+      // Redireciona para a página inicial depois de 1.5s
+      setTimeout(() => {
+        window.location.href = 'http://localhost:5500/index.html';
+      }, 1500);
+    } else {
+      // Se não existirem tokens, redireciona para login
+      window.location.href = 'http://localhost:5500/signin.html';
+    }
+  </script>
 </body>
 
 </html>
+
