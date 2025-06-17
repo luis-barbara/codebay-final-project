@@ -145,3 +145,18 @@ class StripeConnectOnboardingView(APIView):
         )
 
         return Response({"url": account_link.url})
+
+
+class StripeOnboardingRefreshView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Logic to refresh Stripe onboarding link, if needed
+        return Response({"message": "Onboarding refresh endpoint"})
+
+class StripeOnboardingReturnView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Logic to handle user return from Stripe onboarding
+        return Response({"message": "Onboarding return endpoint"})

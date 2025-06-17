@@ -6,10 +6,20 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 from django.conf import settings
 import stripe
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Product, Order, Notification, Rating, Media, Wishlist
+from storage.models import ProjectFile
+from payments.models import Payment
+from .serializers import (
+    ProductSerializer,
+    OrderSerializer,
+    NotificationSerializer,
+    RatingSerializer,
+    MediaSerializer,
+    WishlistSerializer,
+)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
