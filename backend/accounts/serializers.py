@@ -46,7 +46,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'full_name', 'email', 'username', 'avatar', 'description',
-            'phone', 'position', 'location', 'website', 'github_account', 'rating',
+            'phone', 'position', 'country', 'website', 'github_account', 'rating',
             'stripe_account_id'  
         )
 
@@ -77,7 +77,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.phone = validated_data.get('phone', instance.phone)
         instance.position = validated_data.get('position', instance.position)
-        instance.location = validated_data.get('location', instance.location)
+        instance.country = validated_data.get('country', instance.country)
         instance.website = validated_data.get('website', instance.website)
         instance.github_account = validated_data.get('github_account', instance.github_account)
         instance.rating = validated_data.get('rating', instance.rating)
