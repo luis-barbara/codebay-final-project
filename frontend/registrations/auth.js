@@ -23,7 +23,7 @@ export function isLoggedIn() {
 
 export function logout() {
   clearTokens();
-  window.location.href = '/signin.html';
+  window.location.href = '../registrations/signin.html';
 }
 
 // authFetch: fetch que adiciona token no header e trata 401

@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Se já tiver token, redireciona para a página principal
   if (localStorage.getItem('accessToken')) {
-    window.location.href = '/index.html';
+    window.location.href = '../homepage/index.html';
     return;
   }
 
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('accessToken', data.access);
       localStorage.setItem('refreshToken', data.refresh);
 
-      window.location.href = '/index.html';
+      window.location.href = '../homepage/index.html';
 
     } catch (err) {
       console.error(err.message);

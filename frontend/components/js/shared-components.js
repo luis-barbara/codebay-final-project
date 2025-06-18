@@ -218,3 +218,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     setupFilters();
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '../registrations/signin.html';  
+    });
+  }
+});

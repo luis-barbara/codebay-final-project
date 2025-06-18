@@ -57,16 +57,16 @@
     const refresh = urlParams.get('refresh');
 
     if (access && refresh) {
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
+      localStorage.setItem('accessToken', access);
+      localStorage.setItem('refreshToken', refresh);
 
       // Redireciona para a página inicial depois de 1.5s
       setTimeout(() => {
-        window.location.href = 'http://localhost:5500/index.html';
+        window.location.href = 'http://localhost:5500/frontend/homepage/index.html';
       }, 1500);
     } else {
       // Se não existirem tokens, redireciona para login
-      window.location.href = 'http://localhost:5500/signin.html';
+      window.location.href = 'http://localhost:5500/frontend/registrations/signin.html';
     }
   </script>
 </body>
