@@ -98,12 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    window.closeModal = closeModal;
+
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && modalOverlay && modalOverlay.style.display === 'flex') {
             closeModal();
         }
     });
-    
+
+
     // Adiciona os event listeners para validar em tempo real
     if (titleInput) titleInput.addEventListener('input', validateForm);
     if (descriptionInput) descriptionInput.addEventListener('input', validateForm);
@@ -210,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkVideoLimit();
     checkImageLimit();
     validateForm(); // Define o estado inicial do botão 'Create Product'
-    
+
     // ===================================
     // === LÓGICA DO FILTRO RESPONSIVO ===
     // ===================================

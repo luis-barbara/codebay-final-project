@@ -93,7 +93,12 @@ document.getElementById("createProductBtn").addEventListener("click", async () =
 
       alert("All files uploaded successfully!");
 
-      
+      // Fecha o modal
+window.closeModal();
+
+// Renderiza o produto criado na div
+handleAfterCreate(createdProduct.id);
+
   } catch (error) {
       console.error(error);
       alert(`Error: ${error.message}`);
