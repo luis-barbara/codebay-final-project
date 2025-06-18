@@ -36,7 +36,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         if user.products.count() >= max_products:
             raise PermissionDenied(f"You have reached the limit of {max_products} products.")
 
-        serializer.save(owner=user)  
+        serializer.save(seller=user)  
 
 
 class PublishProductView(APIView):
