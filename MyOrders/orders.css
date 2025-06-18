@@ -58,14 +58,17 @@ body {
 }
 
 .search-bar input {
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 0.375rem;
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    width: 200px;
+    width: 100%;
+    padding: 12px 35px 12px 40px;
+    border: 0.6px solid #6b6e72;
+    border-radius: 6px;
+    background-color: #0D1116;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 
 .search-bar:focus {
@@ -178,4 +181,25 @@ body {
 
 .view-btn:hover {
     background-color: var(--primary-hover);
+}
+
+@media (max-width: 768px) {
+  .orders-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .search-filter {
+    width: 100%;
+  }
+  
+  .search-bar input {
+    width: 100%;
+  }
+  
+  .orders-table {
+    display: block;
+    overflow-x: auto;
+  }
 }

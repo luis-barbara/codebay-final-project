@@ -19,7 +19,6 @@ body {
     font-family: 'Segoe UI', system-ui, sans-serif;
     background-color: var(--darker-bg);
     color: var(--text-primary);
-    padding: 2rem;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

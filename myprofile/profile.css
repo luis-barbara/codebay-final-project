@@ -161,13 +161,13 @@ body {
 .profile-info-card, .stats-card {
     background-color: var(--darker-bg);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 16px;
+    border-radius: 8px;
+    padding: 18px;
     margin-bottom: 16px;
 }
 
 .profile-info-card h3, .stats-card h3 {
-    font-size: 16px;
+    font-size: 15px;
     margin-top: 0;
     margin-bottom: 16px;
     font-weight: 600;
@@ -204,7 +204,7 @@ body {
     white-space: pre-wrap;
     min-height: 80px;
     padding: 8px;
-    border-radius: 4px;
+    border-radius: 8px;
     outline: none;
 }
 
@@ -247,10 +247,9 @@ body {
 }
 
 .stat-item {
-
     flex-direction: column;
     align-items: center;
-    padding: 8px;
+    padding: 6px;
     background-color: var(--card-bg);
     border-radius: 8px;
     border: 1px solid var(--border-color);
@@ -264,6 +263,7 @@ body {
 
 .stat-label {
     font-size: 12px;
+
     color: var(--text-secondary);
 }
 
@@ -298,7 +298,7 @@ body {
     background-color: var(--darker-bg);
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    height: 248px;
+    height: 265px;
 }
 
 .empty-state i {

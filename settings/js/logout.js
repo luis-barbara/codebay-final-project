@@ -1,15 +1,106 @@
-/**
- * Contact Page Script
- * Handles component loading and contact form functionality
- */
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize buttons
+    initButtons();
+    
+    // Logout button handler
+    const logoutBtn = document.querySelector('.btn-danger');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            try {
+                // Replace with your actual API endpoint
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+                
+                if (response.ok) {
+                    // Clear local storage and redirect
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('user');
+                    window.location.href = '../index.html';
+                } else {
+                    const data = await response.json();
+                    showErrorAlert(data.message || 'Failed to logout');
+                }
+            } catch (error) {
+                showErrorAlert('Network error. Please try again.');
+                console.error('Error:', error);
+            }
+        });
+    }
+});
 
-// ======================
-// COMPONENT LOADING FUNCTIONS
-// ======================
+function initButtons() {
+    // Danger button styling and behavior
+    document.querySelectorAll('.btn-danger').forEach(btn => {
+        btn.style.backgroundColor = '#B72324';
+        btn.style.color = 'white';
+        btn.style.fontWeight = '600';
+        btn.style.padding = '12px';
+        btn.style.borderRadius = '10px';
+        btn.style.border = 'none';
+        btn.style.cursor = 'pointer';
+        btn.style.transition = 'background-color 0.3s ease';
+        btn.style.width = '100%';
+        
+        btn.addEventListener('mouseover', () => {
+            btn.style.backgroundColor = '#ef4444';
+        });
+        
+        btn.addEventListener('mouseout', () => {
+            btn.style.backgroundColor = '#B72324';
+        });
+    });
+    
+    // Outline button styling and behavior
+    document.querySelectorAll('.btn-outline').forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = 'white';
+        btn.style.fontWeight = '500';
+        btn.style.padding = '12px';
+        btn.style.borderRadius = '10px';
+        btn.style.border = '0.6px solid #6b6e72';
+        btn.style.cursor = 'pointer';
+        btn.style.transition = 'background-color 0.3s ease';
+        btn.style.width = '100%';
+        
+        btn.addEventListener('mouseover', () => {
+            btn.style.backgroundColor = 'rgba(110, 118, 129, 0.1)';
+        });
+        
+        btn.addEventListener('mouseout', () => {
+            btn.style.backgroundColor = 'transparent';
+        });
+        
+        // Cancel button behavior
+        if (btn.textContent.includes('Cancel')) {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = 'publicAccount.html';
+            });
+        }
+    });
+}
 
-/**
- * Loads the copyright year into the footer
- */
+// Helper functions
+function getAuthToken() {
+    return localStorage.getItem('authToken');
+}
+
+function showErrorAlert(message) {
+    Swal.fire({
+        title: 'Error!',
+        text: message,
+        icon: 'error',
+        confirmButtonColor: '#5A69EA'
+    });
+}
+
+
 async function loadCopyright() {
     const year = new Date().getFullYear();
     const el = document.getElementById('copyright-year');
@@ -205,135 +296,13 @@ function setupAvatarSidebar() {
     }
 }
 
-// ======================
-// CONTACT FORM FUNCTIONALITY
-// ======================
 
-/**
- * Sets up the contact form submission handler
- */
-function setupContactForm() {
-    const contactForm = document.querySelector('.contact-form');
-    
-    if (!contactForm) {
-        console.warn('Contact form not found');
-        return;
-    }
-
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        
-        // Validation
-        if (!name || !email || !message) {
-            showFormError('Please fill in all fields');
-            return;
-        }
-        
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            showFormError('Please enter a valid email address');
-            return;
-        }
-        
-        // Prepare form data
-        const formData = {
-            name,
-            email,
-            message,
-            timestamp: new Date().toISOString()
-        };
-        
-        // Show loading state
-        const submitBtn = contactForm.querySelector('.submit-btn');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        submitBtn.disabled = true;
-        
-        try {
-            // In a real app, you would send to your backend here
-            console.log('Form submission data:', formData);
-            
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Store in localStorage (for demo purposes)
-            let submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
-            submissions.push(formData);
-            localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
-            
-            // Show success
-            showFormSuccess(submitBtn, originalText);
-            
-            // Reset form
-            contactForm.reset();
-        } catch (error) {
-            console.error('Form submission error:', error);
-            showFormError('Failed to send message. Please try again.');
-        } finally {
-            submitBtn.disabled = false;
-        }
-    });
-}
-
-/**
- * Shows a form success message
- */
-function showFormSuccess(submitBtn, originalText) {
-    submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-    submitBtn.style.backgroundColor = 'var(--success-color)';
-    
-    setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.style.backgroundColor = 'var(--primary-color)';
-    }, 3000);
-}
-
-/**
- * Shows a form error message
- */
-function showFormError(message) {
-    const errorEl = document.getElementById('form-error') || createFormErrorElement();
-    errorEl.textContent = message;
-    errorEl.style.display = 'block';
-    
-    setTimeout(() => {
-        errorEl.style.display = 'none';
-    }, 5000);
-}
-
-/**
- * Creates a form error element if it doesn't exist
- */
-function createFormErrorElement() {
-    const errorEl = document.createElement('div');
-    errorEl.id = 'form-error';
-    errorEl.style.color = 'var(--error-color)';
-    errorEl.style.marginTop = '1rem';
-    errorEl.style.display = 'none';
-    document.querySelector('.contact-form').appendChild(errorEl);
-    return errorEl;
-}
-
-// ======================
-// INITIALIZATION
-// ======================
-
-/**
- * Main initialization function
- */
-async function initializePage() {
+async function initializeSupportPage() {
     // Load all components
     await loadHeaderBasedOnAuth();
     await loadFooter();
     await loadHamb();
     await loadAvatar();
-    
-    // Setup contact form
-    setupContactForm();
     
     // Setup any additional components
     if (typeof setupNotificationDropdown === 'function') {
@@ -348,4 +317,4 @@ async function initializePage() {
 }
 
 // Start the page initialization when DOM is loaded
-document.addEventListener('DOMContentLoaded', initializePage);
+document.addEventListener('DOMContentLoaded', initializeSupportPage);

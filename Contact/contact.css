@@ -13,24 +13,23 @@
     --success-color: #238636;
 }
 
-body {
+html, body {
+    height: 100%;
     margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: 'Segoe UI', sans-serif;
     background-color: var(--darker-bg);
     color: var(--text-primary);
-    padding: 2rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
-.border-container {
-    max-width: 1100px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 2rem;
-    background-color: var(--dark-bg);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+.main-content {
+    flex: 1;
 }
 
 .contact-container {
@@ -39,22 +38,23 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: 6rem;
+    padding: 2rem;
+    flex: 1;
 }
 
 .border-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-top: 6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    background-color: var(--dark-bg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    margin-top: 2rem;
 }
 
 .contact-content {
     display: flex;
     gap: 3rem;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .contact-info {
@@ -68,6 +68,12 @@ body {
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-form-wrapper h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
 }
 
 h1 {
@@ -84,11 +90,29 @@ h1 {
     max-width: 90%;
 }
 
-.divider {
-    height: 1px;
-    background-color: var(--border-color);
-    margin: 2rem 0;
-    opacity: 0.3;
+.contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.contact-method {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.contact-method i {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    width: 30px;
+    height: 30px;
+    background: rgba(90, 105, 234, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .contact-form {
@@ -141,6 +165,10 @@ textarea.form-input {
     transition: all 0.2s;
     width: 100%;
     margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .submit-btn:hover {
@@ -151,70 +179,6 @@ textarea.form-input {
 .submit-btn:active {
     background-color: var(--primary-active);
     transform: translateY(0);
-}
-
-
-.phone-illustration {
-    margin-top: 3rem;
-    display: flex;
-    justify-content: center;
-}
-
-.phone-frame {
-    width: 200px;
-    height: 400px;
-    background-color: var(--card-bg);
-    border-radius: 30px;
-    padding: 15px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.phone-screen {
-    width: 100%;
-    height: 100%;
-    background-color: var(--dark-bg);
-    border-radius: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    gap: 15px;
-    align-content: flex-start;
-}
-
-.app-icon {
-    width: 40px;
-    height: 40px;
-    background-color: var(--primary-color);
-    border-radius: 10px;
-    opacity: 0.8;
-}
-
-.app-icon:nth-child(2) {
-    background-color: var(--secondary-color);
-}
-
-.app-icon:nth-child(3) {
-    background-color: #F59E0B;
-}
-
-.app-icon:nth-child(4) {
-    background-color: #EF4444;
-}
-
-/* Notch */
-.phone-frame::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50%;
-    height: 20px;
-    background-color: var(--card-bg);
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    z-index: 1;
 }
 
 @media (max-width: 900px) {
@@ -230,18 +194,21 @@ textarea.form-input {
         max-width: 100%;
     }
     
-    .phone-illustration {
-        display: none;
+    .border-container {
+        padding: 1.5rem;
     }
 }
 
 @media (max-width: 600px) {
-    body {
-        padding: 1.5rem;
+    .contact-container {
+        padding: 1rem;
     }
     
     .contact-form-wrapper {
         padding: 1.5rem;
     }
     
+    h1 {
+        font-size: 2rem;
+    }
 }
