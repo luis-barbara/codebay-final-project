@@ -1,3 +1,5 @@
+// frontend/my_products/product-management.js
+
 // Function to create the product (basic data, JSON)
 async function createProduct(data, token) {
   const response = await fetch("http://localhost:8000/api/market/products/", {
