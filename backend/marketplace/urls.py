@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     ProductViewSet, OrderViewSet,
     RatingViewSet, NotificationViewSet, WishlistViewSet,
-    ProductFilesView, PublishProductView, CompleteOnboardingView,
+    ProductFilesView, PublishProductView, CompleteOnboardingView, UnpublishProductView,
 )
 
 router = DefaultRouter()
@@ -19,8 +19,10 @@ urlpatterns = [
     path('', include(router.urls)),
     path('products/<int:product_id>/files/', ProductFilesView.as_view(), name='product-files'),
     path('products/<int:pk>/publish/', PublishProductView.as_view(), name='product-publish'),
+    path('products/<int:pk>/unpublish/', UnpublishProductView.as_view(), name='product-unpublish'), 
     path('stripe/onboarding/complete/', CompleteOnboardingView.as_view(), name='stripe_onboarding_complete'),
 ]
+
 
 
 

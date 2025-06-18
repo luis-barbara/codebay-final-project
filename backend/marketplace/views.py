@@ -25,9 +25,15 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        # Se não está autenticado, retorna vazio
+        if user.is_authenticated:
+            return Product.objects.filter(seller=user)
+        return Product.objects.none()
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -36,7 +42,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         if user.products.count() >= max_products:
             raise PermissionDenied(f"You have reached the limit of {max_products} products.")
 
-        serializer.save(seller=user)  
+        serializer.save(seller=user)
 
 
 class PublishProductView(APIView):
@@ -45,7 +51,7 @@ class PublishProductView(APIView):
     def post(self, request, pk):
         user = request.user
         # Procura o produto, garantindo que pertence ao user
-        product = get_object_or_404(Product, pk=pk, owner=user)
+        product = get_object_or_404(Product, pk=pk, seller=user)
 
         # Verifica se o produto já está publicado
         if product.published:
@@ -80,6 +86,24 @@ class PublishProductView(APIView):
         return Response({"onboarding_url": account_link.url}, status=status.HTTP_200_OK)
 
 
+class UnpublishProductView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        user = request.user
+        product = get_object_or_404(Product, pk=pk, seller=user)
+
+        if not product.published:
+            return Response({"detail": "Product is already unpublished."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Marca o produto como não publicado
+        product.published = False
+        product.pending_publication = False
+        product.save()
+
+        return Response({"detail": "Product unpublished successfully."}, status=status.HTTP_200_OK)
+
+
 class CompleteOnboardingView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -90,7 +114,7 @@ class CompleteOnboardingView(APIView):
             return Response({"detail": "Product ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            product = Product.objects.get(id=product_id, owner=user)
+            product = Product.objects.get(id=product_id, seller=user)
         except Product.DoesNotExist:
             return Response({"detail": "Product not found or not owned by user."}, status=status.HTTP_404_NOT_FOUND)
 

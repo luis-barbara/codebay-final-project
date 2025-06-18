@@ -13,13 +13,15 @@ from storage.models import ProjectFile
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'seller', 'price', 'category', 'language', 'created_at')
+    list_display = (
+        'title', 'seller', 'price', 'category', 'language',
+        'created_at', 'published', 'pending_publication'
+    )
     search_fields = ('title', 'description', 'seller__username')
-    list_filter = ('category', 'language', 'created_at')
+    list_filter = ('category', 'language', 'created_at', 'published', 'pending_publication')
     ordering = ('-created_at',)
     list_per_page = 25
 
-    # Inline para mostrar arquivos relacionados diretamente no admin do produto
     class ProjectFileInline(admin.TabularInline):
         model = ProjectFile
         extra = 0
@@ -27,7 +29,7 @@ class ProductAdmin(admin.ModelAdmin):
         fields = ('title', 'description', 'file_url', 'uploaded_at')
 
     inlines = [ProjectFileInline]
-
+    
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

@@ -86,7 +86,7 @@ class ProductSerializer(serializers.ModelSerializer):
     media = MediaSerializer(many=True, read_only=True)
     rating = serializers.SerializerMethodField()
     wishlisted_by = UserSerializer(many=True, read_only=True)
-    files = ProjectFileSerializer(many=True, read_only=True)  # Arquivos relacionados ao produto
+    files = ProjectFileSerializer(many=True, read_only=True)
 
     file = serializers.FileField(required=False, allow_null=True)
 
@@ -94,8 +94,10 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'seller', 'title', 'description', 'category', 'language',
-            'price', 'created_at', 'rating', 'media', 'wishlisted_by', 'file', 'files'
+            'price', 'created_at', 'rating', 'media', 'wishlisted_by',
+            'file', 'files', 'published', 'pending_publication' 
         ]
+        read_only_fields = ['published', 'pending_publication']  
 
     def get_rating(self, obj):
         return obj.average_rating()

@@ -1,18 +1,10 @@
 # payments/models.py
 
 
+
 from django.db import models
 from django.conf import settings
-
-class Product(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    price_cents = models.PositiveIntegerField()  # preço em cêntimos
-    published = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
-
+from marketplace.models import Product  
 
 class Payment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
@@ -28,5 +20,6 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment {self.stripe_payment_intent_id} - {self.user}"
+
 
 

@@ -10,3 +10,8 @@ password: qwerty
 utilizador: codebay
 senha: qwerty
 
+
+
+## Stripe Onboarding demo
+
+https://rocketrides.io/

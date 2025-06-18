@@ -60,7 +60,7 @@ class CreateCheckoutSessionView(APIView):
                         'currency': 'eur',
                         'unit_amount': product.price_cents,
                         'product_data': {
-                            'name': product.title,
+                            'name': product.name,
                         },
                     },
                     'quantity': 1,

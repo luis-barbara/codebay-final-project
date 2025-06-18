@@ -1,15 +1,17 @@
 # payments/serializers.py
 
 from rest_framework import serializers
-from .models import Product, Payment
+from .models import Payment
+from marketplace.models import Product  
 import stripe
 
+
 class ProductSerializer(serializers.ModelSerializer):
-    owner_username = serializers.ReadOnlyField(source='owner.username')
+    seller_username = serializers.ReadOnlyField(source='seller.username')
 
     class Meta:
         model = Product
-        fields = ['id', 'owner', 'owner_username', 'name', 'description', 'price_cents', 'published']
+        fields = ['id', 'seller', 'seller_username', 'title', 'description', 'price', 'published']
 
 
 class PaymentSerializer(serializers.ModelSerializer):
