@@ -9,7 +9,7 @@ from .views import (
 )
 
 router = DefaultRouter()
-router.register(r'products', ProductViewSet)
+router.register(r'products', ProductViewSet, basename='product')
 router.register(r'orders', OrderViewSet)
 router.register(r'ratings', RatingViewSet)
 router.register(r'notifications', NotificationViewSet, basename='notification')

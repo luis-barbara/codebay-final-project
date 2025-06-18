@@ -14,7 +14,8 @@ from django.shortcuts import redirect
 import stripe
 import logging
 
-from .models import Product, Payment
+from marketplace.models import Product
+from payments.models import Payment
 from .serializers import ProductSerializer, PaymentSerializer
 
 logger = logging.getLogger(__name__)
