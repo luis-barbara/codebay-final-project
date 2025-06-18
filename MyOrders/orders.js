@@ -172,48 +172,75 @@ function setupNotificationDropdown() {
 }
 
 
-function setupSearchAndFilter() {
-    const searchInput = document.querySelector('.search-bar input');
-    const filterDropdown = document.querySelector('.filter-dropdown');
+// Status Filter Functionality
+function setupStatusFilter() {
+    const statusFilterButton = document.getElementById('statusFilterButton');
+    const statusFilterDropdown = document.getElementById('statusFilterDropdown');
+    const statusItems = document.querySelectorAll('.status-filter__item');
     const tableRows = document.querySelectorAll('.orders-table tbody tr');
+    const searchInput = document.querySelector('.search-bar input');
 
-    if (!searchInput || !filterDropdown || !tableRows.length) return;
+    // Toggle dropdown visibility
+    statusFilterButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        statusFilterDropdown.classList.toggle('filter-show');
+        statusFilterButton.classList.toggle('filter-open');
+    });
 
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+        statusFilterDropdown.classList.remove('filter-show');
+        statusFilterButton.classList.remove('filter-open');
+    });
 
-    function applyOriginalColors() {
-        tableRows.forEach((row, index) => {
-            if (row.style.display !== 'none') {
-                row.style.backgroundColor = index % 2 === 0 ? 'var(--darker-bg)' : 'var(--primary-active)';
-            }
+    // Prevent dropdown from closing when clicking inside
+    statusFilterDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Handle item selection
+    statusItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Update active state
+            statusItems.forEach(i => i.classList.remove('status-filter__item--active'));
+            this.classList.add('status-filter__item--active');
+            
+            // Update button label
+            document.getElementById('statusFilterLabel').textContent = this.textContent;
+            
+            // Close dropdown
+            statusFilterDropdown.classList.remove('filter-show');
+            statusFilterButton.classList.remove('filter-open');
+            
+            // Filter orders
+            filterOrders(searchInput.value, this.textContent);
         });
-    }
+    });
 
-    function filterTable() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filterValue = filterDropdown.value.toLowerCase();
+    // Search input handler
+    searchInput.addEventListener('input', function() {
+        const activeStatus = document.querySelector('.status-filter__item--active').textContent;
+        filterOrders(this.value, activeStatus);
+    });
 
-        tableRows.forEach((row, index) => {
+    // Filter function
+    function filterOrders(searchTerm = '', status = 'All Status') {
+        searchTerm = searchTerm.toLowerCase();
+        
+        tableRows.forEach(row => {
             const rowText = row.textContent.toLowerCase();
-            const status = row.querySelector('.status-badge')?.textContent.toLowerCase();
+            const rowStatus = row.querySelector('.status-badge').textContent;
             
             const matchesSearch = rowText.includes(searchTerm);
-            const matchesFilter = filterValue === 'all status' || status === filterValue;
+            const matchesStatus = status === 'All Status' || status === rowStatus;
             
-            if (matchesSearch && matchesFilter) {
+            if (matchesSearch && matchesStatus) {
                 row.style.display = '';
-                row.style.backgroundColor = index % 2 === 0 ? 'var(--darker-bg)' : 'var(--primary-active)';
             } else {
                 row.style.display = 'none';
             }
         });
     }
-
-    // Apply colors initially
-    applyOriginalColors();
-
-    // Set up event listeners
-    searchInput.addEventListener('input', filterTable);
-    filterDropdown.addEventListener('change', filterTable);
 }
 
 // Main initialization
@@ -222,13 +249,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadHeaderBasedOnAuth();
     await loadHamb();
     await loadCard();
-    setupSearchAndFilter();
+    handleOrdersVisibility();
+    setupStatusFilter(); // Replace setupSearchAndFilter with this
     
     if (document.querySelector(".toggle-filters")) {
         setupFilters();
     }
 });
-
 
 
 // Function to show/hide orders based on auth status

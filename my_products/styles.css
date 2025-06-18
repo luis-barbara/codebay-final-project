@@ -180,6 +180,7 @@ body {
     color: #C8C9CD;
     font-size: 14px;
 }
+
 /* FIM DAS NOVAS CLASSES */
 
 .image-placeholder-container {
@@ -318,12 +319,13 @@ body {
     background-color: #1a1c23;
     color: white;
     border: 1px solid #2a2d35;
-    border-radius: 8px;
+    border-radius: 6px;
     margin-bottom: 20px;
     box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
-.search-bar:focus {
+.search-bar:hover {
     border: 2px solid #5A69EA;
     box-shadow: 0 0 8px #5A69EA;
     outline: none;
@@ -487,12 +489,15 @@ body {
     .page-layout {
         flex-direction: column;
     }
+
     .main-content {
         order: 1;
     }
+
     .toggle-filters {
         display: block !important;
     }
+
     .filters-panel {
         width: 100%;
         order: 2;
@@ -504,40 +509,49 @@ body {
     .search-bar {
         font-size: 0.9rem;
     }
+
     .filters-panel {
         font-size: 13px;
     }
+
     .details .heading {
         font-size: 16px;
     }
+
     .details .price {
         font-size: 18px;
     }
+
     .wishlist-header {
         flex-direction: column;
         align-items: stretch;
         text-align: center;
         gap: 1.5rem;
     }
+
     .wishlist-header h1 {
         margin-bottom: 0;
         font-size: 1.8rem;
     }
+
     #modal_btnbox {
         margin-left: 0;
         width: 100%;
     }
+
     #openModalBtn {
         width: 100%;
         padding: 0.8rem 1rem;
         font-size: 1rem;
     }
+
     .toggle-filters {
         display: block !important;
         width: 100%;
         padding: 0.8rem 1rem;
         font-size: 1rem;
     }
+
     .page-layout {
         padding: 15px;
     }
@@ -548,13 +562,16 @@ body {
         width: 95%;
         max-height: 90vh;
     }
+
     .modal-body {
         padding: 16px;
     }
+
     .modal-header,
     .modal-footer {
         padding: 16px;
     }
+
     .image-placeholder-container {
         flex-direction: column;
     }
@@ -564,16 +581,20 @@ body {
     .page-layout {
         padding: 10px;
     }
+
     .card-grid {
         gap: 15px;
     }
+
     .wishlist-header h1 {
         font-size: 1.6rem;
     }
+
     .modal-footer {
         flex-direction: column-reverse;
         gap: 10px;
     }
+
     .modal-footer .btn {
         width: 100%;
     }
