@@ -68,4 +68,10 @@ compose.tests:
 	docker compose run --rm -e DJANGO_SETTINGS_MODULE=dali.settings web poetry run pytest -vvv --no-header
 
 
+# =========================================================
+# Logs
+# =========================================================
+
+logs:
+	tail -f logs/error.log
 
