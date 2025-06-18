@@ -10,6 +10,9 @@ from marketplace.models import Product
 from .serializers import ProjectFileSerializer
 from uuid import uuid4
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class FileUploadView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -58,6 +61,7 @@ class FileUploadView(APIView):
             }
             )
         except Exception as e:
+            logger.error(f"Erro ao fazer upload no S3: {str(e)}", exc_info=True)
             return Response({'error': f'Failed to upload file: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         s3_domain = getattr(settings, 'AWS_S3_CUSTOM_DOMAIN', f"{settings.AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com")
