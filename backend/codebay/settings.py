@@ -253,3 +253,50 @@ STREAM_API_KEY = os.getenv("STREAM_API_KEY")
 STREAM_API_SECRET = os.getenv("STREAM_API_SECRET")
 STREAM_APP_ID = os.getenv("STREAM_APP_ID")
 
+
+
+import sys
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Mantém os loggers padrão do Django
+    'formatters': {
+        'verbose': {
+            'format': '[{levelname}] {asctime} {name} - {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'stream': sys.stdout,
+        },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/error.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'storage': {  
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
+
+
+
+
