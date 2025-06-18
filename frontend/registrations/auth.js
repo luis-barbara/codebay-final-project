@@ -18,11 +18,27 @@ export function clearTokens() {
 
 export function isLoggedIn() {
   const token = getAccessToken();
-  if (!token) return false;
-  return true;
+  return !!token;
 }
 
 export function logout() {
   clearTokens();
-  window.location.href = '/signin.html'; 
+  window.location.href = '/signin.html';
+}
+
+// authFetch: fetch que adiciona token no header e trata 401
+export async function authFetch(url, options = {}) {
+  const token = getAccessToken();
+  if (!options.headers) options.headers = {};
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url, options);
+
+  if (response.status === 401) {
+    logout();  // token inválido ou expirado
+  }
+
+  return response;
 }

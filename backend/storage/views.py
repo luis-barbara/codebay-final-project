@@ -52,7 +52,10 @@ class FileUploadView(APIView):
                 uploaded_file,
                 settings.AWS_STORAGE_BUCKET_NAME,
                 filename,
-                ExtraArgs={'ContentType': uploaded_file.content_type}
+                ExtraArgs={  
+            'ContentType': uploaded_file.content_type,
+            'ACL': 'bucket-owner-full-control'  
+            }
             )
         except Exception as e:
             return Response({'error': f'Failed to upload file: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

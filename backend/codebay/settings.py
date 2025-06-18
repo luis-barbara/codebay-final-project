@@ -131,7 +131,14 @@ MIDDLEWARE = [
 
 
 
+from corsheaders.defaults import default_headers
+
 CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False") == "True"
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "authorization",
+    "x-csrftoken",
+]
 
 
 

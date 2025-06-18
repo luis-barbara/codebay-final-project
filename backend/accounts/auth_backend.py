@@ -1,4 +1,4 @@
-# accounts/auth_bakend.py
+# accounts/auth_backend.py
 
 
 from django.contrib.auth.backends import ModelBackend

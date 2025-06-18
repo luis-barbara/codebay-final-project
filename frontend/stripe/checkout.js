@@ -1,7 +1,7 @@
 // frontend/stripe/checkout.js
 
 
-import { authFetch } from './auth.js';
+import { authFetch } from '../registrations/auth.js';
 
 let stripePromise = null;
 
