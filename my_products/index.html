@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Wishlist - CodeBay</title>
+    <title>My Products - CodeBay</title>
     <link rel="stylesheet" href="../components/css/footer.css">
     <link rel="stylesheet" href="../components/css/card.css">
     <link rel="stylesheet" href="../components/css/both_menus.css">
@@ -63,26 +63,32 @@
             </div>
         </aside>
 
+
+
         <main class="main-content">
-           
+
             <div class="wishlist-header">
                 <h1>My Products</h1>
-                <p>Manage your own products</p>
+                <div id="modal_btnbox">
+                    <button id="openModalBtn">Adicionar Produto</button>
+                </div>
             </div>
 
             <button class="toggle-filters">Show Filters</button>
 
-            
 
-            <input type="text" class="search-bar" placeholder="Search products...">
+
+            <input type="text" class="search-bar" id="search_bar" placeholder="Search products...">
             <div class="card-grid">
-                
+
+
             </div>
+
         </main>
     </div>
 
 
-        <div id="foot"></div>
+    <div id="foot"></div>
 
 
 
@@ -132,10 +138,98 @@
         </div>
     </div>
 
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Product</h2>
+                <button id="closeModalBtn" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="Type here... (min. 3 letters)">
+
+                <label for="description">Description</label>
+                <textarea id="description" placeholder="Type here... (min. 30 letters)"></textarea>
+
+                <label for="categories">Categories</label>
+                <select id="categories">
+                    <option value="" disabled selected>Select option</option>
+                    <option value="bot">Bot</option>
+                    <option value="api">API</option>
+                    <option value="micro_saas">MicroSaaS</option>
+                    <option value="automation">Automation Template</option>
+                    <option value="script">Script</option>
+                    <option value="integration">Integration</option>
+                    <option value="digital_business">Digital Business</option>
+                    <option value="template">Template</option>
+                    <option value="dashboard">Dashboard</option>
+                </select>
+
+                <label for="languages">Languages/Stack</label>
+                <select id="languages">
+                    <option value="" disabled selected>Select option</option>
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="go">Go</option>
+                    <option value="nodejs">Node.js</option>
+                    <option value="java">Java</option>
+                    <option value="php">PHP</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="react">React</option>
+                    <option value="vuejs">Vue.js</option>
+                    <option value="angular">Angular</option>
+                    <option value="rust">Rust</option>
+                </select>
+
+                <label for="github">Github Repository</label>
+                <input type="text" id="github" placeholder="Type here... (Optional)">
+
+                <label for="pricing">Pricing</label>
+                <input type="text" id="pricing" placeholder="Type here... (Minimum 0€)">
+
+                <div class="button-with-hint">
+                    <button id="addVideoBtn" class="btn btn-secondary">Add video link</button>
+                    <span class="input-hint">(Optional)</span>
+                </div>
+                <div id="videoLinksContainer"></div>
+
+                <div class="button-with-hint">
+                    <button id="addImageBtn" class="btn btn-secondary">Add image</button>
+                    <span class="input-hint">(Min. 1)</span>
+                </div>
+                <input type="file" id="imageUpload" accept="image/*" multiple hidden>
+
+                <div class="image-placeholder-container">
+                    <div class="image-placeholder"><small>Image 1</small></div>
+                    <div class="image-placeholder"><small>Image 2</small></div>
+                    <div class="image-placeholder"><small>Image 3</small></div>
+                    <div class="image-placeholder"><small>Image 4</small></div>
+                </div>
+
+                <div class="button-with-hint">
+                    <button id="addFileBtn" class="btn btn-secondary">Add file</button>
+                    <span class="input-hint">(Min. 1)</span>
+                </div>
+                <input type="file" id="fileUpload" multiple hidden>
+                <div class="file-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                <button id="createProductBtn" class="btn btn-primary">Create product</button>
+            </div>
+        </div>
+    </div>
+
 
     <div id="hamb"></div>
     <div id="avat"></div>
 </body>
 <script src="script.js"></script>
+<script src="product-management.js" defer></script>
+<script src="product-render.js" defer></script>
+<script src="../components/js/shared-components.js"></script>
 
 </html>

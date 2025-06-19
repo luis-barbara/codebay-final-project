@@ -9,6 +9,7 @@
     border: 0.6px solid #6B6E72;
     overflow: hidden;
     font-size: 14px;
+    
   }
 
   .preview {
@@ -20,6 +21,8 @@
 
   .preview .image-placeholder {
     width: 100%;
+    height:auto;
+    aspect-ratio: 16 / 9;
   }
 
 

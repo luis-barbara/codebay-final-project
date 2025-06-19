@@ -39,6 +39,17 @@
     cursor: pointer;
 }
 
+.logo-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-icon-img {
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+}
+
 
 .menu-icon,
 .icon {
