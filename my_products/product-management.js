@@ -61,7 +61,7 @@ document.getElementById("createProductBtn").addEventListener("click", async () =
   const price = parseFloat(document.getElementById("pricing").value.trim());
 
   // Basic validation
-  if (title.length < 3 || description.length < 30 || !category || !language || isNaN(price) || price < 0) {
+  if (title.length < 3 || description.length < 10 || !category || !language || isNaN(price) || price < 0) {
       alert("Please fill all required fields correctly.");
       return;
   }

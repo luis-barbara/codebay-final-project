@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Limites de Validação e Upload
     const MIN_TITLE_LENGTH = 3;
-    const MIN_DESC_LENGTH = 30;
+    const MIN_DESC_LENGTH = 10;
     const MAX_IMAGES = 4;
     const MAX_VIDEOS = 2;
 
@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleInput = document.getElementById('title');
     const descriptionInput = document.getElementById('description');
     const pricingInput = document.getElementById('pricing');
-    const createProductBtn = document.getElementById('createProductBtn');
 
     // Botões de Ação do Modal
     const addVideoBtn = document.getElementById('addVideoBtn');
@@ -41,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Lógica de Validação Central ---
     const validateForm = () => {
+
+        const createProductBtn = document.getElementById('createProductBtn');
+
         if (!createProductBtn) return;
 
         // 1. Validar Título
@@ -82,11 +84,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const openAddModal = () => {
+    if (!modalOverlay) return;
+
+    // Limpa os campos
+    titleInput.value = '';
+    descriptionInput.value = '';
+    pricingInput.value = '';
+    document.getElementById('categories').value = '';
+    document.getElementById('languages').value = '';
+    document.getElementById('github').value = '';
+
+    // Limpa imagens
+    imagePlaceholders.forEach(p => {
+        p.style.backgroundImage = '';
+        p.innerHTML = '<i class="fas fa-image"></i>';
+    });
+
+    // Limpa ficheiros
+    fileListContainer.innerHTML = '';
+
+    // Limpa vídeos
+    videoLinksContainer.innerHTML = '';
+
+    // Atualiza o texto do botão
+    const createBtn = document.getElementById("createProductBtn");
+    createBtn.textContent = "Add Product";
+
+    // Remove event listeners antigos
+    const newBtn = createBtn.cloneNode(true);
+    createBtn.parentNode.replaceChild(newBtn, createBtn);
+
+    // Adiciona um novo listener (você deve definir `createProduct()` separadamente)
+    newBtn.addEventListener("click", createProduct); // ou sua função de criação
+
+    // Mostra o modal
+    modalOverlay.style.display = 'flex';
+
+    // Revalida
+    validateForm();
+};
+
+
     const closeModal = () => {
         if (modalOverlay) modalOverlay.style.display = 'none';
     };
 
-    if (openModalBtn) openModalBtn.addEventListener('click', openModal);
+    if (openModalBtn) openModalBtn.addEventListener('click', openAddModal);
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
     if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
 

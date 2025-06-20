@@ -39,7 +39,6 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    padding: 20px 0;
 }
 
 
@@ -284,6 +283,7 @@ body {
 
 .main-content {
     flex: 1;
+    min-height: 95vh;
 }
 
 .wishlist-header {
