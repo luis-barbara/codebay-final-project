@@ -4,11 +4,18 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.reverse import reverse
 from django.conf import settings
+from django.http import HttpResponse, Http404
 import stripe
+import boto3
+import base64
 from .models import Product, Order, Notification, Rating, Media, Wishlist
 from storage.models import ProjectFile
 from payments.models import Payment
@@ -21,28 +28,31 @@ from .serializers import (
     WishlistSerializer,
 )
 
+
+import logging
+logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
-        # Se não está autenticado, retorna vazio
-        if user.is_authenticated:
-            return Product.objects.filter(seller=user)
-        return Product.objects.none()
+        return Product.objects.filter(seller=self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
-        user = self.request.user
-        max_products = 10  # Limite por vendedor
+        if self.request.user.products.count() >= 10:
+            raise PermissionDenied("Você atingiu o limite máximo de 10 produtos.")
+        serializer.save(seller=self.request.user)
 
-        if user.products.count() >= max_products:
-            raise PermissionDenied(f"You have reached the limit of {max_products} products.")
+    def get_serializer(self, *args, **kwargs):
+        # Garante que o contexto tem o request, importante para gerar URLs absolutas
+        kwargs.setdefault('context', {})
+        kwargs['context']['request'] = self.request
+        return super().get_serializer(*args, **kwargs)
 
-        serializer.save(seller=user)
+
 
 
 class PublishProductView(APIView):
@@ -104,6 +114,16 @@ class UnpublishProductView(APIView):
         return Response({"detail": "Product unpublished successfully."}, status=status.HTTP_200_OK)
 
 
+
+class PublicProductListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]  
+
+    def get_queryset(self):
+        return Product.objects.filter(published=True)
+
+
+
 class CompleteOnboardingView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -132,7 +152,6 @@ class CompleteOnboardingView(APIView):
         product.save()
 
         return Response({"detail": "Product published successfully."})
-
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -183,27 +202,47 @@ class RatingViewSet(viewsets.ModelViewSet):
 class MediaViewSet(viewsets.ModelViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
-    def get_queryset(self):
-        return self.queryset
+    def create(self, request, *args, **kwargs):
+        # Verifica se o token JWT é válido
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # Verifica se o produto existe e pertence ao usuário
+        product_id = request.data.get('product')
+        if not product_id:
+            return Response(
+                {"detail": "Product ID is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            product = Product.objects.get(id=product_id, seller=request.user)
+        except Product.DoesNotExist:
+            return Response(
+                {"detail": "Product not found or not owned by user."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Verifica se foi enviado um arquivo
+        if 'image' not in request.FILES:
+            return Response(
+                {"detail": "No image file was provided."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Continua com o processo normal
+        return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-        product = serializer.validated_data.get('product')
-        if product.seller != self.request.user:
-            raise PermissionDenied("You do not have permission to add media for this product.")
+        # Garante que o tipo seja definido como IMAGE
+        serializer.validated_data['type'] = Media.IMAGE
         serializer.save()
-
-    def perform_update(self, serializer):
-        media = self.get_object()
-        if media.product.seller != self.request.user:
-            raise PermissionDenied("You do not have permission to update this media.")
-        serializer.save()
-
-    def perform_destroy(self, instance):
-        if instance.product.seller != self.request.user:
-            raise PermissionDenied("You do not have permission to delete this media.")
-        instance.delete()
 
 
 class WishlistViewSet(viewsets.ModelViewSet):  
@@ -221,15 +260,21 @@ class WishlistViewSet(viewsets.ModelViewSet):
 class ProductFilesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, product_id):
+    def get(self, request, pk):
         user = request.user
 
-        # Verifica se o utilizador comprou o produto
-        if not Payment.objects.filter(product_id=product_id, user=user, succeeded=True).exists():
-            raise PermissionDenied("Access denied. You have not purchased this product.")
+        # Verifica se o produto existe
+        product = get_object_or_404(Product, id=pk)
+
+        # Verifica se o user é o vendedor ou um comprador do produto
+        is_seller = product.seller == user
+        has_purchased = Payment.objects.filter(product_id=pk, user=user, succeeded=True).exists()
+
+        if not is_seller and not has_purchased:
+            raise PermissionDenied("Access denied. You are neither the seller nor a purchaser of this product.")
 
         # Procura arquivos relacionados ao produto
-        files = ProjectFile.objects.filter(product_id=product_id)
+        files = ProjectFile.objects.filter(product_id=pk)
         if not files.exists():
             raise NotFound("No files found for this product.")
 

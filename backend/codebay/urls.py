@@ -22,19 +22,15 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
-    # Django Allauth - login social (Google, GitHub)
     path("accounts/", include("allauth.urls")),
-
-    # Rotas API
-    path("api/market/", include("marketplace.urls")),
+    path("api/marketplace/", include("marketplace.urls")),
     path("api/accounts/", include("accounts.urls")),
     path("api/payments/", include("payments.urls")),
     path('api/storage/', include('storage.urls')),
     path('api/chat/', include('chat.urls')),
 ]
 
-# Arquivos estáticos e media no dev
+# Configuração de arquivos estáticos em DEBUG 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

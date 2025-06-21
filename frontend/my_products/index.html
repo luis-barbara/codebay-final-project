@@ -70,7 +70,7 @@
             <div class="wishlist-header">
                 <h1>My Products</h1>
                 <div id="modal_btnbox">
-                    <button id="openModalBtn">Adicionar Produto</button>
+                    <button id="openModalBtn">Add Product</button>
                 </div>
             </div>
 
@@ -200,7 +200,7 @@
                     <button id="addImageBtn" class="btn btn-secondary">Add image</button>
                     <span class="input-hint">(Min. 1)</span>
                 </div>
-                <input type="file" id="imageUpload" accept="image/*" multiple hidden>
+                <img id="uploaded-image" style="display: none;" alt="Imagem do produto" />
 
                 <div class="image-placeholder-container">
                     <div class="image-placeholder"><small>Image 1</small></div>
@@ -227,9 +227,10 @@
     <div id="hamb"></div>
     <div id="avat"></div>
 </body>
-<script src="script.js"></script>
-<script src="product-management.js" defer></script>
-<script src="product-render.js" defer></script>
-<script src="../components/js/shared-components.js"></script>
+<script src="product-actions.js" defer></script>
+<script src="script.js" defer></script>
+<script type="module" src="product-management.js" defer></script>
+<script type="module" src="product-render.js" defer></script>
+<script src="../components/js/shared-components.js" defer></script>
 
 </html>

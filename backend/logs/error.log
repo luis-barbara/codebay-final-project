@@ -1,5 +1,21 @@
 
-[ERROR] 2025-06-18 17:44:07,449 django.request - Internal Server Error: /accounts/google/login/
+[ERROR] 2025-06-21 00:53:16,668 django.request - Internal Server Error: /admin/accounts/user/4/change/
+Traceback (most recent call last):
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 840, in get_form
+    return modelform_factory(self.model, **defaults)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/forms/models.py", line 654, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/forms/models.py", line 312, in __new__
+    fields = fields_for_model(
+             ^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/forms/models.py", line 207, in fields_for_model
+    raise FieldError(
+django.core.exceptions.FieldError: 'avatar' cannot be specified for User model form as it is a non-editable field
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
   File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/asgiref/sync.py", line 518, in thread_handler
     raise exc_info[1]
@@ -20,21 +36,118 @@ Traceback (most recent call last):
   File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/asgiref/sync.py", line 522, in thread_handler
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/allauth/socialaccount/providers/oauth2/views.py", line 105, in view
-    return self.dispatch(request, *args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/allauth/socialaccount/providers/base/views.py", line 15, in dispatch
-    provider = self.get_provider()
-               ^^^^^^^^^^^^^^^^^^^
-  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/allauth/socialaccount/providers/oauth2/views.py", line 114, in get_provider
-    return self.adapter.get_provider()
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/allauth/socialaccount/providers/oauth2/views.py", line 48, in get_provider
-    return get_adapter(self.request).get_provider(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/allauth/socialaccount/adapter.py", line 213, in get_provider
-    app = self.get_app(request, provider=provider, client_id=client_id)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/allauth/socialaccount/adapter.py", line 303, in get_app
-    raise SocialApp.DoesNotExist()
-allauth.socialaccount.models.SocialApp.DoesNotExist
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1987, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1840, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1878, in _changeform_view
+    ModelForm = self.get_form(
+                ^^^^^^^^^^^^^^
+  File "/app/accounts/admin.py", line 33, in get_form
+    form = super().get_form(request, obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/auth/admin.py", line 98, in get_form
+    return super().get_form(request, obj, **defaults)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 842, in get_form
+    raise FieldError(
+django.core.exceptions.FieldError: 'avatar' cannot be specified for User model form as it is a non-editable field. Check fields/fieldsets/exclude attributes of class UserAdmin.
+[ERROR] 2025-06-21 00:53:55,579 django.request - Internal Server Error: /admin/marketplace/media/add/
+Traceback (most recent call last):
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 840, in get_form
+    return modelform_factory(self.model, **defaults)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/forms/models.py", line 654, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/forms/models.py", line 312, in __new__
+    fields = fields_for_model(
+             ^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/forms/models.py", line 207, in fields_for_model
+    raise FieldError(
+django.core.exceptions.FieldError: 'created_at' cannot be specified for Media model form as it is a non-editable field
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/asgiref/sync.py", line 518, in thread_handler
+    raise exc_info[1]
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/asgiref/sync.py", line 518, in thread_handler
+    raise exc_info[1]
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/asgiref/sync.py", line 468, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/asgiref/sync.py", line 522, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1984, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1840, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1878, in _changeform_view
+    ModelForm = self.get_form(
+                ^^^^^^^^^^^^^^
+  File "/root/.cache/pypoetry/virtualenvs/codebay-final-project-9TtSrW0h-py3.12/lib/python3.12/site-packages/django/contrib/admin/options.py", line 842, in get_form
+    raise FieldError(
+django.core.exceptions.FieldError: 'created_at' cannot be specified for Media model form as it is a non-editable field. Check fields/fieldsets/exclude attributes of class MediaAdmin.

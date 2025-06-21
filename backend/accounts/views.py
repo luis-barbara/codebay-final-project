@@ -12,7 +12,8 @@ from django.conf import settings
 from rest_framework.permissions import AllowAny
 from django.shortcuts import redirect
 
-
+import logging
+logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class SignupView(APIView):

@@ -1,106 +1,249 @@
 // frontend/my_products/product-management.js
 
-// Function to create the product (basic data, JSON)
-async function createProduct(data, token) {
-  const response = await fetch("http://localhost:8000/api/market/products/", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(data)
+import { authFetch, getAccessToken } from '../registrations/auth.js';
+
+// Função para criar o produto (dados principais em JSON)
+async function createProduct(data) {
+  const response = await authFetch("http://localhost:8000/api/marketplace/products/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
   });
 
-  if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || "Failed to create product");
+  const responseData = await response.json().catch(() => ({}));
+
+  if (response.status === 400) {
+    const errorMsg = responseData.detail ||
+      Object.values(responseData).flat().join(", ") ||
+      "Dados inválidos";
+    throw new Error(`Erro de validação: ${errorMsg}`);
   }
 
-  return await response.json();
+  if (!response.ok) {
+    throw new Error(responseData.detail || "Falha ao criar produto");
+  }
+
+  return responseData;
 }
 
-// Function to upload a single file using FormData
-async function uploadFile(file, productId, token) {
+
+
+// Upload de arquivos genéricos (ZIP, código, etc.)
+async function uploadFile(file, productId) {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("product_id", productId);
   formData.append("title", file.name);
-  formData.append("is_main_file", false);  // or true if needed
+  formData.append("is_main_file", false);
   formData.append("file_type", file.type || "unknown");
 
-  const response = await fetch("http://localhost:8000/api/storage/upload/", {
-      method: "POST",
-      headers: {
-          "Authorization": `Bearer ${token}`
-          // Note: no Content-Type here! browser sets it automatically for FormData
-      },
-      body: formData
+  const response = await authFetch("http://localhost:8000/api/storage/upload/", {
+    method: "POST",
+    body: formData
   });
 
   if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to upload file");
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Falha no upload do arquivo");
   }
 
   return await response.json();
 }
 
-// Main handler linked to the button click event
-document.getElementById("createProductBtn").addEventListener("click", async () => {
-  const token = localStorage.getItem("accessToken");
-  if (!token) {
-      alert("You must be logged in to create a product.");
-      return;
+// Upload de imagens como Media
+async function uploadImageAsMedia(file, productId) {
+  // Validação do tipo de arquivo
+  const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  if (!validImageTypes.includes(file.type)) {
+    throw new Error('Tipo de arquivo não suportado. Use JPEG, PNG, GIF ou WebP.');
   }
 
-  // Collect product info from inputs
-  const title = document.getElementById("title").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const category = document.getElementById("categories").value;
-  const language = document.getElementById("languages").value;
-  const price = parseFloat(document.getElementById("pricing").value.trim());
-
-  // Basic validation
-  if (title.length < 3 || description.length < 30 || !category || !language || isNaN(price) || price < 0) {
-      alert("Please fill all required fields correctly.");
-      return;
+  // Validação do tamanho do arquivo (máx. 5MB)
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (file.size > maxSize) {
+    throw new Error('O tamanho da imagem não pode exceder 5MB.');
   }
 
-  // Prepare product data for creation
-  const productData = {
-      title,
-      description,
-      category,
-      language,
-      price
-  };
+  const formData = new FormData();
+  formData.append("product", productId);
+  formData.append("type", "image");
+  formData.append("image", file);
+
+  // Adiciona feedback visual do upload
+  const uploadIndicator = document.getElementById('upload-progress');
+  if (uploadIndicator) {
+    uploadIndicator.style.display = 'block';
+  }
 
   try {
-      // 1) Create product first
-      const createdProduct = await createProduct(productData, token);
-      alert("Product created successfully!");
+    const response = await authFetch("http://localhost:8000/api/marketplace/media/", {
+      method: "POST",
+      body: formData,
+    });
 
-      // 2) Upload files/images if any
-      const imageFiles = document.getElementById("imageUpload").files;
-      const otherFiles = document.getElementById("fileUpload").files;
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
 
-      // Combine all files into one array
-      const allFiles = [...imageFiles, ...otherFiles];
-
-      for (const file of allFiles) {
-          await uploadFile(file, createdProduct.id, token);
+      // Tratamento específico para erros conhecidos
+      if (response.status === 400) {
+        const errorMsg = errorData.detail || 
+                        Object.values(errorData).flat().join(", ") || 
+                        "Dados inválidos";
+        throw new Error(`Erro de validação: ${errorMsg}`);
       }
 
-      alert("All files uploaded successfully!");
+      if (response.status === 401) {
+        throw new Error('Autenticação necessária. Faça login novamente.');
+      }
 
-      // Fecha o modal
-window.closeModal();
+      throw new Error(errorData.detail || "Erro ao salvar imagem");
+    }
 
-// Renderiza o produto criado na div
-handleAfterCreate(createdProduct.id);
+    const responseData = await response.json();
+    console.log("Upload bem-sucedido:", responseData);
+
+    // Exibir a imagem no frontend após o upload
+    const imageUrl = responseData.image_url;  // Supondo que a API retorna image_url
+    const imageElement = document.getElementById('uploaded-image'); 
+    
+    if (imageElement) {
+      imageElement.src = imageUrl;  // Atualiza a imagem com a URL retornada
+      imageElement.style.display = 'block';  // Exibe a imagem
+    }
+
+    return responseData;
+  } catch (error) {
+    console.error("Erro no upload:", error);
+
+    // Mostra erro para o usuário
+    showNotification(`Erro: ${error.message}`, 'error');
+    throw error;
+  } finally {
+    if (uploadIndicator) {
+      uploadIndicator.style.display = 'none';
+    }
+  }
+}
+
+
+// Criação de Media com vídeo (via URL)
+async function createVideoMedia(videoUrl, productId) {
+  const response = await authFetch("http://localhost:8000/api/marketplace/media/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      type: "video",
+      product: productId,
+      video_url: videoUrl
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.detail || "Erro ao salvar vídeo");
+  }
+
+  return await response.json();
+}
+
+// Handler do botão de criação de produto
+document.getElementById("createProductBtn").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const createBtn = e.currentTarget; // ou document.getElementById("createProductBtn")
+  createBtn.disabled = true;
+  createBtn.textContent = "Criando...";
+
+  try {
+    if (!getAccessToken()) {
+      alert("Você precisa estar logado para criar um produto.");
+      return;
+    }
+
+    const getValidatedValue = (id, minLength = 1, label = id) => {
+      const value = document.getElementById(id)?.value?.trim() || '';
+      if (value.length < minLength) {
+        throw new Error(`O campo "${label}" é obrigatório`);
+      }
+      return value;
+    };
+
+    const productData = {
+      title: getValidatedValue("title", 3, "Título"),
+      description: getValidatedValue("description", 10, "Descrição"),
+      category: getValidatedValue("categories", 1, "Categoria"),
+      language: getValidatedValue("languages", 1, "Linguagem"),
+      price: parseFloat(getValidatedValue("pricing", 1, "Preço"))
+    };
+
+    if (!productData.category) {
+      throw new Error("Categoria inválida");
+    }
+    if (!productData.language) {
+      throw new Error("Linguagem inválida");
+    }
+    if (isNaN(productData.price) || productData.price < 0) {
+      throw new Error("Preço inválido");
+    }
+
+    // criar o produto e o ID
+    const createdProduct = await createProduct(productData);
+
+    // Agora que o produto está criado, pode enviar imagens
+    const imageInput = document.getElementById("imageUpload");
+    if (imageInput?.files?.length > 0) {
+      await Promise.all(
+        Array.from(imageInput.files).map(file =>
+          uploadImageAsMedia(file, createdProduct.id)
+        )
+      );
+    }
+
+    // Upload de arquivos genéricos
+    const fileInput = document.getElementById("fileUpload");
+    if (fileInput?.files?.length > 0) {
+      await Promise.all(
+        Array.from(fileInput.files).map(file =>
+          uploadFile(file, createdProduct.id)
+        )
+      );
+    }
+
+    // Adicionar vídeo por URL
+    const videoUrl = document.getElementById("videoUrl")?.value?.trim();
+    if (videoUrl) {
+      const isValidUrl = /^(https?:\/\/)/i.test(videoUrl);
+      if (!isValidUrl) {
+        throw new Error("URL do vídeo inválida");
+      }
+
+      try {
+        await createVideoMedia(videoUrl, createdProduct.id);
+      } catch (err) {
+        console.warn("Erro ao adicionar vídeo:", err);
+        alert("Produto criado, mas houve um erro ao adicionar o vídeo.");
+      }
+    }
+
+    alert("Produto criado com sucesso!");
+
+    if (typeof handleAfterCreate === 'function') {
+      await handleAfterCreate();
+    } else {
+      window.location.reload();
+    }
 
   } catch (error) {
-      console.error(error);
-      alert(`Error: ${error.message}`);
+    console.error("Erro completo:", error);
+    alert(`Erro: ${error.message}`);
+  } finally {
+    createBtn.disabled = false;
+    createBtn.textContent = "Criar Produto";
   }
-});
+
+}
+);
