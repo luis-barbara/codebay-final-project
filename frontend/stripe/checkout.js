@@ -8,7 +8,7 @@ let stripePromise = null;
 // Função para buscar a chave pública do backend e criar instância Stripe
 async function getStripe() {
   if (!stripePromise) {
-    const response = await fetch('http://localhost:8000/api/stripe/publishable-key/');
+    const response = await fetch('http://localhost:8000/api/payments/stripe/publishable-key/');
     const data = await response.json();
     stripePromise = Stripe(data.publishableKey);
   }
@@ -19,7 +19,7 @@ export async function createCheckoutSession(productId) {
   try {
     const stripe = await getStripe();  
 
-    const response = await authFetch('http://localhost:8000/api/create-checkout-session/', {
+    const response = await authFetch('http://localhost:8000/api/payments/create-checkout-session/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

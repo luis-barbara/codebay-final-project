@@ -40,10 +40,10 @@ class ProductDetailView(RetrieveAPIView):
 # ------------------ Stripe Checkout ------------------
 
 class CreateCheckoutSessionView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
-        product_id = request.data.get('product_id')
+        product_id = request.data.get('product_id', 1)
         try:
             product = Product.objects.get(id=product_id, published=True)
         except Product.DoesNotExist:
@@ -73,7 +73,7 @@ class CreateCheckoutSessionView(APIView):
                     },
                     'metadata': {
                         'product_id': product.id,
-                        'user_id': request.user.id,
+                        'user_id': request.user.id if request.user.is_authenticated else None,
                     }
                 },
                 success_url='http://localhost:5500/payment-success.html?session_id={CHECKOUT_SESSION_ID}',
@@ -84,6 +84,16 @@ class CreateCheckoutSessionView(APIView):
         except Exception as e:
             logger.error(f"Error creating checkout session: {e}")
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class StripePublishableKeyView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({"publishableKey": settings.STRIPE_PUBLISHABLE_KEY})
+
+
+
 
 
 # ------------------ Webhook Stripe ------------------

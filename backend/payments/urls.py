@@ -9,6 +9,7 @@ from .views import (
     StripeOnboardingRefreshView,
     StripeOnboardingReturnView,
     CreateCheckoutSessionView,
+    StripePublishableKeyView
 )
 
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
     path('stripe-webhook/', stripe_webhook, name='stripe_webhook'),
     path('stripe/onboarding/', StripeConnectOnboardingView.as_view(), name='stripe_onboarding'),
     path('stripe/onboarding/refresh/', StripeOnboardingRefreshView.as_view(), name='stripe_onboarding_refresh'),
-    path('stripe/onboarding/return/', StripeOnboardingReturnView.as_view(), name='stripe_onboarding_return')
+    path('stripe/onboarding/return/', StripeOnboardingReturnView.as_view(), name='stripe_onboarding_return'),
+    path('stripe/publishable-key/', StripePublishableKeyView.as_view(), name='stripe_publishable_key'),
 ]
 
