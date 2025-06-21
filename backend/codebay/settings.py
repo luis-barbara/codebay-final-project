@@ -114,8 +114,9 @@ SOCIAL_AUTH_GITHUB_SECRET = os.getenv('SOCIAL_AUTH_GITHUB_SECRET')
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = "http://localhost:8000/api/accounts/oauth/callback/"
-LOGOUT_REDIRECT_URL = 'http://localhost:5500/signin.html'
+LOGOUT_REDIRECT_URL = 'http://localhost:5500/frontend/registrations/signin.html'
 ACCOUNT_LOGOUT_REDIRECT_URL = LOGOUT_REDIRECT_URL
+FRONTEND_URL = 'http://localhost:5500'
 
 
 AUTH_USER_MODEL = 'accounts.User'

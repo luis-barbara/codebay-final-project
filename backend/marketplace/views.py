@@ -40,10 +40,13 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]  # Permitir qualquer usuário acessar os produtos
 
     def get_queryset(self):
-        return Product.objects.filter(seller=self.request.user).order_by('-created_at')
+        if self.request.user.is_authenticated:
+            return Product.objects.filter(seller=self.request.user).order_by('-created_at')
+        else:
+            return Product.objects.filter(published=True).order_by('-created_at')
 
     def perform_create(self, serializer):
         # Limite de 10 produtos por usuário
@@ -68,6 +71,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         kwargs.setdefault('context', {})
         kwargs['context']['request'] = self.request
         return super().get_serializer(*args, **kwargs)
+
 
 
 
@@ -242,12 +246,7 @@ class MediaViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
 
     def create(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return Response(
-                {"detail": "Authentication credentials were not provided."},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
+        # O DRF já valida a autenticação, então a verificação manual não é mais necessária
         product_id = request.data.get('product')
         if not product_id:
             return Response(
@@ -256,6 +255,7 @@ class MediaViewSet(viewsets.ModelViewSet):
             )
 
         try:
+            # Garante que o produto pertence ao usuário autenticado
             product = Product.objects.get(id=product_id, seller=request.user)
         except Product.DoesNotExist:
             return Response(
@@ -265,21 +265,31 @@ class MediaViewSet(viewsets.ModelViewSet):
 
         media_type = request.data.get('type')
 
-        if media_type == Media.IMAGE and 'image' not in request.FILES:
-            return Response({"detail": "No image file was provided."}, status=400)
+        # Validação do tipo de mídia
+        if media_type == Media.IMAGE:
+            if 'image' not in request.FILES:
+                return Response({"detail": "No image file was provided."}, status=400)
+        elif media_type == Media.VIDEO:
+            if not request.data.get('video_url'):
+                return Response({"detail": "Video URL is required."}, status=400)
+        else:
+            return Response({"detail": "Invalid media type."}, status=400)
 
-        if media_type == Media.VIDEO and not request.data.get('video_url'):
-            return Response({"detail": "Video URL is required."}, status=400)
-
+        # Passa o produto no contexto do serializer
         return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-        # Remove a validação daqui, que ficou no serializer
-        serializer.save()
+        # Passa o produto diretamente para a criação
+        product_id = self.request.data.get('product')
+        try:
+            product = Product.objects.get(id=product_id, seller=self.request.user)
+            serializer.save(product=product)  # Associando o produto ao media
+        except Product.DoesNotExist:
+            raise serializers.ValidationError("Product does not exist or is not owned by user.")
 
     def get_serializer(self, *args, **kwargs):
         kwargs.setdefault('context', {})
-        kwargs['context']['request'] = self.request
+        kwargs['context']['request'] = self.request  # Garante que a requisição seja passada
         return super().get_serializer(*args, **kwargs)
 
 

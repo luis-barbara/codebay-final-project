@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      window.location.href = '../registrations/signin.html';  // redireciona para login
+      window.location.href = 'http://localhost:5500/frontend/registrations/index.html'; 
     });
   }
 });

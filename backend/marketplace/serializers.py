@@ -53,14 +53,50 @@ class MediaSerializer(serializers.ModelSerializer):
 
     def get_thumbnail_url(self, obj):
         request = self.context.get('request')
-        if obj.thumbnail_url and request:
-            return request.build_absolute_uri(obj.thumbnail_url)
+        if obj.thumbnail and request:
+            return request.build_absolute_uri(obj.thumbnail.url)
         return None
     
     def validate_type(self, value):
         if value not in [Media.IMAGE, Media.VIDEO]:
             raise serializers.ValidationError("Tipo de mídia inválido.")
         return value
+
+    # Validar que 'product_id' está sendo passado corretamente
+    def validate(self, data):
+        product = self.context.get('product')
+        if not product:
+            raise serializers.ValidationError("Produto não encontrado.")
+        
+        # Garantir que uma imagem ou URL de vídeo seja fornecida conforme o tipo
+        if data.get('type') == Media.IMAGE and not data.get('image'):
+            raise serializers.ValidationError("Uma imagem é necessária para este tipo de mídia.")
+        if data.get('type') == Media.VIDEO and not data.get('video_url'):
+            raise serializers.ValidationError("Uma URL de vídeo é necessária para este tipo de mídia.")
+        
+        # Garantir que ao adicionar uma mídia principal, outras não sejam principais
+        if data.get('is_primary'):
+            if product.media.filter(is_primary=True).exists():
+                raise serializers.ValidationError("Já existe uma mídia principal.")
+        
+        return data
+
+    def create(self, validated_data):
+        # A criação pode ser ajustada para associar a mídia ao produto
+        product = self.context.get('product')
+        if product:
+            validated_data['product'] = product  # Associar o produto
+        media = Media.objects.create(**validated_data)
+        return media
+
+    def update(self, instance, validated_data):
+        # A atualização pode garantir que o campo 'is_primary' seja validado corretamente
+        product = self.context.get('product')
+        if product:
+            validated_data['product'] = product  # Atualiza o produto se necessário
+        instance = super().update(instance, validated_data)
+        return instance
+
     
 
 
@@ -125,13 +161,13 @@ class ProductSerializer(serializers.ModelSerializer):
             return []
     
     def validate_category(self, value):
-        valid_categories = [choice[0] for choice in Product.CATEGORY_CHOICES]
+        valid_categories = set(choice[0] for choice in Product.CATEGORY_CHOICES)
         if value not in valid_categories:
             raise serializers.ValidationError("Categoria inválida")
         return value
 
     def validate_language(self, value):
-        valid_languages = [choice[0] for choice in Product.LANGUAGE_CHOICES]
+        valid_languages = set(choice[0] for choice in Product.LANGUAGE_CHOICES)
         if value not in valid_languages:
             raise serializers.ValidationError("Linguagem inválida")
         return value

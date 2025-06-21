@@ -97,8 +97,11 @@ class Media(models.Model):
 
     def clean(self):
         super().clean()
-        if self.type == self.IMAGE and not self.image:
-            raise ValidationError("Uma imagem é necessária para este tipo de mídia.")
+        if self.type == self.IMAGE:
+            if not self.image:
+                raise ValidationError("Uma imagem é necessária para este tipo de mídia.")
+            if self.image and not self.image.name.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                raise ValidationError("Formato de imagem inválido. Aceitos: PNG, JPG, JPEG, WEBP.")
         if self.type == self.VIDEO and not self.video_url:
             raise ValidationError("Uma URL de vídeo é necessária para este tipo de mídia.")
 
@@ -106,7 +109,7 @@ class Media(models.Model):
         # Otimização automática da imagem
         if self.image and not self.thumbnail:
             self._optimize_image()
-        
+
         super().save(*args, **kwargs)
 
     def _optimize_image(self):

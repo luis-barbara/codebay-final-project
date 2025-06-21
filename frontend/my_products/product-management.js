@@ -1,15 +1,30 @@
 // frontend/my_products/product-management.js
 
+
 import { authFetch, getAccessToken } from '../registrations/auth.js';
 
-// Função para criar o produto (dados principais em JSON)
-async function createProduct(data) {
+// Função para criar o produto e enviar junto com as imagens
+async function createProductWithFiles(data, files) {
+  const formData = new FormData();
+
+  // Adiciona os dados do produto
+  formData.append("title", data.title);
+  formData.append("description", data.description);
+  formData.append("category", data.category);
+  formData.append("language", data.language);
+  formData.append("price", data.price);
+
+  // Adiciona as imagens, caso existam
+  if (files && files.image) {
+    files.image.forEach(file => {
+      formData.append("images", file);
+    });
+  }
+
+  // Enviar a requisição com multipart/form-data
   const response = await authFetch("http://localhost:8000/api/marketplace/products/", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
+    body: formData,
   });
 
   const responseData = await response.json().catch(() => ({}));
@@ -28,49 +43,12 @@ async function createProduct(data) {
   return responseData;  // Retorna o produto com o ID
 }
 
-// Função para upload de imagens como Media
-async function uploadImageAsMedia(file, productId) {
-  const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-  if (!validImageTypes.includes(file.type)) {
-    throw new Error('Tipo de arquivo não suportado. Use JPEG, PNG, GIF ou WebP.');
-  }
-
-  const maxSize = 5 * 1024 * 1024; // 5MB
-  if (file.size > maxSize) {
-    throw new Error('O tamanho da imagem não pode exceder 5MB.');
-  }
-
-  const formData = new FormData();
-  formData.append("product", productId);  
-  formData.append("type", "image");
-  formData.append("image", file);
-
-  try {
-    const response = await authFetch("http://localhost:8000/api/marketplace/media/", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Falha ao salvar imagem");
-    }
-
-    const responseData = await response.json();
-    console.log("Upload bem-sucedido:", responseData);
-    return responseData;  // Retorna a resposta com os dados da imagem
-  } catch (error) {
-    console.error("Erro no upload:", error);
-    throw error;
-  }
-}
-
 // Função para upload de arquivos genéricos
 async function uploadFile(file, productId) {
   const maxSize = 20 * 1024 * 1024; // Limite opcional de 20MB 
 
   if (file.size > maxSize) {
-    throw new Error('O tamanho do arquivo não pode exceder 50MB.');
+    throw new Error('O tamanho do arquivo não pode exceder 20MB.');
   }
 
   const formData = new FormData();
@@ -129,7 +107,7 @@ async function createVideoMedia(videoUrl, productId) {
 document.getElementById("createProductBtn").addEventListener("click", async (e) => {
   e.preventDefault();
 
-  const createBtn = e.currentTarget; 
+  const createBtn = e.currentTarget;
   createBtn.disabled = true;
   createBtn.textContent = "Creating...";
 
@@ -165,20 +143,14 @@ document.getElementById("createProductBtn").addEventListener("click", async (e) 
       throw new Error("Preço inválido");
     }
 
-    // Criar o produto e obter o ID
-    const createdProduct = await createProduct(productData);
-
-    // Agora que o produto foi criado com sucesso, podemos associar as imagens
+    // Obter imagens do input
     const imageInput = document.getElementById("imageUpload");
-    if (imageInput?.files?.length > 0) {
-      await Promise.all(
-        Array.from(imageInput.files).map(file =>
-          uploadImageAsMedia(file, createdProduct.id)
-        )
-      );
-    }
+    const images = imageInput?.files ? Array.from(imageInput.files) : [];
 
-    // Upload de arquivos genéricos (se houver)
+    // Criar o produto junto com as imagens
+    const createdProduct = await createProductWithFiles(productData, { image: images });
+
+    // Agora que o produto foi criado com sucesso, podemos associar os arquivos genéricos (se houver)
     const fileInput = document.getElementById("fileUpload");
     if (fileInput?.files?.length > 0) {
       await Promise.all(

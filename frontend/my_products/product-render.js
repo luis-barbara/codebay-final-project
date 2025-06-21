@@ -66,23 +66,18 @@ function injectCardOptionsStyles() {
   document.head.appendChild(styleSheet);
 }
 
-
 // 3. Buscar produtos
 async function fetchSellerProducts(sellerId) {
   try {
     const response = await authFetch(`http://localhost:8000/api/marketplace/products/?seller_id=${sellerId}`, {
-      headers: {
-        "Accept": "application/json"
-      }
+      headers: { "Accept": "application/json" }
     });
 
     if (response.status === 404) return [];
 
     if (response.status === 400) {
       const fallbackResponse = await authFetch(`http://localhost:8000/api/marketplace/products/`, {
-        headers: {
-          "Accept": "application/json"
-        }
+        headers: { "Accept": "application/json" }
       });
 
       if (fallbackResponse.ok) {
@@ -102,7 +97,7 @@ async function fetchSellerProducts(sellerId) {
   }
 }
 
-// Buscar imagens (Media)
+// 4. Buscar imagens (Media)
 async function fetchProductMedia(productId, token) {
   try {
     const response = await fetch(`http://localhost:8000/api/marketplace/media/?product=${productId}`, {
@@ -120,27 +115,6 @@ async function fetchProductMedia(productId, token) {
     return await response.json();
   } catch (err) {
     console.error("Erro ao buscar media:", err);
-    return [];
-  }
-}
-
-// 4. Buscar arquivos do produto (opcional, não usado diretamente aqui)
-async function fetchProductFiles(productId, token) {
-  try {
-    const response = await fetch(`http://localhost:8000/api/marketplace/products/${productId}/files/`, {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Accept": "application/json"
-      }
-    });
-
-    if (!response.ok) {
-      console.warn(`Falha ao buscar arquivos do produto ${productId}`);
-      return [];
-    }
-
-    return await response.json();
-  } catch {
     return [];
   }
 }
@@ -241,12 +215,6 @@ function renderProductCard(gridContainer, cardHTML, product) {
 
     card.appendChild(optionsButton);
     card.appendChild(optionsMenu);
-
-    // Botão principal
-    const mainButton = cardWrapper.querySelector('.button');
-    if (mainButton) {
-      mainButton.textContent = 'Unlist product';
-    }
   }
 
   // Fecha menus ao clicar fora – apenas 1 vez
@@ -262,74 +230,107 @@ function renderProductCard(gridContainer, cardHTML, product) {
   gridContainer.appendChild(cardWrapper);
 }
 
-// 6. Fechar modal (opcional)
+// 6. Fechar modal
 function closeModal() {
   const modal = document.getElementById("modalOverlay");
   if (modal) modal.style.display = "none";
 }
 
-// 7. Função principal
-async function handleAfterCreate(productId = null, token = null) {
-  token = token || localStorage.getItem("accessToken");
-  if (!token) return alert("Você precisa estar logado para visualizar os produtos.");
+// 7. Função para editar um produto
+function openEditModal(product) {
+  const modal = document.getElementById("editProductModal");
+  if (!modal) return;
+
+  modal.querySelector('#edit-title').value = product.title;
+  modal.querySelector('#edit-description').value = product.description;
+  modal.querySelector('#edit-category').value = product.category;
+  modal.querySelector('#edit-price').value = product.price;
+
+  modal.style.display = 'block';
+
+  modal.querySelector('#saveEdit').onclick = async () => {
+    await saveProductEdits(product.id);
+  };
+}
+
+// Função para salvar a edição do produto
+async function saveProductEdits(productId) {
+  const title = document.getElementById('edit-title').value;
+  const description = document.getElementById('edit-description').value;
+  const category = document.getElementById('edit-category').value;
+  const price = parseFloat(document.getElementById('edit-price').value);
 
   try {
-    injectCardOptionsStyles();
-
-    const payload = parseJwt(token);
-    if (!payload || !payload.user_id) throw new Error("Token inválido ou expirado");
-
-    const sellerId = payload.user_id;
-    const cardResponse = await fetch('../components/card.html');
-    if (!cardResponse.ok) throw new Error(`Erro ao carregar template (${cardResponse.status})`);
-    const cardHTML = await cardResponse.text();
-
-    const products = await fetchSellerProducts(sellerId, token);
-
-    const gridContainer = document.querySelector(".card-grid");
-    if (!gridContainer) throw new Error("Container .card-grid não encontrado no DOM");
-    gridContainer.innerHTML = '';
-
-    for (const product of products) {
-      try {
-        const media = await fetchProductMedia(product.id, token);
-        product.media = media || [];
-        renderProductCard(gridContainer, cardHTML, product);
-      } catch (fileError) {
-        console.error(`Erro ao carregar mídia do produto ${product.id}:`, fileError);
-        product.media = [];
-        renderProductCard(gridContainer, cardHTML, product);
+    const response = await authFetch(`http://localhost:8000/api/marketplace/products/${productId}/`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        title, description, category, price
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
       }
+    });
+
+    const updatedProduct = await response.json();
+
+    if (!response.ok) throw new Error(`Erro ao editar produto: ${updatedProduct.detail || 'Erro desconhecido'}`);
+
+    // Atualizar o produto na UI
+    const productCard = document.getElementById(`product-${productId}`);
+    if (productCard) {
+      productCard.querySelector('.details .heading').textContent = updatedProduct.title;
+      productCard.querySelector('.details .description').textContent = updatedProduct.description;
+      productCard.querySelector('.details .price').textContent = `${updatedProduct.price.toFixed(2)}€`;
     }
 
     closeModal();
-
-    if (productId) {
-      setTimeout(() => {
-        const newProductCard = document.getElementById(`product-${productId}`);
-        newProductCard?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 300);
-    }
-
-  } catch (error) {
-    console.error("Erro em handleAfterCreate:", error);
-    if (error.message.includes("Token inválido") || error.message.includes("401")) {
-      localStorage.removeItem("accessToken");
-      alert("Sessão expirada. Por favor, faça login novamente.");
-    } else {
-      alert(`Erro ao carregar produtos: ${error.message}`);
-    }
+  } catch (err) {
+    console.error("Erro ao salvar edição do produto:", err);
+    alert(`Erro: ${err.message}`);
   }
 }
 
-// 8. Fechar dropdowns ao clicar fora
-document.addEventListener('click', () => {
-  document.querySelectorAll('.options-menu.active').forEach(menu => {
-    menu.classList.remove('active');
-  });
-});
+// 8. Função para excluir um produto
+async function deleteProduct(productId) {
+  try {
+    const response = await authFetch(`http://localhost:8000/api/marketplace/products/${productId}/`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    });
 
-// 9. Chamada inicial
-handleAfterCreate();
-window.closeModal = closeModal;
-window.handleAfterCreate = handleAfterCreate;
+    if (!response.ok) {
+      throw new Error(`Erro ao excluir o produto: ${response.statusText}`);
+    }
+
+    // Remover o produto da UI
+    const productCard = document.getElementById(`product-${productId}`);
+    if (productCard) {
+      productCard.remove();
+    }
+
+    alert('Produto excluído com sucesso!');
+  } catch (err) {
+    console.error("Erro ao excluir produto:", err);
+    alert(`Erro: ${err.message}`);
+  }
+}
+
+// 9. Função para compartilhar o produto
+function shareProduct(productId) {
+  const productUrl = `http://localhost:8000/product/${productId}`;
+  if (navigator.share) {
+    navigator.share({
+      title: 'Compartilhe este produto',
+      url: productUrl
+    }).then(() => {
+      console.log('Produto compartilhado!');
+    }).catch(err => {
+      console.error("Erro ao compartilhar:", err);
+    });
+  } else {
+    prompt('Copie o link para compartilhar:', productUrl);
+  }
+}

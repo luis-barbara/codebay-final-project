@@ -44,46 +44,60 @@ class CreateCheckoutSessionView(APIView):
 
     def post(self, request):
         product_id = request.data.get('product_id', 1)
+
         try:
             product = Product.objects.get(id=product_id, published=True)
         except Product.DoesNotExist:
-            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Product not found"}, status=404)
 
-        if not product.owner.stripe_account_id:
-            return Response({"error": "Vendor has no Stripe account"}, status=status.HTTP_400_BAD_REQUEST)
+        # Verificar se o vendedor tem uma conta Stripe associada
+        if not product.seller.stripe_account_id:
+            return Response({"error": "Vendor has no Stripe account"}, status=400)
 
         try:
+            customer_id = request.user.stripe_customer_id if request.user.is_authenticated else 'cus_SXbyqVYkoVEAfH'
+
+            # Convertendo o preço de string para centavos (se necessário)
+            price_cents = int(float(product.price) * 100)
+
+            metadata = {
+                'product_id': product.id,
+                'product_name': product.title,
+                'vendor': product.seller.full_name,
+            }
+
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 mode='payment',
                 line_items=[{
                     'price_data': {
                         'currency': 'eur',
-                        'unit_amount': product.price_cents,
+                        'unit_amount': price_cents,
                         'product_data': {
-                            'name': product.name,
+                            'name': product.title,
                         },
                     },
                     'quantity': 1,
                 }],
+                customer=customer_id,
                 payment_intent_data={
-                    'application_fee_amount': int(product.price_cents * 0.10),
+                    'application_fee_amount': int(price_cents * 0.10),
                     'transfer_data': {
-                        'destination': product.owner.stripe_account_id,
+                        'destination': product.seller.stripe_account_id,
                     },
-                    'metadata': {
-                        'product_id': product.id,
-                        'user_id': request.user.id if request.user.is_authenticated else None,
-                    }
+                    'metadata': metadata,
                 },
-                success_url='http://localhost:5500/payment-success.html?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url='http://localhost:5500/payment-cancel.html',
+                success_url=f"{settings.FRONTEND_URL}/frontend/stripe/payment-success.html?session_id={{CHECKOUT_SESSION_ID}}",
+                cancel_url=f"{settings.FRONTEND_URL}/frontend/stripe/payment-cancel.html",
             )
 
             return Response({'sessionId': checkout_session.id})
+
         except Exception as e:
             logger.error(f"Error creating checkout session: {e}")
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': str(e)}, status=500)
+
+
 
 
 class StripePublishableKeyView(APIView):

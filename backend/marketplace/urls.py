@@ -25,5 +25,3 @@ urlpatterns = [
     path('stripe/onboarding/complete/', CompleteOnboardingView.as_view(), name='stripe_onboarding_complete'),
     path('public/products/', PublicProductListView.as_view(), name='public-products'),
 ]
-
-

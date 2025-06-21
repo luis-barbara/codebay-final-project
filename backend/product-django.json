@@ -1,0 +1,49 @@
+{
+    "id": 1,
+    "seller": {
+        "full_name": "John Cenas",
+        "email": "yibegis665@calorpg.com",
+        "username": null,
+        "avatar": null,
+        "description": null,
+        "phone": null,
+        "position": null,
+        "country": null,
+        "website": null,
+        "github_account": null,
+        "rating": null,
+        "stripe_account_id": "acct_1RcWHhFWgY0NcbgU"
+    },
+    "title": "bot",
+    "description": "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+    "category": "api",
+    "language": "css",
+    "price": "150.00",
+    "created_at": "2025-06-21T18:46:20.407151Z",
+    "rating": null,
+    "media": [
+        {
+            "id": 1,
+            "type": "image",
+            "url": "http://localhost:8000/media/products/images/2025/06/21/codebay-favicon.jpg",
+            "thumbnail_url": "http://localhost:8000/media/products/thumbnails/2025/06/21/thumb_codebay-favicon.jpg",
+            "is_primary": true,
+            "created_at": "2025-06-21T18:48:20.278794Z"
+        }
+    ],
+    "files": [
+        {
+            "id": 1,
+            "user": 2,
+            "product": 1,
+            "title": "bot",
+            "description": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "file_url": "https://www.freepik.com/free-vector/laptop-realistic_35202486.htm#fromView=popular&page=1&position=1&uuid=c208b5c4-1cda-4619-bcd3-ec707d3713db&from_element=home_tools",
+            "uploaded_at": "2025-06-21T18:50:15.350373Z",
+            "is_main_file": true,
+            "file_type": ""
+        }
+    ],
+    "published": true,
+    "pending_publication": false
+}
