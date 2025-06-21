@@ -7,12 +7,14 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.reverse import reverse
 from django.conf import settings
 from django.http import HttpResponse, Http404
+from rest_framework.exceptions import NotFound
 import stripe
 import boto3
 import base64
@@ -26,6 +28,8 @@ from .serializers import (
     RatingSerializer,
     MediaSerializer,
     WishlistSerializer,
+    ProjectFileSerializer,
+
 )
 
 
@@ -42,9 +46,22 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Product.objects.filter(seller=self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
+        # Limite de 10 produtos por usuário
         if self.request.user.products.count() >= 10:
             raise PermissionDenied("Você atingiu o limite máximo de 10 produtos.")
-        serializer.save(seller=self.request.user)
+        
+        # Cria o produto com o usuário como vendedor
+        product = serializer.save(seller=self.request.user)
+
+        # Salva as imagens enviadas
+        images = self.request.FILES.getlist('images')
+        for i, image in enumerate(images):
+            Media.objects.create(
+                product=product,
+                type=Media.IMAGE,
+                image=image,
+                is_primary=(i == 0)  # A primeira imagem será a principal
+            )
 
     def get_serializer(self, *args, **kwargs):
         # Garante que o contexto tem o request, importante para gerar URLs absolutas
@@ -53,6 +70,25 @@ class ProductViewSet(viewsets.ModelViewSet):
         return super().get_serializer(*args, **kwargs)
 
 
+
+class ProductFilesView(APIView):
+    permission_classes = [AllowAny]  # Permite acesso público temporariamente para testes
+
+    def get(self, request, pk):
+        try:
+            product = Product.objects.get(pk=pk)
+            files = ProjectFile.objects.filter(product=product)
+            
+            if not files.exists():
+                # Retorna array vazio com status 200 se não houver arquivos
+                return Response([], status=status.HTTP_200_OK)
+                
+            serializer = ProjectFileSerializer(files, many=True, context={'request': request})
+            return Response(serializer.data)
+            
+        except Product.DoesNotExist:
+            # Retorna array vazio com status 200 mesmo se o produto não existir
+            return Response([], status=status.HTTP_200_OK)
 
 
 class PublishProductView(APIView):
@@ -206,14 +242,12 @@ class MediaViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
 
     def create(self, request, *args, **kwargs):
-        # Verifica se o token JWT é válido
         if not request.user.is_authenticated:
             return Response(
                 {"detail": "Authentication credentials were not provided."},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        # Verifica se o produto existe e pertence ao usuário
         product_id = request.data.get('product')
         if not product_id:
             return Response(
@@ -229,20 +263,25 @@ class MediaViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # Verifica se foi enviado um arquivo
-        if 'image' not in request.FILES:
-            return Response(
-                {"detail": "No image file was provided."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        media_type = request.data.get('type')
 
-        # Continua com o processo normal
+        if media_type == Media.IMAGE and 'image' not in request.FILES:
+            return Response({"detail": "No image file was provided."}, status=400)
+
+        if media_type == Media.VIDEO and not request.data.get('video_url'):
+            return Response({"detail": "Video URL is required."}, status=400)
+
         return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-        # Garante que o tipo seja definido como IMAGE
-        serializer.validated_data['type'] = Media.IMAGE
+        # Remove a validação daqui, que ficou no serializer
         serializer.save()
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs.setdefault('context', {})
+        kwargs['context']['request'] = self.request
+        return super().get_serializer(*args, **kwargs)
+
 
 
 class WishlistViewSet(viewsets.ModelViewSet):  

@@ -26,3 +26,4 @@ urlpatterns = [
     path('public/products/', PublicProductListView.as_view(), name='public-products'),
 ]
 
+

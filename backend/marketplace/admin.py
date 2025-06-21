@@ -3,6 +3,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from rest_framework.reverse import reverse
+from django.conf import settings
 from django import forms
 import base64
 from .models import (
@@ -15,6 +16,8 @@ from .models import (
 )
 from storage.models import ProjectFile
 
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -26,13 +29,6 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     list_per_page = 25
 
-    class ProjectFileInline(admin.TabularInline):
-        model = ProjectFile
-        extra = 0
-        readonly_fields = ('file_url', 'uploaded_at')
-        fields = ('title', 'description', 'file_url', 'uploaded_at')
-
-    inlines = [ProjectFileInline]
     
 
 @admin.register(Order)
@@ -62,49 +58,59 @@ class RatingAdmin(admin.ModelAdmin):
 
 
 
+
+
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'type', 'media_preview', 'created_at', 'has_media')
-    list_filter = ('type', 'created_at')
+    list_display = ('product_info', 'media_preview', 'type', 'is_primary', 'created_at')
+    list_filter = ('type', 'is_primary', 'product__seller')
     search_fields = ('product__title',)
-    ordering = ('-created_at',)
-    readonly_fields = ('media_preview_large', 'created_at')  # <- aqui está ok
-    fields = ('product', 'type', 'image', 'video_url', 'media_preview_large')  # <- sem 'created_at'
+    list_editable = ('is_primary',)
+    readonly_fields = ('media_preview',)
+    actions = ['make_primary']
 
-    def has_media(self, obj):
-        if obj.type == obj.IMAGE:
-            return bool(obj.image)
-        return bool(obj.video_url)
-    has_media.boolean = True
-    has_media.short_description = 'Tem Mídia'
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = [
+            (None, {
+                'fields': ('product', 'type', 'is_primary')
+            }),
+            ('Image', {
+                'fields': ('image', 'media_preview'),
+                'classes': ('collapse',)
+            }),
+            ('Video', {
+                'fields': ('video_url',),
+                'classes': ('collapse',)
+            }),
+        ]
+        return fieldsets
+
+    def product_info(self, obj):
+        return f"{obj.product.title} (by {obj.product.seller.username})"
+    product_info.short_description = "Product"
 
     def media_preview(self, obj):
         if obj.type == obj.IMAGE and obj.image:
             return format_html(
-                '<img src="{}" width="100" style="border-radius: 5px;" />',
+                '<img src="{}" style="max-height: 100px; max-width: 100px;" />',
                 obj.image.url
             )
         elif obj.type == obj.VIDEO and obj.video_url:
             return format_html(
-                '<a href="{}" target="_blank" style="padding: 3px 6px; background: #eee; border-radius: 3px;">▶ Assistir</a>',
+                '<a href="{}" target="_blank">🔗 Video Link</a>',
                 obj.video_url
             )
         return "-"
+    media_preview.short_description = "Preview"
 
-    def media_preview_large(self, obj):
-        if obj.type == obj.IMAGE and obj.image:
-            return format_html(
-                '<img src="{}" style="max-width: 500px; max-height: 500px; border-radius: 5px;" />',
-                obj.image.url
-            )
-        elif obj.type == obj.VIDEO and obj.video_url:
-            return format_html(
-                '<div style="margin-top: 10px;">'
-                '<a href="{}" target="_blank" style="padding: 5px 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">▶ Assistir Vídeo</a>'
-                '</div>',
-                obj.video_url
-            )
-        return "Nenhuma pré-visualização disponível"
+    def make_primary(self, request, queryset):
+        for media in queryset:
+            Media.objects.filter(product=media.product).exclude(pk=media.pk).update(is_primary=False)
+            media.is_primary = True
+            media.save()
+        self.message_user(request, f"{queryset.count()} media items set as primary.")
+    make_primary.short_description = "Mark selected as primary"
+
 
 
 @admin.register(Wishlist)

@@ -66,6 +66,7 @@ function injectCardOptionsStyles() {
   document.head.appendChild(styleSheet);
 }
 
+
 // 3. Buscar produtos
 async function fetchSellerProducts(sellerId) {
   try {
@@ -101,7 +102,29 @@ async function fetchSellerProducts(sellerId) {
   }
 }
 
-// 4. Buscar arquivos do produto
+// Buscar imagens (Media)
+async function fetchProductMedia(productId, token) {
+  try {
+    const response = await fetch(`http://localhost:8000/api/marketplace/media/?product=${productId}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Accept": "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      console.warn(`Falha ao buscar media do produto ${productId}`);
+      return [];
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error("Erro ao buscar media:", err);
+    return [];
+  }
+}
+
+// 4. Buscar arquivos do produto (opcional, não usado diretamente aqui)
 async function fetchProductFiles(productId, token) {
   try {
     const response = await fetch(`http://localhost:8000/api/marketplace/products/${productId}/files/`, {
@@ -239,8 +262,6 @@ function renderProductCard(gridContainer, cardHTML, product) {
   gridContainer.appendChild(cardWrapper);
 }
 
-
-
 // 6. Fechar modal (opcional)
 function closeModal() {
   const modal = document.getElementById("modalOverlay");
@@ -271,12 +292,12 @@ async function handleAfterCreate(productId = null, token = null) {
 
     for (const product of products) {
       try {
-        const files = await fetchProductFiles(product.id, token);
-        product.files = files || [];
+        const media = await fetchProductMedia(product.id, token);
+        product.media = media || [];
         renderProductCard(gridContainer, cardHTML, product);
       } catch (fileError) {
-        console.error(`Erro ao carregar arquivos do produto ${product.id}:`, fileError);
-        product.files = [];
+        console.error(`Erro ao carregar mídia do produto ${product.id}:`, fileError);
+        product.media = [];
         renderProductCard(gridContainer, cardHTML, product);
       }
     }

@@ -2,9 +2,11 @@
 
 from rest_framework import serializers
 from rest_framework.reverse import reverse
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from .models import Product, Order, Notification, Rating, Media, Wishlist
 from storage.models import ProjectFile
+from storage.serializers import ProjectFileSerializer
 from accounts.serializers import UserProfileSerializer as UserSerializer
 from PIL import Image
 from io import BytesIO
@@ -32,38 +34,33 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
 
 
-class ProjectFileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProjectFile
-        fields = ['id', 'title', 'description', 'file_url', 'uploaded_at']
 
 
 class MediaSerializer(serializers.ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-    # Remova write_only=True para permitir visualização nos responses de teste
-    image = serializers.ImageField(required=False, allow_null=True)
-    video_url = serializers.URLField(required=False, allow_null=True)
-    image_url = serializers.SerializerMethodField()
-    
+    url = serializers.SerializerMethodField()
+    thumbnail_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Media
-        fields = ['id', 'product', 'type', 'image', 'image_url', 'video_url', 'created_at']
-        read_only_fields = ['created_at']
+        fields = ['id', 'type', 'url', 'thumbnail_url', 'is_primary', 'created_at']
+        read_only_fields = fields
 
-    def get_image_url(self, obj):
-        if obj.type == Media.IMAGE and obj.image:
-            request = self.context.get('request')
-            if request:
-                return request.build_absolute_uri(obj.image.url)
-            return obj.image.url
+    def get_url(self, obj):
+        request = self.context.get('request')
+        if obj.url and request:
+            return request.build_absolute_uri(obj.url)
         return None
 
-    def validate(self, data):
-        if data.get('type') == Media.IMAGE and not data.get('image'):
-            raise serializers.ValidationError("Image is required for media type image.")
-        if data.get('type') == Media.VIDEO and not data.get('video_url'):
-            raise serializers.ValidationError("Video URL is required for media type video.")
-        return data
+    def get_thumbnail_url(self, obj):
+        request = self.context.get('request')
+        if obj.thumbnail_url and request:
+            return request.build_absolute_uri(obj.thumbnail_url)
+        return None
+    
+    def validate_type(self, value):
+        if value not in [Media.IMAGE, Media.VIDEO]:
+            raise serializers.ValidationError("Tipo de mídia inválido.")
+        return value
     
 
 

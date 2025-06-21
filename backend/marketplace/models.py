@@ -8,7 +8,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from PIL import Image
 from io import BytesIO
-
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 
 
 class Product(models.Model):
@@ -64,6 +65,8 @@ class Product(models.Model):
         return f"{self.title} by {self.seller.username}"
 
 
+
+
 class Media(models.Model):
     IMAGE = 'image'
     VIDEO = 'video'
@@ -74,38 +77,89 @@ class Media(models.Model):
 
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='media')
     type = models.CharField(max_length=10, choices=MEDIA_TYPE_CHOICES)
-    
-    # Trocar o BinaryField pelo ImageField para armazenar caminho da imagem
-    image = models.ImageField(upload_to='products/images/', blank=True, null=True)
-    
+    image = models.ImageField(
+        upload_to='products/images/%Y/%m/%d/',
+        blank=True,
+        null=True,
+        help_text="Upload de imagens (JPEG, PNG, WEBP)"
+    )
     video_url = models.URLField(blank=True, null=True, validators=[URLValidator()])
-    content_type = models.CharField(max_length=100, blank=True, null=True)  
-    created_at = models.DateTimeField(auto_now_add=True)  
+    thumbnail = models.ImageField(upload_to='products/thumbnails/%Y/%m/%d/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_primary = models.BooleanField(default=False, help_text="Imagem principal do produto")
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-is_primary', '-created_at']
+        verbose_name_plural = "Media"
 
     def __str__(self):
-        return f"{self.type} for {self.product.title}"
+        return f"{self.get_type_display()} for {self.product.title}"
 
     def clean(self):
-        if self.type not in dict(self.MEDIA_TYPE_CHOICES):
-            raise ValidationError("Tipo de mídia inválido.")
-        
-        if self.type == self.IMAGE:
-            if not self.image:
-                raise ValidationError("Image is required for media type image.")
-            if self.video_url:
-                raise ValidationError("Video URL should be empty for media type image.")
-        elif self.type == self.VIDEO:
-            if not self.video_url:
-                raise ValidationError("Video URL is required for media type video.")
-            if self.image:
-                raise ValidationError("Image should be empty for media type video.")
+        super().clean()
+        if self.type == self.IMAGE and not self.image:
+            raise ValidationError("Uma imagem é necessária para este tipo de mídia.")
+        if self.type == self.VIDEO and not self.video_url:
+            raise ValidationError("Uma URL de vídeo é necessária para este tipo de mídia.")
 
     def save(self, *args, **kwargs):
-        self.full_clean()
+        # Otimização automática da imagem
+        if self.image and not self.thumbnail:
+            self._optimize_image()
+        
         super().save(*args, **kwargs)
+
+    def _optimize_image(self):
+        img = Image.open(self.image)
+        
+        if img.mode in ('RGBA', 'P'):
+            img = img.convert('RGB')
+        
+        if img.width > 1200 or img.height > 1200:
+            img.thumbnail((1200, 1200))
+        
+        thumb = img.copy()
+        thumb.thumbnail((300, 300))
+        
+        output = BytesIO()
+        img.save(output, format='JPEG', quality=85)
+        output.seek(0)
+        output_size = output.tell()
+        
+        self.image = InMemoryUploadedFile(
+            output,
+            'ImageField',
+            f"{self.image.name.split('.')[0]}.jpg",
+            'image/jpeg',
+            output_size,
+            None
+        )
+        
+        thumb_output = BytesIO()
+        thumb.save(thumb_output, format='JPEG', quality=80)
+        thumb_output.seek(0)
+        thumb_output_size = thumb_output.tell()
+        
+        self.thumbnail = InMemoryUploadedFile(
+            thumb_output,
+            'ImageField',
+            f"thumb_{self.image.name.split('.')[0]}.jpg",
+            'image/jpeg',
+            thumb_output_size,
+            None
+        )
+
+    @property
+    def url(self):
+        if self.type == self.IMAGE and self.image:
+            return self.image.url
+        return self.video_url
+
+    @property
+    def thumbnail_url(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        return self.url
 
 
 class Wishlist(models.Model):

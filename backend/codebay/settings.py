@@ -17,9 +17,6 @@ import os
 
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -138,18 +135,37 @@ MIDDLEWARE = [
 
 from corsheaders.defaults import default_headers
 
-CORS_ALLOW_ALL_ORIGINS = True 
-
+# CORS Settings
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
-    "http://localhost:5500",  
+    "http://localhost:5500",
+    "http://localhost:8000",  
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
-    "authorization",
-    "x-csrftoken",
+    'authorization',
+    'content-type',
+    'x-csrftoken',
 ]
 
+CORS_EXPOSE_HEADERS = [
+    'Content-Type',
+    'X-CSRFToken',
+    'Authorization',
+]
+
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS.copy()  
 
 
 ROOT_URLCONF = "codebay.urls"
