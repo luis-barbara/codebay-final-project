@@ -38,39 +38,81 @@ logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
+
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    permission_classes = [AllowAny]  # Permitir qualquer usuário acessar os produtos
+    # Usamos AllowAny para permitir que o pedido chegue a perform_create
+    # onde verificaremos explicitamente a autenticação para a criação.
+    permission_classes = [AllowAny] 
 
     def get_queryset(self):
+        # Este método define quais produtos um utilizador pode ver.
+        # Se autenticado, vê os seus próprios produtos. Caso contrário, vê apenas os publicados.
         if self.request.user.is_authenticated:
+            logger.info(f"ProductViewSet: Filtering queryset for authenticated user {self.request.user.email} (ID: {self.request.user.id})")
             return Product.objects.filter(seller=self.request.user).order_by('-created_at')
         else:
+            logger.info("ProductViewSet: Filtering queryset for anonymous user (published products only).")
             return Product.objects.filter(published=True).order_by('-created_at')
 
     def perform_create(self, serializer):
+        # Esta função é chamada quando um POST (criação) é feito.
+        # A JWTAuthentication do DRF deve já ter tentado autenticar o self.request.user.
+        logger.info(f"perform_create: Request received for user {self.request.user} (Authenticated: {self.request.user.is_authenticated})")
+
+        # Se o utilizador não estiver autenticado AQUI, é um problema na autenticação JWT.
+        if not self.request.user.is_authenticated:
+            logger.error("perform_create: Product creation denied. User is not authenticated, despite token presence.")
+            # Lançar PermissionDenied explícita para dar um 403 claro
+            raise PermissionDenied("You must be authenticated to create a product. Please log in.")
+
         # Limite de 10 produtos por usuário
-        if self.request.user.products.count() >= 10:
-            raise PermissionDenied("Você atingiu o limite máximo de 10 produtos.")
-        
-        # Cria o produto com o usuário como vendedor
-        product = serializer.save(seller=self.request.user)
+        try:
+            current_product_count = self.request.user.products.count()
+            logger.info(f"perform_create: User {self.request.user.email} has {current_product_count} products.")
+            if current_product_count >= 10:
+                logger.warning(f"perform_create: Product creation denied. User {self.request.user.email} has reached the maximum limit of 10 products.")
+                raise PermissionDenied("Você atingiu o limite máximo de 10 produtos.")
+        except Exception as e:
+            logger.error(f"perform_create: Error checking product count for user {self.request.user.email}: {e}")
+            # Se ocorrer um erro ao aceder a self.request.user.products (ex: AnonymousUser), ele será apanhado aqui.
+            raise PermissionDenied("An error occurred while verifying user's product limit. Please ensure you are logged in.")
+
+
+        # Cria o produto com o usuário como vendedor (agora que sabemos que está autenticado)
+        try:
+            product = serializer.save(seller=self.request.user)
+            logger.info(f"perform_create: Product '{product.title}' (ID: {product.id}) created by {self.request.user.email}.")
+        except Exception as e:
+            logger.error(f"perform_create: Error saving product for user {self.request.user.email}: {e}")
+            raise serializers.ValidationError("Could not save product. Please check provided data.")
+
 
         # Salva as imagens enviadas
         images = self.request.FILES.getlist('images')
+        logger.info(f"perform_create: Received {len(images)} images for product {product.id}.")
         for i, image in enumerate(images):
-            Media.objects.create(
-                product=product,
-                type=Media.IMAGE,
-                image=image,
-                is_primary=(i == 0)  # A primeira imagem será a principal
-            )
+            try:
+                Media.objects.create(
+                    product=product,
+                    type=Media.IMAGE,
+                    image=image,
+                    is_primary=(i == 0)  # A primeira imagem será a principal
+                )
+            except Exception as e:
+                logger.error(f"perform_create: Error saving image {image.name} for product {product.id}: {e}")
+                # Consider deleting the product if image save fails critically
+                # product.delete() 
+                raise serializers.ValidationError(f"Failed to save image {image.name}: {e}")
+        logger.info(f"perform_create: All images processed for product {product.id}.")
+
 
     def get_serializer(self, *args, **kwargs):
         # Garante que o contexto tem o request, importante para gerar URLs absolutas
         kwargs.setdefault('context', {})
         kwargs['context']['request'] = self.request
         return super().get_serializer(*args, **kwargs)
+
 
 
 

@@ -78,10 +78,14 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Access token expiry time (default: 15 minutes)
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),    # Access token expiry time (default: 15 minutes)
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Refresh token expiry time (default: 1 day)
-    'ROTATE_REFRESH_TOKENS': False,                   # Whether to rotate refresh tokens
-    'BLACKLIST_AFTER_ROTATION': True,                 # Whether to blacklist tokens after rotation
+    'ROTATE_REFRESH_TOKENS': False,                  # Whether to rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,                # Whether to blacklist tokens after rotation
+    'SIGNING_KEY': SECRET_KEY, 
+    'AUTH_HEADER_TYPES': ('Bearer',), 
+    'USER_ID_FIELD': 'id', 
+    'USER_ID_CLAIM': 'user_id', 
 }
 
 
@@ -261,9 +265,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/marketplace/'
 
-LOGOUT_REDIRECT_URL = "/"
+
+
 
 
 
