@@ -1,6 +1,5 @@
 // frontend/my_products/script.js
 
-// frontend/my_products/script.js
 
 import { authFetch, getAccessToken } from '../registrations/auth.js';
 // Importa as funções de ação de produto (estas vêm de product-actions.js)
@@ -53,7 +52,7 @@ const BTN_ENABLED_COLOR = '#238636';
 // --- Funções Auxiliares de UI (Definidas aqui e EXPORTADAS para outros módulos) ---
 
 // Exportada para que product-actions.js possa usá-la via callbacks
-export const updateButtonState = (button, disabled) => {
+export const updateButtonState = (button, disabled) => { // EXPORTED
     if (!button) return;
     button.disabled = disabled;
     button.style.cursor = disabled ? 'not-allowed' : 'pointer';
@@ -225,7 +224,6 @@ export const handleAfterCreate = async () => { // EXPORTED para product-actions.
 };
 
 // --- Funções de Interação com a API (Privadas, pois só são chamadas internamente neste script) ---
-// Se estas funções forem usadas APENAS pelo createProductBtn listener neste ficheiro, não precisam de ser exportadas.
 
 async function createProductWithPrimaryImages(productData, primaryImageFiles) {
     const formData = new FormData();
@@ -408,6 +406,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (projectFilesToUpload.length === 0) { throw new Error("Pelo menos um ficheiro de projeto é obrigatório."); }
 
                     const createdProduct = await createProductWithPrimaryImages(productData, primaryImagesToUpload);
+                    
+                    // --- COLOQUE ESTE CONSOLE.LOG AQUI ABAIXO DE createdProduct ---
+                    console.log("DEBUG SCRIPT.JS: Produto criado:", createdProduct); 
+                    console.log("DEBUG SCRIPT.JS: ID do Produto criado para upload de ficheiros:", createdProduct ? createdProduct.id : "undefined/null");
+                    // --- FIM DO CONSOLE.LOG ---
+
                     if (!createdProduct || !createdProduct.id) { throw new Error("Falha ao criar o produto principal. Verifique os detalhes do produto ou as imagens primárias."); }
 
                     await Promise.all(videoUrlsToUpload.map(url => uploadMediaFile(url, createdProduct.id, "video")));
@@ -430,7 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         setButtonState: (disabled, text) => { // Cria um callback para updateButtonState
                             createProductBtn.disabled = disabled;
                             createProductBtn.textContent = text;
-                            // updateButtonState aqui para setar as cores, etc.
                             updateButtonState(createProductBtn, disabled); // Usa a função auxiliar definida acima
                         }
                     });

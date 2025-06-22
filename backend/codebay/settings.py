@@ -297,6 +297,8 @@ STREAM_APP_ID = os.getenv("STREAM_APP_ID")
 
 import sys
 
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -317,7 +319,7 @@ LOGGING = {
             'stream': sys.stdout,
         },
         'file': {
-            'level': 'ERROR',
+            'level': 'ERROR', # Keep ERROR for file handler to only log severe errors to file
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'logs/error.log',
             'formatter': 'verbose',
@@ -331,17 +333,17 @@ LOGGING = {
         },
         'storage': {  
             'handlers': ['console', 'file'],
-            'level': 'ERROR',
+            'level': 'INFO', # <-- CHANGE THIS FROM 'ERROR' TO 'INFO'
             'propagate': True,
         },
         'marketplace': {
             'handlers': ['console', 'file'],
-            'level': 'ERROR',
+            'level': 'INFO', # <-- CHANGE THIS FROM 'ERROR' TO 'INFO'
             'propagate': True,
         },
         'accounts': {
             'handlers': ['console', 'file'],
-            'level': 'ERROR',
+            'level': 'ERROR', # Can remain 'ERROR' if not actively debugging accounts
             'propagate': True,
         },
         'payments': {

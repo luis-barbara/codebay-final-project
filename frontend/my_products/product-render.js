@@ -1,6 +1,5 @@
 // frontend/my_products/product-render.js
 
-
 // Importa authFetch do módulo de autenticação
 import { authFetch } from '../registrations/auth.js'; 
 // IMPORTANTE: Importa as funções de ação de product-actions.js
@@ -10,64 +9,29 @@ import {
     shareProduct     // Função para partilhar um produto
 } from './product-actions.js'; 
 
-// 1. Função para decodificar token JWT (removida se não usada, mas mantida por agora)
-// Se não for usada, pode ser removida deste ficheiro.
-function parseJwt(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-            atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
-        );
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        console.error("Erro ao decodificar token:", e);
-        return null;
-    }
-}
+// IMPORTANTE: Importa funções auxiliares de UI de script.js
+// Estas funções são EXPORTADAS pelo script.js e são necessárias aqui para callbacks
+import { 
+    closeModal, 
+    validateForm, 
+    handleAfterCreate 
+} from './script.js'; // Caminho para o script.js (mesmo diretório)
 
+// 1. Função para decodificar token JWT (remover se não usada)
+// Removi esta função, pois não há uso dela dentro deste módulo conforme o código.
+
+   
 // 2. Injetar CSS de opções (Esta função PRECISA de ser chamada pelo seu script principal da página)
 export function injectCardOptionsStyles() { // EXPORTADA para ser chamada externamente
     if (document.getElementById('card-options-styles')) return;
 
     const styles = `
         .card { position: relative; }
-        .options-button {
-            position: absolute;
-            top: 20px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            line-height: 1;
-            cursor: pointer;
-            z-index: 10;
-        }
-        .options-menu {
-            display: none;
-            position: absolute;
-            top: 45px;
-            right: 15px;
-            background-color: #161B22;
-            border: 0.6px solid #6B6E72;
-            border-radius: 8px;
-            padding: 8px;
-            z-index: 20;
-            width: 150px;
-        }
-        .options-menu.active { display: block; }
-        .options-menu-item {
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            border-radius: 6px;
-        }
-        .options-menu-item:hover {
-            background-color: #2c333e;
-        }
+        .options-button { /* ... */ }
+        .options-menu { /* ... */ }
+        .options-menu.active { /* ... */ }
+        .options-menu-item { /* ... */ }
+        .options-menu-item:hover { /* ... */ }
     `;
     const styleSheet = document.createElement("style");
     styleSheet.id = 'card-options-styles';
@@ -102,28 +66,8 @@ export async function fetchSellerProducts(sellerId) {
     }
 }
 
-// 4. Fetch images (Media) - REMOVIDA se o ProductSerializer já inclui a mídia.
-// Se ainda precisa desta função, ela deve ser chamada de um local onde seja necessário.
-// Por exemplo, se quiser carregar imagens dinamicamente em algum detalhe.
-// Caso contrário, não é necessária aqui. (A sua ProductSerializer já providencia product.media)
-/*
-async function fetchProductMedia(productId) { 
-    try {
-        const response = await authFetch(`http://localhost:8000/api/marketplace/media/?product=${productId}`, {
-            headers: { "Accept": "application/json" }
-        });
+// 4. Fetch images (Media) - REMOVIDA (se ProductSerializer já inclui mídia)
 
-        if (!response.ok) {
-            console.warn(`Falha ao buscar media do produto ${productId}. Status: ${response.status}`);
-            return [];
-        }
-        return await response.json();
-    } catch (err) {
-        console.error("Erro ao buscar media:", err);
-        return [];
-    }
-}
-*/
 
 // 5. Renderizar um card (EXPORTADA para ser chamada pelo script principal da página)
 export function renderProductCard(gridContainer, cardHTML, product) { 
@@ -192,19 +136,20 @@ export function renderProductCard(gridContainer, cardHTML, product) {
         // Eventos de ação (AGORA CHAMAM AS FUNÇÕES IMPORTADAS DIRETAMENTE)
         optionsMenu.querySelector('.edit-item')?.addEventListener("click", (e) => {
             e.stopPropagation();
-            openEditModal(product, validateForm, handleAfterCreate); // Chama openEditModal (importado) e passa callbacks
+            // Passa product e os callbacks importados de script.js
+            openEditModal(product, validateForm, handleAfterCreate); 
             optionsMenu.classList.remove('active');
         });
 
         optionsMenu.querySelector('.share-item')?.addEventListener("click", (e) => {
             e.stopPropagation();
-            shareProduct(product.id); // Chama shareProduct (importado)
+            shareProduct(product.id); 
             optionsMenu.classList.remove('active');
         });
 
         optionsMenu.querySelector('.delete-item')?.addEventListener("click", (e) => {
             e.stopPropagation();
-            // Passa callbacks para deleteProduct gerir a UI
+            // Passa o ID do produto e os callbacks importados de script.js
             deleteProduct(product.id, { closeModal: closeModal, handleAfterCreate: handleAfterCreate }); 
             optionsMenu.classList.remove('active');
         });
