@@ -1,30 +1,42 @@
 CodeBay - Digital Assets Marketplace
 
-📌 Overview
-CodeBay is a digital marketplace where users can buy and sell digital assets such as code snippets, templates, graphics, and more. It provides a seamless experience for developers, designers, and creators to monetize their work while offering buyers access to high-quality digital products.
+## ✨ Why CodeBay?
+
+CodeBay provides a seamless platform for:
+- 🛒 **Buyers** to find production-ready code snippets, templates, and digital assets
+- 💰 **Sellers** to monetize their creative work with secure transactions
+- 🤝 **Developers** to collaborate and share resources
+
+---
+
+## 🚀 Features
+
+### For Buyers
+| Feature | Description |
+|---------|-------------|
+| Smart Search | Filter by language, price, or rating |
+| Instant Download | Get files immediately after purchase |
+| Review System | Evaluate your purchases |
+
+### For Sellers
+| Feature | Description |
+|---------|-------------|
+| Easy Uploads | Drag-and-drop interface |
+| Analytics Dashboard | Track sales and performance |
+| Secure Payments | Protected transactions |
 
 
-✨ Features
-✅ User Authentication – Secure sign-up/login system.
-✅ Digital Asset Listings – Sellers can upload products with descriptions, pricing, and categories.
-✅ Search & Filters – Buyers can easily find assets by keywords, categories, or price range.
-✅ Secure Transactions – Integrated payment system for safe purchases.
-✅ User Dashboard – Manage listings, purchases, and account settings.
+## **🛠️ Technology Stack**  
+| Layer          | Technology           |
+|----------------|----------------------|
+| **Frontend**   | Html, Css, Javascript|
+| **Backend**    | Node.js, Express     |
+| **Database**   | MongoDB (Atlas)      |
+| **Auth**       | JWT, OAuth 2.0       |
+| **Storage**    | AWS S3 + CloudFront  |
 
 
-🛠 Tech Stack
-Backend
-Language: (e.g., Node.js, Python, Java)
-Framework: (e.g., Django)
-Database: (e.g., MongoDB, PostgreSQL)
-Authentication: (e.g., JWT, OAuth)
-
-Frontend
-Framework: (e.g., Html)
-Styling: (e.g., CSS, Javascript)
-
-
-🚀 Getting Started
+## 🚀 Getting Started
 Prerequisites:
 
 Node.js / Python 
@@ -32,7 +44,7 @@ npm / yarn
 Database setup
 
 
-Installation
+# Installation
 Clone the repository:
 
 bash
@@ -44,16 +56,11 @@ cd codebay-final-project
 git checkout Main
 
 
-Install dependencies:
+# Install dependencies:
 bash
 npm install  # or yarn install
 
-
-Configure environment variables:
-(Add .env file with required keys – database, API keys, etc.)
-
-
-Run the application:
+# Run the application:
 bash
 npm start  # or other start command
 
