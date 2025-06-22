@@ -11,6 +11,7 @@ services:
       - .env
     volumes:
       - ./backend:/app
+      - /etc/localtime:/etc/localtime:ro
     depends_on:
       - db
     

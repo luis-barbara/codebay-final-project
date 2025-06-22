@@ -269,9 +269,14 @@ async function uploadMediaFile(fileOrUrl, productId, type) {
     } catch (error) { console.error("Error uploading media file:", error); throw error; }
 }
 
-async function uploadProjectFile(file, productId, title, description = '', isMain = false, fileType = '') {
-    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) { throw new Error(`Project file size exceeds ${MAX_FILE_SIZE_MB}MB limit.`); }
 
+async function uploadProjectFile(file, productId, title, description = '', isMain = false, fileType = '') {
+    // Validação de tamanho do ficheiro
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) { 
+        throw new Error(`Project file size exceeds ${MAX_FILE_SIZE_MB}MB limit.`); 
+    }
+
+    // Construção do FormData
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
@@ -280,17 +285,61 @@ async function uploadProjectFile(file, productId, title, description = '', isMai
     formData.append("is_main_file", isMain);
     formData.append("file_type", fileType);
 
-    console.log("Sending FormData to /api/storage/upload/:", Array.from(formData.entries()));
+    console.log(`Sending FormData to /api/storage/upload/: ${Array.from(formData.entries()).map(([k,v]) => `${k}=${v instanceof File ? v.name : v}`).join(', ')}`);
+    
+    let response;
+    let responseText = ''; // Para guardar a resposta em texto
+    let responseData = {}; // Para guardar a resposta JSON (ou objeto vazio)
+
     try {
-        const response = await authFetch("http://localhost:8000/api/storage/upload/", { method: "POST", body: formData });
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            console.error("Backend error details (FileUploadView):", response.status, errorData);
-            throw new Error(errorData.error || errorData.detail || "Failed to save project file");
+        // Envia a requisição autenticada
+        response = await authFetch("http://localhost:8000/api/storage/upload/", { method: "POST", body: formData });
+        
+        // --- Processamento da Resposta ---
+        // 1. Tentar ler o corpo da resposta como texto (mais robusto que .json() direto)
+        try {
+            responseText = await response.text();
+            console.log("uploadProjectFile: Raw response text from API:", responseText);
+        } catch (textError) {
+            console.warn("uploadProjectFile: Failed to read response body as text.", textError);
+            responseText = ''; // Garante que é uma string vazia se falhar
         }
-        return await response.json();
-    } catch (error) { console.error("Error uploading project file:", error); throw error; }
+
+        // 2. Tentar fazer parse do texto para JSON
+        if (responseText) { // Só tenta JSON.parse se houver texto
+            try {
+                responseData = JSON.parse(responseText);
+            } catch (jsonError) {
+                console.warn("uploadProjectFile: Failed to parse JSON from response text.", jsonError);
+                // Se o parsing JSON falhar, responseData permanece {}, mas o erro não é relançado aqui.
+            }
+        }
+        
+        // 3. Verificar o status da resposta HTTP
+        if (!response.ok) { 
+            // Se o status HTTP não é 2xx (e.g., 400, 403, 500), então é um erro do backend.
+            console.error("uploadProjectFile: Backend returned a non-OK status.", response.status, responseData || responseText);
+            const errorMsg = responseData.error || responseData.detail || responseText || `Unknown server error (Status: ${response.status}).`;
+            throw new Error(`Failed to upload project file: ${errorMsg}`);
+        }
+        
+        // --- SE CHEGARMOS AQUI, A REQUISIÇÃO FOI UM SUCESSO (Status 2xx) ---
+        console.log("Project file successfully uploaded and processed by backend:", responseData || responseText);
+        
+        // Retorna os dados para a Promise.all no handler principal.
+        // O Promise.all DEVE RESOLVER A PARTIR DAQUI.
+        return responseData || {}; // Retorna os dados JSON ou um objeto vazio em caso de sucesso mas resposta vazia/não JSON
+
+    } catch (error) { 
+        // Este bloco catch apanhará APENAS:
+        // 1. Erros de rede (Failed to fetch).
+        // 2. Erros explicitamente lançados do bloco try (os 'throw new Error()').
+        // 3. Rejeições de Promise que não foram tratadas internamente pelo authFetch.
+        console.error("Caught unhandled error during project file upload request (rethrowing):", error, error.message, error.stack);
+        throw error; // Re-lança o erro para ser apanhado pelo handler principal do botão
+    }
 }
+
 
 
 // --- Listener Principal DOMContentLoaded (ÚNICO para a página) ---
@@ -407,11 +456,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const createdProduct = await createProductWithPrimaryImages(productData, primaryImagesToUpload);
                     
-                    // --- COLOQUE ESTE CONSOLE.LOG AQUI ABAIXO DE createdProduct ---
+                    // console.log de depuração do produto criado
                     console.log("DEBUG SCRIPT.JS: Produto criado:", createdProduct); 
                     console.log("DEBUG SCRIPT.JS: ID do Produto criado para upload de ficheiros:", createdProduct ? createdProduct.id : "undefined/null");
-                    // --- FIM DO CONSOLE.LOG ---
-
+                    
                     if (!createdProduct || !createdProduct.id) { throw new Error("Falha ao criar o produto principal. Verifique os detalhes do produto ou as imagens primárias."); }
 
                     await Promise.all(videoUrlsToUpload.map(url => uploadMediaFile(url, createdProduct.id, "video")));
@@ -426,15 +474,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (mode === 'edit') {
                     if (!productId) { throw new Error("ID do produto para edição não encontrado."); }
                     
-                    // Chama a função updateProduct importada de product-actions.js
-                    // Passa callbacks necessários para updateProduct gerir UI
                     await updateProduct(productId, productData, { 
                         closeModal: closeModal, 
                         handleAfterCreate: handleAfterCreate,
-                        setButtonState: (disabled, text) => { // Cria um callback para updateButtonState
+                        setButtonState: (disabled, text) => { 
                             createProductBtn.disabled = disabled;
                             createProductBtn.textContent = text;
-                            updateButtonState(createProductBtn, disabled); // Usa a função auxiliar definida acima
+                            updateButtonState(createProductBtn, disabled); 
                         }
                     });
                 }
@@ -446,9 +492,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     else { window.location.reload(); }
                 }
 
-            } catch (error) {
-                console.error("Erro completo no fluxo do produto:", error);
-                alert(`Erro: ${error.message}`);
+            } catch (error) { // <-- AQUI É O INÍCIO DO SEU BLOCO CATCH
+                // --- SUBSTITUA ESTE BLOCO CATCH PELO CÓDIGO FORNECIDO ---
+                const errorMessage = error instanceof Error ? error.message : String(error);
+                console.error("Erro completo no fluxo do produto:", error); // Log o objeto de erro original
+                alert(`Erro: ${errorMessage}`); // Usa a mensagem de erro ou a representação em string
+                // --- FIM DA SUBSTITUIÇÃO ---
             } finally {
                 // O estado final do botão para o modo 'create' é gerido aqui.
                 // Para 'edit', o updateProduct.finally já faz o reset.

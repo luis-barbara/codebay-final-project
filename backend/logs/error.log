@@ -2290,3 +2290,4 @@ django.db.utils.ProgrammingError: relation "django_session" does not exist
 LINE 1: ...ession_data", "django_session"."expire_date" FROM "django_se...
                                                              ^
 
+[ERROR] 2025-06-22 20:40:06,940 marketplace.views - perform_create: Error checking product count for user vepew90172@ihnpo.com: Você atingiu o limite máximo de 10 produtos.

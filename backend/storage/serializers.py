@@ -12,10 +12,11 @@ class ProjectFileSerializer(serializers.ModelSerializer):
             'product',
             'title',
             'description',
-            'file_url',
+            'file_url',        
             'uploaded_at',
             'is_main_file',
             'file_type',
         ]
-        read_only_fields = ['id', 'uploaded_at', 'user', 'file_url']
+        
+        read_only_fields = ['id', 'uploaded_at', 'user'] 
 
