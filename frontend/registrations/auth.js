@@ -112,6 +112,7 @@ export async function authFetch(url, options = {}, isRetry = false) { // isRetry
     let response = await fetch(url, {
         ...options,
         headers,
+        credentials: 'include',
     });
 
     // Se a resposta for 401 (Unauthorized) ou 403 (Forbidden) E não estamos já a tentar refrescar (isRetry é false)
