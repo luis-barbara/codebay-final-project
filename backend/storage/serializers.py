@@ -1,9 +1,8 @@
 # storage/serializers.py
 
-from rest_framework import serializers
-from .models import ProjectFile
-
 class ProjectFileSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = ProjectFile
         fields = [
@@ -17,6 +16,6 @@ class ProjectFileSerializer(serializers.ModelSerializer):
             'is_main_file',
             'file_type',
         ]
-        
-        read_only_fields = ['id', 'uploaded_at', 'user'] 
+        read_only_fields = ['id', 'uploaded_at', 'user']
+
 
