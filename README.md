@@ -1,29 +1,102 @@
-CodeBay - Digital Assets Marketplace
 
-## ✨ Why CodeBay?
+# CodeBay - Digital Marketplace Platform
 
-CodeBay provides a seamless platform for:
-- 🛒 **Buyers** to find production-ready code snippets, templates, and digital assets
-- 💰 **Sellers** to monetize their creative work with secure transactions
-- 🤝 **Developers** to collaborate and share resources
+CodeBay is a digital marketplace where developers and creators can buy and sell code snippets, templates, graphics, and other digital assets. The platform features secure transactions, user authentication, and integrations with Stripe for payments and GetStream for real-time messaging.
 
----
+## Key Features
+- **User Authentication**: Secure signup, login, and logout
+- **Product Management**: Create, edit, view, and delete digital products
+- **Payment Processing**: Stripe integration for secure transactions
+- **Real-time Messaging**: GetStream integration for buyer-seller communication
+- **Containerized Architecture**: Docker Compose for easy deployment
+- **Reliable Database**: PostgreSQL for data storage
+- **Comprehensive Testing**: Pytest for unit and integration tests
+
+## Technology Stack
+- **Backend**: Django
+- **Database**: PostgreSQL
+- **Payments**: Stripe API
+- **Messaging**: GetStream API
+- **Containerization**: Docker + Docker Compose
+- **Testing**: Pytest
+- **Dependency Management**: Poetry
+
+## Project Structure
+```bash
+├── products/                                   # Django app for product management
+│   ├── migrations/                             # Database migrations
+│   ├── templates/                              # HTML templates for rendering views
+│   │   ├── products/                           # Templates related to product management
+│   │   │   ├── product_confirm_delete.html     # Confirmation page for deleting a product
+│   │   │   ├── product_list.html               # Page listing all products
+│   │   │   ├── product_update.html             # Form for updating an existing product
+│   │   │   ├── create_product.html             # Form for creating a new product
+│   │   │   ├── product_detail.html             # Single product detail view
+│   │   │   ├── checkout_success.html           # Stripe checkout success page
+│   │   ├── registration/                       # Authentication-related templates
+│   │   │   ├── signin.html                     # User login page
+│   │   │   ├── signup.html                     # User signup page
+│   │   ├── base.html                           # Base template for consistent styling
+│   ├── tests/                                  # Unit tests
+│   ├── admin.py                                # Django Admin configuration
+│   ├── apps.py                                 # App configuration
+│   ├── forms.py                                # Form handling logic
+│   ├── stripe_service.py                       # Stripe payment logic
+│   ├── getstream_service.py                    # GetStream messaging logic
+│   ├── models.py                               # Database models
+│   ├── urls.py                                 # URL routing
+│   ├── views.py                                # Application views
+│ 
+├── codebay/                                    # Django project settings
+│   ├── settings.py                             # Project settings
+│   ├── urls.py                                 # Project-wide URLs
+│   ├── wsgi.py                                 # WSGI config
+│ 
+├── static/                                     # Static files
+├── docker-compose.yml                          # Docker Compose config
+├── Dockerfile                                  # Docker setup
+├── Makefile                                    # Helper commands
+├── LICENSE                                     # MIT License
+├── poetry.lock                                 # Poetry lockfile
+├── pyproject.toml                              # Poetry config
+├── pytest.ini                                  # Pytest config
+└── README.md                                   # This file
+```
 
 ## 🚀 Features
 
-### For Buyers
-| Feature | Description |
-|---------|-------------|
-| Smart Search | Filter by language, price, or rating |
-| Instant Download | Get files immediately after purchase |
-| Review System | Evaluate your purchases |
+# User Authentication
 
-### For Sellers
-| Feature | Description |
-|---------|-------------|
-| Easy Uploads | Drag-and-drop interface |
-| Analytics Dashboard | Track sales and performance |
-| Secure Payments | Protected transactions |
+Secure registration and login system  
+Password reset functionality   
+Profile management  
+
+# Product Management
+
+Create digital products with titles, descriptions, and pricing   
+Upload product files (code snippets, templates, graphics)   
+Categorize products for easy discovery   
+Edit and delete products   
+ 
+# Payment Processing
+
+Stripe integration for secure payments   
+Checkout process with success/failure handling   
+Purchase history tracking   
+
+# Docker Deployment
+
+Containerized PostgreSQL database   
+Easy setup with Docker Compose   
+Adminer for database management   
+
+# Requirements
+
+Before you begin, ensure you have the following installed:
+- [Docker](https://www.docker.com/get-started) 
+- [Poetry](https://python-poetry.org/docs/#installation)
+- [Python 3.12](https://www.python.org/downloads/)
+
 
 
 ## **🛠️ Technology Stack**  
@@ -64,21 +137,39 @@ CodeBay provides a seamless platform for:
 
 
 
-# Installation
-Clone the repository:
+## Installation
+# Clone the Repository
+```bash
 git clone https://github.com/luis-barbara/codebay-final-project.git
+```
 
+## Set Up Environment Variables
+Create a `.env` file in the root directory and configure it with the necessary settings:
+```bash
+POSTGRES_DB=your_database
+POSTGRES_USERNAME=your_username
+POSTGRES_PASSWORD=your_password
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+OPENAI_API_KEY=your_openai_key
+DJANGO_DEBUG=True
+```
+Make sure to replace `yourpassword` and `your_openai_api_key` with your actual PostgreSQL password and OpenAI API key.
 
-Navigate to the backend/frontend branch:
-cd codebay-final-project
-
-# Install dependencies:
-npm install  # or yarn install
 
 # Run the application:
-make start
-make migrations
+```bash
+make compose.start
+make compose.migrations
 make compose.migrate
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+<div align="center"> <h3>💬 Questions or Suggestions?</h3> <p> <a href="https://github.com/luis-barbara/codebay-final-project/issues">Report Bug</a> • <a href="https://github.com/luis-barbara/codebay-final-project/issues">Request Feature</a> </p> </div> 
+
 
 
 
