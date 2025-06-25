@@ -131,7 +131,8 @@ Before you begin, ensure you have the following installed:
 | Layer          | Technology           |
 |----------------|----------------------|
 | **Frontend**   | Html, Css, Javascript|
-| **Backend**    | Node.js, Express     |
+| **Backend**    | Javascript, Django   |
+|                | Python, Django Rest  |
 | **Database**   | Postgres             |
 | **Auth**       | JWT, OAuth 2.0       |
 | **Storage**    | AWS S3 + CloudFront  |
@@ -161,7 +162,7 @@ Before you begin, ensure you have the following installed:
 -Stream-chat (>=4.24.0,<5.0.0)"   
 -Django-cors-headers (>=4.7.0,<5.0.0)"   
 -AWS S3 account (for file storage) or alternative   
--LiveServer Extensions   
+-LiveServer Extension   
 
 
 
@@ -187,7 +188,7 @@ Make sure to replace `yourpassword` and `your_openai_api_key` with your actual P
 # Run the application:
 ```bash
 make compose.start
-make compose.migrations
+make migrations
 make compose.migrate
 ```
 
