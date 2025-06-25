@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - CodeBay</title>
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="orders.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div id="head"></div>
+    
+
+    <div class="orders-container">
+        <div class="orders-header">
+            <h1>My Orders</h1> 
+            <div class="search-filter">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search orders...">
+                </div>
+                <div class="status-filter" id="statusFilter">
+                    <button class="status-filter__button" id="statusFilterButton">
+                        <span id="statusFilterLabel">All Status</span>
+                        <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                    <div class="status-filter__dropdown" id="statusFilterDropdown">
+                        <div class="status-filter__item status-filter__item--active">All Status</div>
+                        <div class="status-filter__item">Processing</div>
+                        <div class="status-filter__item">Shipped</div>
+                        <div class="status-filter__item">Delivered</div>
+                        <div class="status-filter__item">Canceled</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="orders-table-container">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Seller</th>
+                        <th>Phone</th>
+                        <th>Price</th>
+                        <th>Product</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Seller" class="seller-avatar">
+                                <span>JohnDoe</span>
+                            </div>
+                        </td>
+                        <td>(414) 907-1274</td>
+                        <td>$99.99</td>
+                        <td>Web Development Course</td>
+                        <td><span class="status-badge shipped">Shipped</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="Seller" class="seller-avatar">
+                                <span>JaneSmith</span>
+                            </div>
+                        </td>
+                        <td>(414) 555-1234</td>
+                        <td>$39.99</td>
+                        <td>JavaScript Book</td>
+                        <td><span class="status-badge processing">Processing</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Seller" class="seller-avatar">
+                                <span>MikeJohnson</span>
+                            </div>
+                        </td>
+                        <td>(414) 123-4567</td>
+                        <td>$49.99</td>
+                        <td>React Template</td>
+                        <td><span class="status-badge delivered">Delivered</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="seller-info">
+                                <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Seller" class="seller-avatar">
+                                <span>Mike</span>
+                            </div>
+                        </td>
+                        <td>(414) 123-4567</td>
+                        <td>$49.99</td>
+                        <td>React Template</td>
+                        <td><span class="status-badge cancelled">Canceled</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Coming soon...</h2>
+        
+    </div>
+    <div id="avat"></div>
+        <div id="hamb"></div>
+    <div id="foot"></div>
+
+    <script src="../components/js/shared-components.js"></script>
+    <script src="orders.js"></script>
+</body>
+</html>

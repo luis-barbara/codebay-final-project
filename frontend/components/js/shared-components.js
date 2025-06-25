@@ -38,17 +38,19 @@ async function loadHeaderBasedOnAuth() {
 }
 
 
-// Load product cards
-async function loadCard() {
-    const response = await fetch('../components/card.html');
-    const card = await response.text();
-    for (let i = 0; i < 9; i++) {
-        const cardContainer = document.getElementById('product_card_' + i);
-        if (cardContainer) {
-            cardContainer.innerHTML += card;
-        }
-    }
-}
+// // Load product cards
+// async function loadCard() {
+//     const response = await fetch('../components/card.html');
+//     const card = await response.text();
+//     for (let i = 0; i < 9; i++) {
+//         const cardContainer = document.getElementById('product_card_' + i);
+//         if (cardContainer) {
+//             cardContainer.innerHTML += card;
+//         }
+//     }
+// }
+
+
 
 // Load hamburger menu and setup sidebar
 async function loadHamb() {
@@ -149,30 +151,47 @@ async function setupAvatarSidebar() {
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            window.location.href = '/signin.html';
+            window.location.href = '../registrations/signin.html';
         });
     }
 }
 
 
+
+
 // Setup notifications dropdown
 function setupNotificationDropdown() {
     const bell = document.getElementById('notificationToggle');
+    const message = document.getElementById('messageToggle')
     const dropdown = document.getElementById('notificationDropdown');
+    const mdropdown = document.getElementById('messageDropdown')
 
     if (!bell || !dropdown) {
         console.warn('Notification elements not found');
         return;
     }
 
+
+    if (!message || !mdropdown) {
+        console.warn('Message elements not found');
+        return;
+    }
     bell.addEventListener('click', (e) => {
         e.stopPropagation();
         dropdown.classList.toggle('show');
     });
 
+    message.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mdropdown.classList.toggle('show');
+    });
+
     document.addEventListener('click', (e) => {
         if (!dropdown.contains(e.target) && e.target.id !== 'notificationToggle') {
             dropdown.classList.remove('show');
+        }
+         if (!mdropdown.contains(e.target) && e.target.id !== 'messageToggle') {
+            mdropdown.classList.remove('show');
         }
     });
 }
@@ -212,7 +231,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadFooter();
   await loadHeaderBasedOnAuth();
   await loadHamb();
-  await loadCard();
+//   await loadCard();
 
   if (document.querySelector(".toggle-filters")) {
     setupFilters();

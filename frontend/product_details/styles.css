@@ -20,7 +20,7 @@ body {
   padding: 0rem 0rem 1rem;
   color: #fff;
   font-family: sans-serif;
-  display:flex ;
+  display: flex;
 }
 
 .product-header {
@@ -89,6 +89,25 @@ body {
   justify-content: space-between;
   margin-bottom: 0;
   margin-left: 1rem;
+}
+
+.product-image {
+  margin-bottom: 1rem;
+  max-height: 380px;       /* altura máxima da caixa */
+  display: flex;           /* para facilitar centralização */
+  justify-content: center; /* centraliza horizontalmente */
+  align-items: center;     /* centraliza verticalmente */
+  overflow: hidden;        /* esconde o que passar da caixa */
+   border-radius: 1rem;
+  border: 0.6px solid #6b6e72;
+}
+
+.product-image img {
+  max-height: 100%;  /* limita altura da imagem à altura da caixa */
+  width: auto;       /* largura automática para manter proporção */
+  border-radius: 1rem;
+  display: block;
+  border: 0.6px solid #6b6e72;
 }
 
 .author {
@@ -165,7 +184,7 @@ body {
   display: block;
 }
 
-.price-container{
+.price-container {
   display: block
 }
 
@@ -182,7 +201,8 @@ body {
 .buy-btn:hover {
   background-color: #62a468;
 }
-.files{
+
+.files {
   border: 0.6px solid #6B6E72;
   border-radius: 12px;
   padding: 1rem;
@@ -201,7 +221,7 @@ body {
 .files li {
   display: grid;
   grid-template-columns: 1fr auto auto;
-  align-items: center; 
+  align-items: center;
   border-bottom: 1px solid #333;
   padding: 0.75rem 0;
   width: 570px;
@@ -211,13 +231,34 @@ body {
   color: #fff;
 }
 
-.readme{
+.readme {
   border: 0.6px solid #6B6E72;
   border-radius: 12px;
   padding: 1rem;
+  min-width: 628px;
 
+  max-height: 300px;
+  /* altura máxima desejada */
+  overflow-y: auto;
+  scrollbar-width: thin;           /* Firefox */
+  scrollbar-color: #4a4a4a #0D1116; /* Firefox: thumb e track */
 }
 
+/* Chrome, Edge, Safari */
+.readme::-webkit-scrollbar {
+  width: 8px;
+}
+
+.readme::-webkit-scrollbar-track {
+  background: #0D1116;
+  border-radius: 12px;
+}
+
+.readme::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a; /* cor do polegar da scrollbar */
+  border-radius: 12px;
+  border: 2px solid #0D1116; /* espaçamento para "destacar" o polegar */
+}
 
 .readme h2 {
   margin-bottom: 1rem;
@@ -230,13 +271,13 @@ body {
   line-height: 1.6;
 }
 
-.secundary_info{
-  display:flex ;
+.secundary_info {
+  display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.suggestions{
+.suggestions {
   margin-top: 4rem;
 }
 
@@ -245,16 +286,103 @@ body {
   width: 100%;
 }
 
-.cards-container {
+.card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
 }
 
-.full_container{
+.full_container {
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+/* Popup base */
+.popup-container {
+  position: fixed;
+  top: 0; left: 0; right:0; bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.hidden-popup {
+  display: none;
+}
+
+.popup-content {
+  background-color: #0D1116;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: #C9D1D9;
+  box-shadow: 0 0 10px #58a6ff;
+  position: relative;
+}
+
+/* Close button */
+.popup-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #58a6ff;
+  cursor: pointer;
+}
+
+/* Carrossel básico */
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.carousel img {
+  max-height: 250px;
+  border-radius: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 0 5px #58a6ff;
+  transition: transform 0.3s ease;
+}
+
+.carousel img:hover {
+  transform: scale(1.05);
+}
+
+/* Lista de vídeos */
+.video-list {
+  list-style: none;
+  padding: 0;
+}
+
+.video-list li {
+  margin-bottom: 0.75rem;
+}
+
+.video-list a {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.video-list a:hover {
+  text-decoration: underline;
+}
+
+/* Disabled button */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

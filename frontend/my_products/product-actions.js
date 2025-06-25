@@ -1,6 +1,5 @@
 // frontend/my_products/product-actions.js
 
-
 import { authFetch } from '../registrations/auth.js'; 
 
 /**
@@ -158,4 +157,113 @@ export function shareProduct(productId) {
     } else {
         prompt('Copy the link to share this product:', productUrl);
     }
+}
+
+/**
+ * Publica um produto no marketplace.
+ * @param {number} productId - O ID do produto a ser publicado.
+ * @param {Object} callbacks - Objeto com funções de callback: {handleAfterAction, setButtonState (opcional para o botão de publicar)}
+ */
+export async function publishProduct(productId, callbacks) {
+    const { handleAfterAction } = callbacks; // setButtonState é opcional aqui, depende de onde está o botão de publish
+
+    const confirmed = confirm("Tem certeza que quer publicar este produto? Pode ser necessário completar o onboarding do Stripe.");
+    if (!confirmed) return;
+
+    try {
+        const response = await authFetch(`http://127.0.0.1:8000/api/marketplace/products/${productId}/publish/`, {
+            method: "POST",
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            console.error("Backend error during product publish:", response.status, responseData);
+            const errorMessage = responseData.onboarding_url 
+                                ? `Para publicar, por favor complete o seu registo no Stripe: ${responseData.onboarding_url}`
+                                : responseData.detail || JSON.stringify(responseData) || "Falha ao publicar o produto.";
+            throw new Error(errorMessage);
+        }
+
+        if (responseData.onboarding_url) {
+            alert("Redirecionando para o Stripe para completar o registo da conta...");
+            window.location.href = responseData.onboarding_url;
+        } else {
+            alert("Produto publicado com sucesso!");
+        }
+        
+        await handleAfterAction(); // Atualiza a lista de produtos na UI (recarregará a página)
+
+    } catch (error) {
+        console.error("Erro ao publicar produto:", error);
+        alert(`Erro ao publicar produto: ${error.message}`);
+    }
+}
+
+/**
+ * Despublica um produto do marketplace.
+ * @param {number} productId - O ID do produto a ser despublicado.
+ * @param {Object} callbacks - Objeto com funções de callback: {handleAfterAction}
+ */
+export async function unpublishProduct(productId, callbacks) {
+    const { handleAfterAction } = callbacks;
+
+    const confirmed = confirm("Tem certeza que quer despublicar este produto? Ele deixará de aparecer no marketplace.");
+    if (!confirmed) return;
+
+    try {
+        const response = await authFetch(`http://127.0.0.1:8000/api/marketplace/products/?id=${productId}/unpublish/`, {
+            method: "POST",
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            console.error("Backend error during product unpublish:", response.status, responseData);
+            throw new Error(responseData.detail || JSON.stringify(responseData) || "Falha ao despublicar o produto.");
+        }
+
+        alert("Produto despublicado com sucesso!");
+        await handleAfterAction(); // Atualiza a lista de produtos na UI (recarregará a página)
+
+    } catch (error) {
+        console.error("Erro ao despublicar produto:", error);
+        alert(`Erro ao despublicar produto: ${error.message}`);
+    }
+}
+
+/**
+ * Inicia o onboarding no Stripe para o vendedor atual.
+ */
+export async function startStripeOnboarding(id) {
+  const yourAccessToken = localStorage.getItem("accessToken"); // <- Pega do localStorage
+
+  if (!yourAccessToken) {
+    alert("Acesso não autorizado. Faça login novamente.");
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:8000/api/payments/stripe/onboarding/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${yourAccessToken}`,
+        'Content-Type': 'application/json'      
+      },
+      body: JSON.stringify({ product_id: id})
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      window.location.href = data.url; // redireciona o usuário para o Stripe
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Erro ao iniciar onboarding Stripe:", errorData);
+      alert("Erro ao iniciar integração com o Stripe.");
+    }
+
+  } catch (error) {
+    console.error("Erro na requisição de onboarding:", error);
+    alert("Erro ao conectar ao Stripe. Tente novamente.");
+  }
 }

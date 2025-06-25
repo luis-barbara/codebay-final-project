@@ -37,7 +37,7 @@ pyclean:
 
 # Start the application with Docker Compose (builds & recreates containers)
 compose.start:
-	docker compose up --build --force-recreate 
+	docker compose up --build --force-recreate -d
 
 # Run migrations with Docker Compose
 compose.migrate:

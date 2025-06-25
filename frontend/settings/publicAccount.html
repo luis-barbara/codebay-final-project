@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Settings - CodeBay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../settings/css/styles.css">
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+        <link rel="stylesheet" href="../components/css/notifications.css">
+</head>
+
+<body>
+    <div id="head"></div>
+    <div class="settings-container">
+        <aside class="settings-sidebar">
+            <div class="sidebar-header">
+                <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="" class="sidebar-avatar">
+                <div class="sidebar-user-info">
+                    <strong>John Carter</strong>
+                    <span>@johncarter</span>
+                </div>
+            </div>
+            <nav class="settings-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="publicAccount.html">
+                            <i class="fas fa-user"></i> Public profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="account.html">
+                            <i class="fas fa-cog"></i> Account
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="email.html">
+                            <i class="fas fa-envelope"></i> Emails
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="security.html">
+                            <i class="fas fa-shield-alt"></i> Security
+                        </a>
+                    </li>
+                    <li class="nav-item logout">
+                        <a href="Logout.html">
+                            <i class="fas fa-sign-out-alt"></i> Sign out
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="settings-content">
+            <div class="settings-header">
+                <h1>Public profile</h1>
+                <p>Coming soon...</p>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">Personal information</h2>
+                
+                <div class="form-group">
+                    <label for="fullname">Full name</label>
+                    <input type="text" id="fullname" value="John Carter">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" value="john@dashdark.com">
+                    <p class="form-note">This is your primary email address</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Profile picture</label>
+                    <div class="avatar-upload">
+                        <div class="avatar-preview">
+                            <img src="" alt="" class="current-avatar">
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                        <div class="upload-box">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload or drag and drop</p>
+                                <p class="upload-hint">SVG, PNG, JPG or GIF (max. 300×400px)</p>
+                            </div>
+                            <input type="file" id="avatar-upload" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" rows="4">Write a short bio about you...</textarea>
+                    <p class="form-note">Tell us a little about yourself</p>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">Basic information</h2>
+                
+                <div class="form-group">
+                    <label for="phone">Phone number</label>
+                    <input type="tel" id="phone" value="(123) 456-7890">
+                </div>
+                
+                <div class="form-group">
+                    <label for="position">Position</label>
+                    <input type="text" id="position" value="CEO & Founder">
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Country</label>
+                    <input type="text" id="country" value="New York, NY">
+                </div>
+                
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" id="website" value="https://dashdark.com">
+                </div>
+            </div>
+
+            <div class="settings-footer">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save changes
+                </button>
+                <button class="btn btn-outline">
+                    Cancel
+                </button>
+            </div>
+        </main>
+    </div>
+    <div id="avat"></div>
+    <div id="hamb"></div>
+    <div id="foot"></div>
+    <script src="../components/js/shared-components.js"></script>
+    <script src="../settings/js/publicaccount.js"></script>
+</body>
+</html>

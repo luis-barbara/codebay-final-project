@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Settings - CodeBay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../settings/css/styles.css">
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+        <link rel="stylesheet" href="../components/css/notifications.css">
+</head>
+
+<body>
+    <div id="head"></div>
+    <div class="settings-container">
+        <aside class="settings-sidebar">
+            <div class="sidebar-header">
+                <img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png" alt="" class="sidebar-avatar">
+                <div class="sidebar-user-info">
+                    <strong>John Carter</strong>
+                    <span>@johncarter</span>
+                </div>
+            </div>
+            <nav class="settings-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="publicAccount.html">
+                            <i class="fas fa-user"></i> Public profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="account.html">
+                            <i class="fas fa-cog"></i> Account
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="email.html">
+                            <i class="fas fa-envelope"></i> Emails
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="security.html">
+                            <i class="fas fa-shield-alt"></i> Security
+                        </a>
+                    </li>
+                    <li class="nav-item logout">
+                        <a href="Logout.html">
+                            <i class="fas fa-sign-out-alt"></i> Sign out
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="settings-content">
+            <div class="settings-header">
+                <h1>Security Settings</h1>
+                <p>Coming soon...</p>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">Authentication</h2>
+                
+                <div class="form-group">
+                    <label for="two-factor">Two-Factor Authentication</label>
+                    <select id="two-factor">
+                        <option value="enabled">Enabled</option>
+                        <option value="disabled" selected>Disabled</option>
+                    </select>
+                    <p class="form-note">Add an extra layer of security to your account</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Recovery Options</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked> Email recovery
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox"> Phone recovery
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked> Security questions
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">Security Questions</h2>
+                
+                <div class="form-group">
+                    <label for="question1">Question 1</label>
+                    <select id="question1">
+                        <option value="" selected disabled>Select a question</option>
+                        <option>What was your first pet's name?</option>
+                        <option>What city were you born in?</option>
+                        <option>What is your mother's maiden name?</option>
+                    </select>
+                    <input type="text" id="answer1" placeholder="Your answer" class="mt-2">
+                </div>
+                
+                <div class="form-group">
+                    <label for="question2">Question 2</label>
+                    <select id="question2">
+                        <option value="" selected disabled>Select a question</option>
+                        <option>What was your first car?</option>
+                        <option>What was the name of your first school?</option>
+                        <option>What is your favorite book?</option>
+                    </select>
+                    <input type="text" id="answer2" placeholder="Your answer" class="mt-2">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title">Active Sessions</h2>
+                <div class="sessions-list">
+                    <div class="session-item">
+                        <div class="session-info">
+                            <i class="fas fa-desktop"></i>
+                            <div>
+                                <strong>Windows 10 - Chrome</strong>
+                                <span>New York, NY • Active now</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline">Revoke</button>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-info">
+                            <i class="fas fa-mobile-alt"></i>
+                            <div>
+                                <strong>iOS 15 - Safari</strong>
+                                <span>San Francisco, CA • 2 hours ago</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline">Revoke</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-footer">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save security settings
+                </button>
+                <button class="btn btn-outline">
+                    Cancel
+                </button>
+            </div>
+        </main>
+    </div>
+    <div id="avat"></div>
+    <div id="hamb"></div>
+    <div id="foot"></div>
+     <script src="../components/js/shared-components.js"></script>
+    <script src="../settings/js/security.js">   </script>
+</body>
+</html>

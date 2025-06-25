@@ -5,8 +5,10 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from .views import SignupView, PublicProfileView, TokenObtainPairView
 from django.views.generic import RedirectView
 from .views import OAuthRedirectView
+from .views import CurrentUserProfileView
 
 urlpatterns = [
+    path("profile/me/", CurrentUserProfileView.as_view(), name="my-profile"),
     path('signup/', SignupView.as_view(), name='signup'),
     path('profile/<str:email>/', PublicProfileView.as_view(), name='public_profile'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

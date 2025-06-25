@@ -1,8 +1,6 @@
 # storage/serializers.py
-
 from rest_framework import serializers
 from storage.models import ProjectFile
-
 
 class ProjectFileSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)

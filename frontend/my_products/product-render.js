@@ -6,7 +6,8 @@ import { authFetch } from '../registrations/auth.js';
 import { 
     openEditModal,   // Função para abrir o modal de edição
     deleteProduct,   // Função para apagar um produto
-    shareProduct     // Função para partilhar um produto
+    shareProduct,
+    startStripeOnboarding,    
 } from './product-actions.js'; 
 
 // IMPORTANTE: Importa funções auxiliares de UI de script.js
@@ -20,29 +21,125 @@ import {
 // 1. Função para decodificar token JWT (remover se não usada)
 // Removi esta função, pois não há uso dela dentro deste módulo conforme o código.
 
-   
-// 2. Injetar CSS de opções (Esta função PRECISA de ser chamada pelo seu script principal da página)
-export function injectCardOptionsStyles() { // EXPORTADA para ser chamada externamente
-    if (document.getElementById('card-options-styles')) return;
-
-    const styles = `
-        .card { position: relative; }
-        .options-button { /* ... */ }
-        .options-menu { /* ... */ }
-        .options-menu.active { /* ... */ }
-        .options-menu-item { /* ... */ }
-        .options-menu-item:hover { /* ... */ }
-    `;
-    const styleSheet = document.createElement("style");
-    styleSheet.id = 'card-options-styles';
-    styleSheet.innerText = styles;
-    document.head.appendChild(styleSheet);
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error("Erro ao decodificar token:", e);
+    return null;
+  }
 }
+
+
+export function getSellerIdFromToken() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    console.warn("Token de acesso não encontrado.");
+    return null;
+  }
+
+  const payload = parseJwt(token);
+  if (!payload || !payload.user_id) {
+    console.warn("Payload inválido ou user_id ausente no token.");
+    return null;
+  }
+
+  return payload.user_id;
+}
+
+function injectCardOptionsStyles() {
+  if (document.getElementById('card-options-styles')) return;
+
+  const styles = `
+    .card {
+      position: relative;
+    }
+
+    .options-button {
+      position: absolute;
+      top: 20px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .options-menu {
+      display: none;
+      position: absolute;
+      top: 45px;
+      right: 15px;
+      background-color: #161B22;
+      border: 0.6px solid #6B6E72;
+      border-radius: 8px;
+      padding: 8px;
+      z-index: 20;
+      width: 150px;
+    }
+
+    .options-menu.active {
+      display: block;
+    }
+
+    .options-menu-item {
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .options-menu-item:hover {
+      background-color: #2c333e;
+    }
+  `;
+
+  const styleSheet = document.createElement("style");
+  styleSheet.id = 'card-options-styles';
+  styleSheet.innerText = styles;
+  document.head.appendChild(styleSheet);
+}
+
+async function initProductRender() {
+    
+  const sellerId = getSellerIdFromToken();
+  if (!sellerId) return;
+
+  const products = await fetchSellerProducts(sellerId);
+
+  // Supondo que já tens o HTML do card carregado:
+  const cardResponse = await fetch('../components/card.html');
+  const cardHTML = await cardResponse.text();
+
+  const gridContainer = document.querySelector(".card-grid");
+  if (!gridContainer) {
+    console.error("Container .card-grid não encontrado");
+    return;
+  }
+
+  gridContainer.innerHTML = '';
+  for (const product of products) {
+    renderProductCard(gridContainer, cardHTML, product);
+  }
+}
+
+initProductRender(); // chamada inicial
+
 
 // 3. Buscar produtos (EXPORTADA para ser chamada pelo script principal da página)
 export async function fetchSellerProducts(sellerId) { 
     try {
-        const response = await authFetch(`http://localhost:8000/api/marketplace/products/`, {
+        const response = await authFetch(`http://localhost:8000/api/marketplace/products/?seller_id=${sellerId}`, {
             headers: { "Accept": "application/json" }
         });
 
@@ -75,6 +172,22 @@ export function renderProductCard(gridContainer, cardHTML, product) {
     cardWrapper.className = 'product-card-wrapper';
     cardWrapper.id = `product-${product.id}`;
     cardWrapper.innerHTML = cardHTML;
+    const mainButton = cardWrapper.querySelector('.card-details');
+
+if(product.published == true) {
+  if (mainButton) {
+    mainButton.textContent = 'Unlist product';
+  }
+} else {
+  mainButton.textContent = 'List product';
+}
+
+if (mainButton) {
+  mainButton.addEventListener("click", async () => {
+    startStripeOnboarding(product.id);
+  });
+}
+
 
     // Imagem (usando 'url' ou 'thumbnail_url' do MediaSerializer)
     const img = cardWrapper.querySelector('.preview img');
@@ -184,4 +297,5 @@ export function renderProductCard(gridContainer, cardHTML, product) {
     }
 
     gridContainer.appendChild(cardWrapper);
+    injectCardOptionsStyles();
 }

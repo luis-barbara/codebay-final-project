@@ -69,7 +69,7 @@
     color: gold;
   }
 
-  .button {
+  .card-details {
     background-color: #5A69EA;
     color: white;
     text-align: center;
@@ -77,6 +77,8 @@
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    width: 100%;
+    border: none;
   }
 
   .button:hover {

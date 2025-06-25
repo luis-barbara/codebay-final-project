@@ -29,7 +29,7 @@ export async function createCheckoutSession(productId) {
     const stripe = await getStripe();  
 
     // Mostrar um carregando para o usuário enquanto cria a sessão de checkout
-    document.querySelector('.buy-btn').textContent = 'Processando pagamento...';
+    document.querySelector('.buy-btn').textContent = 'Loading...';
     document.querySelector('.buy-btn').disabled = true;  // Desabilitar o botão enquanto a requisição é feita
 
     const response = await authFetch('http://localhost:8000/api/payments/create-checkout-session/', {
@@ -59,7 +59,7 @@ export async function createCheckoutSession(productId) {
     alert('Falha ao iniciar o checkout: ' + error.message);
   } finally {
     // Restaurar o botão de compra
-    document.querySelector('.buy-btn').textContent = 'Comprar Agora';
+    document.querySelector('.buy-btn').textContent = 'Buy Now';
     document.querySelector('.buy-btn').disabled = false;
   }
 }

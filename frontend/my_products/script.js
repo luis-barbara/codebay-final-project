@@ -1,5 +1,17 @@
 // frontend/my_products/script.js
-
+function parseJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+        );
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error("Erro ao decodificar token:", e);
+        return null;
+    }
+}
 
 import { authFetch, getAccessToken } from '../registrations/auth.js';
 // Importa as funções de ação de produto (estas vêm de product-actions.js)
@@ -49,7 +61,6 @@ const BTN_DISABLED_COLOR = '#CBE1CC';
 const BTN_ENABLED_COLOR = '#238636';
 
 
-// --- Funções Auxiliares de UI (Definidas aqui e EXPORTADAS para outros módulos) ---
 
 // Exportada para que product-actions.js possa usá-la via callbacks
 export const updateButtonState = (button, disabled) => { // EXPORTED

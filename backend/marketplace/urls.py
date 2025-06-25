@@ -6,7 +6,7 @@ from .views import (
     ProductViewSet, OrderViewSet,
     RatingViewSet, NotificationViewSet, WishlistViewSet,
     ProductFilesView, PublishProductView, CompleteOnboardingView, 
-    UnpublishProductView, PublicProductListView, MediaViewSet,
+    UnpublishProductView, PublicProductListView, MediaViewSet, PublicProductDetailView, 
 )
 
 router = DefaultRouter()
@@ -24,4 +24,5 @@ urlpatterns = [
     path('products/<int:pk>/unpublish/', UnpublishProductView.as_view(), name='product-unpublish'), 
     path('stripe/onboarding/complete/', CompleteOnboardingView.as_view(), name='stripe_onboarding_complete'),
     path('public/products/', PublicProductListView.as_view(), name='public-products'),
+    path('public/products/<int:pk>/', PublicProductDetailView.as_view(), name='public-product-detail'),
 ]

@@ -11,6 +11,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    min-height: 100vh;
 }
 
 .logo-icon {
@@ -30,6 +31,7 @@ body {
     margin-right: auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    min-height: 87vh;
 }
 
 .dashboard-header {

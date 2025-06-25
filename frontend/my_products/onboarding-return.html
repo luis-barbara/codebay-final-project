@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Account Setup Complete</title>
+    <link rel="icon" type="image/png" href="../codebay-favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #0D1116;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 0 20px;
+        }
+        h1 {
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #238636; /* Green for success */
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #238636; /* Green spinner */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner"></div>
+    <h1>Finalizando Configuração do Stripe...</h1>
+    <p>Por favor, aguarde enquanto confirmamos a configuração da sua conta Stripe e listamos o seu produto.</p>
+
+    <script type="module">
+        // Importa authFetch do seu módulo de autenticação.
+        // Verifique o caminho relativo. Se onboarding-return.html está em frontend/,
+        // e auth.js está em frontend/registrations/, então o caminho é './registrations/auth.js'.
+        import { authFetch } from '../registrations/auth.js'; 
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('product_id');
+
+            if (!productId) {
+                alert("Erro: ID do produto não encontrado na URL. Não foi possível completar a publicação. Redirecionando para a sua página de produtos.");
+                window.location.href = '/frontend/my_products/index.html'; // Redirect to your products page
+                return;
+            }
+
+            try {
+                // Fazer a chamada API para o backend para verificar o status do Stripe e publicar o produto
+                const response = await authFetch(`http://localhost:8000/api/marketplace/stripe/onboarding/complete/?product_id=${productId}`, {
+                    method: 'GET', // Sua view de backend espera um GET
+                });
+
+                const data = await response.json(); // Tentar parsear JSON sempre que possível
+
+                if (response.ok) {
+                    alert(data.detail || "Configuração do Stripe completa! O seu produto está agora listado.");
+                    // Redireciona para a página de "Meus Produtos" após sucesso
+                    window.location.href = '/frontend/my_products/index.html'; 
+                } else {
+                    // Trata erros retornados pelo backend
+                    console.error("Erro do backend ao completar onboarding:", data);
+                    alert(`Erro ao completar a configuração do Stripe: ${data.detail || JSON.stringify(data) || "Erro desconhecido."}\nPor favor, tente novamente.`);
+                    // Redireciona para a página de "Meus Produtos" em caso de falha para que o user possa tentar de novo
+                    window.location.href = '/frontend/my_products/index.html';
+                }
+            } catch (error) {
+                console.error("Erro de rede ou inesperado durante a conclusão do onboarding do Stripe:", error);
+                alert(`Erro de rede: Não foi possível completar a configuração do Stripe. ${error.message}\nVerifique sua conexão e tente novamente.`);
+                window.location.href = '/frontend/my_products/index.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -41,7 +41,7 @@
 
     <div class="product-details">
       <div class="author">
-        <a href="#" style="text-decoration: none;"><img src="../components/images/ChatGPT_Image_30_05_2025_21_53_58.png"
+        <a href="#" style="text-decoration: none;"><img src="../components/images/default_avatar.webp"
             alt="Author" class="author-avatar"></a>
         <a href="#" style="text-decoration: none;"><span class="author-name">John Doe</span></a>
         <span class="verified">✔</span>
@@ -62,7 +62,7 @@
             <span class="price-label">Current Price</span>
             <span class="price">$315.26</span>
           </div>
-          <button class="buy-btn" data-product-id="1">Buy</button>
+          <button class="buy-btn">Buy</button>
         </div>
       </div>
     </div>
@@ -118,12 +118,7 @@
 
   <div class="suggestions"> 
     <h2>Suggestions</h2>
-    <div class="cards-container"> 
-      <div id="product_card_0"></div>
-      <div id="product_card_1"></div>
-      <div id="product_card_2"></div>
-      <div id="product_card_3"></div>
-      <div id="product_card_4"></div>
+    <div class="card-grid"> 
     </div>        
   </div>
 </div>
@@ -131,8 +126,23 @@
   <div id="foot"></div>
   <div id="hamb"></div>
   <div id="avat"></div>
+
+  <!-- Modal container -->
+<!-- Popup container -->
+<div id="media-popup" class="popup-container hidden-popup">
+  <div class="popup-content">
+    <button class="popup-close-btn">&times;</button>
+    <div class="popup-body">
+      <!-- Conteúdo do popup será injetado aqui via JS -->
+    </div>
+  </div>
+</div>
+
+
 </body>
 <script src="https://js.stripe.com/v3/"></script>
+<script src="../components/js/shared-components.js"></script>
 <script type="module" src="script.js"></script>
+<script type="module" src="recomendations.js"></script>
 
 </html>

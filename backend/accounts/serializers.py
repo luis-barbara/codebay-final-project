@@ -40,14 +40,14 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    avatar = serializers.SerializerMethodField()  # Use get_avatar instead of direct field
+    avatar = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = (
             'full_name', 'email', 'username', 'avatar', 'description',
             'phone', 'position', 'country', 'website', 'github_account', 'rating',
-            'stripe_account_id'  
+            'stripe_account_id', 'stripe_customer_id', 'date_joined',
         )
 
     def get_avatar(self, obj):
@@ -82,6 +82,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.github_account = validated_data.get('github_account', instance.github_account)
         instance.rating = validated_data.get('rating', instance.rating)
         instance.stripe_account_id = validated_data.get('stripe_account_id', instance.stripe_account_id)
+        instance.stripe_customer_id = validated_data.get('stripe_customer_id', instance.stripe_customer_id)
 
         instance.save()
         return instance

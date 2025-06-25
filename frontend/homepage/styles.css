@@ -3,6 +3,7 @@ body {
     margin: 0;
     font-family: sans-serif;
     color: #c8c9cd;
+    min-height: 100vh;
 }
 
 
@@ -66,6 +67,7 @@ body {
   max-width: 1800px;
   margin: 0 auto;
   gap: 20px;
+  min-height: 65vh;
 }
 
 @media (max-width: 1024px) {

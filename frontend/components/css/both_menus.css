@@ -100,6 +100,13 @@
     margin-top: 10px;
 }
 
+/* Aplica text-decoration: none aos links dentro do menu */
+.sidebar-menu li a {
+    color: #c8c9cd; /* Garante que o texto dos links tenha a cor padrão */
+    text-decoration: none; /* Remove o sublinhado */
+    display: flex;
+    align-items: center; /* Para alinhar os ícones e o texto */
+}
 .marker-remove {
     display: block;
     color: #9a9c9f;

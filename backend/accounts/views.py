@@ -11,6 +11,8 @@ import stripe
 from django.conf import settings
 from rest_framework.permissions import AllowAny
 from django.shortcuts import redirect
+from rest_framework.permissions import IsAuthenticated
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -96,7 +98,7 @@ class OAuthRedirectView(APIView):
     def get(self, request):
         user = request.user
         if not user.is_authenticated:
-            return redirect('http://localhost:5500/signin.html')  
+            return redirect('http://localhost:5500/frontend/registrations/signin.html')  
 
         # Gerar tokens JWT
         refresh = RefreshToken.for_user(user)
@@ -104,5 +106,13 @@ class OAuthRedirectView(APIView):
         refresh_token = str(refresh)
 
         # Redirecionar para o frontend com os tokens
-        frontend_url = f"http://localhost:5500/oauth-success.html?access={access_token}&refresh={refresh_token}"
+        frontend_url = f"http://localhost:5500/frontend/registrations/oauth-success.html?access={access_token}&refresh={refresh_token}"
         return redirect(frontend_url)
+    
+
+class CurrentUserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserProfileSerializer(request.user)
+        return Response(serializer.data)

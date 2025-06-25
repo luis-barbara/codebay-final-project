@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - CodeBay</title>
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/card.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="../Wishlist/wish.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="head"></div>
+
+    <div class="page-layout">
+        <aside class="filters-panel">
+            <h2>Coming soon...</h2>
+            <div class="filter-group">
+                <h3>Sort by</h3>
+                <label><input type="radio" name="sort" checked> Newest</label>
+                <label><input type="radio" name="sort"> Best selling</label>
+                <label><input type="radio" name="sort"> Price: Low to High</label>
+                <label><input type="radio" name="sort"> Price: High to Low</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Categories</h3>
+                <label><input type="checkbox"> Templates</label>
+                <label><input type="checkbox"> Landing pages</label>
+                <label><input type="checkbox"> UI kits</label>
+                <label><input type="checkbox"> SaaS tools</label>
+                <label><input type="checkbox"> Scripts</label>
+                <label><input type="checkbox"> AI bots</label>
+                <label><input type="checkbox"> No-code</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Languages / Stack</h3>
+                <label><input type="checkbox"> Javascript</label>
+                <label><input type="checkbox"> Python</label>
+                <label><input type="checkbox"> HTML</label>
+                <label><input type="checkbox"> CSS</label>
+                <label><input type="checkbox"> React</label>
+                <label><input type="checkbox"> C</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <input type="range" min="0" max="1000" />
+            </div>
+
+            <div class="filter-group">
+                <h3>Rating</h3>
+                <label><input type="checkbox"> 5 stars</label>
+                <label><input type="checkbox"> 4 stars & up</label>
+                <label><input type="checkbox"> 3 stars & up</label>
+                <label><input type="checkbox"> 2 stars & up</label>
+            </div>
+        </aside>
+
+        <main class="main-content">
+           
+
+            <div class="wishlist-header">
+                <h1>My Wishlist</h1>
+                <p>Coming soon...</p>
+            </div>
+
+            <button class="toggle-filters">Show Filters</button>
+            
+            <input type="text" class="search-bar" placeholder="Search products..." />
+
+            <div class="card-grid">
+                <div class="card">
+                    <i class="fas fa-heart favorite-heart"></i>
+                    <div class="preview">
+                        <img src="https://img.youtube.com/vi/7V5jdOjWVU4/maxresdefault.jpg" alt="Discord"
+                            class="image-placeholder">
+                    </div>
+
+                    <div class="details">
+                        <div class="heading">E-commerce Template</div>
+                        <div class="description">Modern and ready-to-use template for online stores.</div>
+                        <div class="tech">HTML, CSS, Javascript</div>
+
+                        <div class="price-rating">
+                            <div class="price">100€</div>
+                            <div class="rating">
+                                <div class="stars">★★★★★</div>
+                                <div>5.0</div>
+                                <div style="color: #aaa;">40 reviews</div>
+                            </div>
+                        </div>
+
+                        <div class="button">View details</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+        <div id="foot"></div>
+
+
+
+
+    <div id="filters-overlay" class="overlay hidden"></div>
+    <div id="filters-sidebar" class="sidebar filters-sidebar hidden">
+        <div class="sidebar-header">
+            <h3 style="margin: 0;">Filters</h3>
+            <button id="close-filters-sidebar" class="close-btn">&times;</button>
+        </div>
+        <div class="filter-group">
+            <h3>Sort by</h3>
+            <label><input type="radio" name="sort" checked> Newest</label>
+            <label><input type="radio" name="sort"> Best selling</label>
+            <label><input type="radio" name="sort"> Price: Low to High</label>
+            <label><input type="radio" name="sort"> Price: High to Low</label>
+        </div>
+        <div class="filter-group">
+            <h3>Categories</h3>
+            <label><input type="checkbox"> Templates</label>
+            <label><input type="checkbox"> Landing pages</label>
+            <label><input type="checkbox"> UI kits</label>
+            <label><input type="checkbox"> SaaS tools</label>
+            <label><input type="checkbox"> Scripts</label>
+            <label><input type="checkbox"> AI bots</label>
+            <label><input type="checkbox"> No-code</label>
+        </div>
+        <div class="filter-group">
+            <h3>Languages / Stack</h3>
+            <label><input type="checkbox"> Javascript</label>
+            <label><input type="checkbox"> Python</label>
+            <label><input type="checkbox"> HTML</label>
+            <label><input type="checkbox"> CSS</label>
+            <label><input type="checkbox"> React</label>
+            <label><input type="checkbox"> C</label>
+        </div>
+        <div class="filter-group">
+            <h3>Price Range</h3>
+            <input type="range" min="0" max="1000" />
+        </div>
+        <div class="filter-group">
+            <h3>Rating</h3>
+            <label><input type="checkbox"> 5 stars</label>
+            <label><input type="checkbox"> 4 stars & up</label>
+            <label><input type="checkbox"> 3 stars & up</label>
+            <label><input type="checkbox"> 2 stars & up</label>
+        </div>
+    </div>
+
+
+    <div id="hamb"></div>
+
+    <div id="avat"></div>
+</body>
+
+<script src="../components/js/shared-components.js"></script>
+<script src="../Wishlist/wish.js"></script>
+
+</html>

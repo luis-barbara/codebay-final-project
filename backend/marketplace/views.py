@@ -5,6 +5,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -18,6 +19,7 @@ from rest_framework.exceptions import NotFound
 import stripe
 import boto3
 import base64
+from rest_framework.generics import RetrieveAPIView
 from .models import Product, Order, Notification, Rating, Media, Wishlist
 from storage.models import ProjectFile
 from payments.models import Payment
@@ -47,13 +49,10 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # Este método define quais produtos um utilizador pode ver.
-        # Se autenticado, vê os seus próprios produtos. Caso contrário, vê apenas os publicados.
-        if self.request.user.is_authenticated:
+        # Vê os seus próprios produtos
             logger.info(f"ProductViewSet: Filtering queryset for authenticated user {self.request.user.email} (ID: {self.request.user.id})")
             return Product.objects.filter(seller=self.request.user).order_by('-created_at')
-        else:
-            logger.info("ProductViewSet: Filtering queryset for anonymous user (published products only).")
-            return Product.objects.filter(published=True).order_by('-created_at')
+
 
     def perform_create(self, serializer):
         # Esta função é chamada quando um POST (criação) é feito.
@@ -113,28 +112,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         kwargs['context']['request'] = self.request
         return super().get_serializer(*args, **kwargs)
 
-
-
-
-
-class ProductFilesView(APIView):
-    permission_classes = [AllowAny]  # Permite acesso público temporariamente para testes
-
-    def get(self, request, pk):
-        try:
-            product = Product.objects.get(pk=pk)
-            files = ProjectFile.objects.filter(product=product)
-            
-            if not files.exists():
-                # Retorna array vazio com status 200 se não houver arquivos
-                return Response([], status=status.HTTP_200_OK)
-                
-            serializer = ProjectFileSerializer(files, many=True, context={'request': request})
-            return Response(serializer.data)
-            
-        except Product.DoesNotExist:
-            # Retorna array vazio com status 200 mesmo se o produto não existir
-            return Response([], status=status.HTTP_200_OK)
 
 
 class PublishProductView(APIView):
@@ -347,6 +324,11 @@ class WishlistViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class PublicProductDetailView(RetrieveAPIView):
+    queryset = Product.objects.filter(published=True)
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
+
 
 class ProductFilesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -391,3 +373,6 @@ class ProductFilesView(APIView):
             })
 
         return Response(file_urls)
+
+
+

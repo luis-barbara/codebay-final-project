@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+    <link rel="stylesheet" href="../components/css/card.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+
+<body>
+    <div id="head"></div>
+
+    <div class="profile-container">
+        <h1>My Profile</h1>
+        <div class="profile-header">
+            <div class="profile-avatar-container">
+                <img src="../components/images/default_avatar.webp" alt="avatar" class="profile-avatar">
+                <div class="profile-name">
+                    <h2 id="full-name">John Doe</h2>
+                    <span class="username">JohnDoe42</span>
+                </div>
+            </div>
+
+            <div class="profile-bar">
+                <div class="profile-info-card">
+                    <h3>Profile information</h3>
+                    <div class="info-item">
+                        <i class="fas fa-user"></i>
+                        <span>Full stack developer</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>San Francisco, CA</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-link"></i> 
+                        <a href="#">john.doe.dev</a>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="#">john@example.com</a>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Joined on June 2023</span>
+                    </div>
+                </div>
+
+                <div class="stats-card">
+                    <h3>Statistics <span>(coming soon)</span></h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number product-count">0</div>
+                            <div class="stat-label">Products</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <div class="stat-label">Rating</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-readme-card">
+                <div class="readme-header">
+                    <h3><i class="fas fa-book"></i> README</h3>
+                    <button class="btn btn-sm btn-secondary edit-readme-btn">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                </div>
+                <div class="readme-content" contenteditable="false">
+                    <p>Coming soon...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-content">
+
+            <div class="profile-main">
+                <div class="activity-feed">
+                    <div class="section-header">
+                        <h2><i class="fas fa-box"></i> Your recent products</h2>
+                    </div>
+
+                    <div class="card-grid">
+                        <!-- Products will be loaded here -->
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="avat"></div>
+    <div id="hamb"></div>
+    <div id="foot"></div>
+
+    <script type="module"src="profile.js"></script>
+    <script type="module"src="show-data.js"></script>
+    <script src="../components/js/shared-components.js"></script>
+    <script type="module" src="../registrations/auth.js" defer></script>
+</body>
+
+</html>
