@@ -17,13 +17,12 @@ function handleOrdersVisibility() {
       </tr>
     `;
   } else {
-    // If logged in, the existing orders will show (loaded from HTML)
-    // You could also fetch orders from an API here if needed
+   
   }
 }
 
-// Main initialization - update this function
+
 document.addEventListener("DOMContentLoaded", async () => {
-  handleOrdersVisibility(); // Add this line
+  handleOrdersVisibility(); 
 });
 

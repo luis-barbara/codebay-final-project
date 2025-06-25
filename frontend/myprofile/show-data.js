@@ -28,9 +28,6 @@ export async function showProfile() {
                 throw new Error(data.detail || JSON.stringify(data));
             }
 
-            // Preenche o campo do perfil
-            
-            // Chama renderProfile se necessário
             if (typeof renderProfile === "function") {
                 renderProfile(data);
             }
@@ -48,7 +45,6 @@ export async function showProfile() {
 }
 
 
-// Esta função popula os dados no DOM (ajusta conforme tua estrutura HTML real)
 function renderProfile(profile) {
    const fullNameElement = document.getElementById("full-name");
 if (fullNameElement) {
@@ -59,7 +55,6 @@ if (fullNameElement) {
     document.querySelector('.username').textContent = profile.username || "Utilizador";
     document.querySelector('.readme-content').innerHTML = profile.bio || "<p>Ainda não escreveste o teu README.</p>";
 
-    // Exemplo de mais campos
     document.querySelector('.info-item:nth-child(2) span').textContent = profile.role || "Função indefinida";
     document.querySelector('.info-item:nth-child(3) span').textContent = profile.location || "Sem localização";
     document.querySelector('.info-item:nth-child(4) a').textContent = profile.website || "";
@@ -77,11 +72,6 @@ if (fullNameElement) {
 
 
 
-
-
-// frontend/product_details/recomendations.js 
-
-// Importa authFetch do módulo de autenticação
 
 async function initProductRender() {
 
@@ -123,7 +113,7 @@ initProductRender();
 
 
 
-// 3. Buscar produtos (EXPORTADA para ser chamada pelo script principal da página)
+// produtos 
 export async function fetchSellerProducts(sellerId) {
     try {
         const response = await authFetch(`http://localhost:8000/api/marketplace/products/?seller_id=${sellerId}`, {
@@ -150,17 +140,17 @@ export async function fetchSellerProducts(sellerId) {
     }
 }
 
-// 4. Fetch images (Media) - REMOVIDA (se ProductSerializer já inclui mídia)
 
 
-// 5. Renderizar um card (EXPORTADA para ser chamada pelo script principal da página)
+
+// Renderizar um card 
 export function renderProductCard(gridContainer, cardHTML, product) {
     const cardWrapper = document.createElement('div');
     cardWrapper.className = 'product-card-wrapper';
     cardWrapper.id = `product-${product.id}`;
     cardWrapper.innerHTML = cardHTML;
 
-    // Imagem (usando 'url' ou 'thumbnail_url' do MediaSerializer)
+    // Imagem 
     const img = cardWrapper.querySelector('.preview img');
     if (img) {
         const primaryMedia = Array.isArray(product.media)
@@ -177,7 +167,7 @@ export function renderProductCard(gridContainer, cardHTML, product) {
             console.warn(`Produto ${product.id} não tem URL de imagem principal válido na mídia.`);
             img.src = '';
         }
-        // Adicionar event listener no botão .card-details
+        // event listener no botão .card-details
         const detailsButton = cardWrapper.querySelector('.card-details');
         if (detailsButton) {
             detailsButton.addEventListener('click', () => {
@@ -212,11 +202,6 @@ export function renderProductCard(gridContainer, cardHTML, product) {
 
     // Options menu
     const card = cardWrapper.querySelector('.card');
-    // Global listener to close all menus when clicking outside
-    // Esta lógica deve ser adicionada APENAS UMA VEZ por toda a aplicação
-    // É mais seguro se for adicionada no seu script.js principal ou noutro script de orquestração global.
-    // Assumimos que o script.js adiciona este listener globalmente.
-    // Aqui, vamos apenas adicionar uma guarda para não duplicar listeners.
     if (!window.optionsMenuListenerAdded) {
         document.addEventListener('click', () => {
             document.querySelectorAll('.options-menu.active').forEach(menu => {

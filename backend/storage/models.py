@@ -15,8 +15,8 @@ class ProjectFile(models.Model):
     file_url = models.URLField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    is_main_file = models.BooleanField(default=False)  # ← ZIP ou arquivo principal
-    file_type = models.CharField(max_length=20, blank=True)  # zip, code, doc, image...
+    is_main_file = models.BooleanField(default=False)  
+    file_type = models.CharField(max_length=20, blank=True)  
     
     def __str__(self):
         return self.title

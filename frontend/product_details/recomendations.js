@@ -25,10 +25,10 @@ async function initProductRender() {
 }
 
 
-initProductRender(); // chamada inicial
+initProductRender(); 
 
 
-// 3. Buscar produtos (EXPORTADA para ser chamada pelo script principal da página)
+// produtos
 export async function fetchSellerProducts() { 
     try {
         const response = await authFetch(`http://localhost:8000/api/marketplace/public/products/`, {
@@ -55,17 +55,17 @@ export async function fetchSellerProducts() {
     }
 }
 
-// 4. Fetch images (Media) - REMOVIDA (se ProductSerializer já inclui mídia)
 
 
-// 5. Renderizar um card (EXPORTADA para ser chamada pelo script principal da página)
+
+// Render card 
 export function renderProductCard(gridContainer, cardHTML, product) { 
     const cardWrapper = document.createElement('div');
     cardWrapper.className = 'product-card-wrapper';
     cardWrapper.id = `product-${product.id}`;
     cardWrapper.innerHTML = cardHTML;
 
-    // Imagem (usando 'url' ou 'thumbnail_url' do MediaSerializer)
+    // Imagem 
     const img = cardWrapper.querySelector('.preview img');
     if (img) {
         const primaryMedia = Array.isArray(product.media)
@@ -82,7 +82,7 @@ export function renderProductCard(gridContainer, cardHTML, product) {
             console.warn(`Produto ${product.id} não tem URL de imagem principal válido na mídia.`);
             img.src = ''; 
         }
-        // Adicionar event listener no botão .card-details
+        // event listener no botão .card-details
     const detailsButton = cardWrapper.querySelector('.card-details');
     if (detailsButton) {
         detailsButton.addEventListener('click', () => {
@@ -115,13 +115,8 @@ export function renderProductCard(gridContainer, cardHTML, product) {
             : 'Price unavailable';
     }
 
-    // Options menu
+    
     const card = cardWrapper.querySelector('.card');
-    // Global listener to close all menus when clicking outside
-    // Esta lógica deve ser adicionada APENAS UMA VEZ por toda a aplicação
-    // É mais seguro se for adicionada no seu script.js principal ou noutro script de orquestração global.
-    // Assumimos que o script.js adiciona este listener globalmente.
-    // Aqui, vamos apenas adicionar uma guarda para não duplicar listeners.
     if (!window.optionsMenuListenerAdded) {
         document.addEventListener('click', () => {
             document.querySelectorAll('.options-menu.active').forEach(menu => {

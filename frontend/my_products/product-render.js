@@ -1,25 +1,23 @@
 // frontend/my_products/product-render.js
 
-// Importa authFetch do módulo de autenticação
+
 import { authFetch } from '../registrations/auth.js'; 
-// IMPORTANTE: Importa as funções de ação de product-actions.js
+
 import { 
-    openEditModal,   // Função para abrir o modal de edição
-    deleteProduct,   // Função para apagar um produto
+    openEditModal,   
+    deleteProduct,   
     shareProduct,
     startStripeOnboarding,    
 } from './product-actions.js'; 
 
-// IMPORTANTE: Importa funções auxiliares de UI de script.js
-// Estas funções são EXPORTADAS pelo script.js e são necessárias aqui para callbacks
+
 import { 
     closeModal, 
     validateForm, 
     handleAfterCreate 
-} from './script.js'; // Caminho para o script.js (mesmo diretório)
+} from './script.js'; 
 
-// 1. Função para decodificar token JWT (remover se não usada)
-// Removi esta função, pois não há uso dela dentro deste módulo conforme o código.
+
 
 function parseJwt(token) {
   try {
@@ -117,7 +115,7 @@ async function initProductRender() {
 
   const products = await fetchSellerProducts(sellerId);
 
-  // Supondo que já tens o HTML do card carregado:
+
   const cardResponse = await fetch('../components/card.html');
   const cardHTML = await cardResponse.text();
 
@@ -133,10 +131,10 @@ async function initProductRender() {
   }
 }
 
-initProductRender(); // chamada inicial
+initProductRender(); 
 
 
-// 3. Buscar produtos (EXPORTADA para ser chamada pelo script principal da página)
+
 export async function fetchSellerProducts(sellerId) { 
     try {
         const response = await authFetch(`http://localhost:8000/api/marketplace/products/?seller_id=${sellerId}`, {
@@ -163,10 +161,9 @@ export async function fetchSellerProducts(sellerId) {
     }
 }
 
-// 4. Fetch images (Media) - REMOVIDA (se ProductSerializer já inclui mídia)
 
 
-// 5. Renderizar um card (EXPORTADA para ser chamada pelo script principal da página)
+// Renderizar um card 
 export function renderProductCard(gridContainer, cardHTML, product) { 
     const cardWrapper = document.createElement('div');
     cardWrapper.className = 'product-card-wrapper';
@@ -189,7 +186,7 @@ if (mainButton) {
 }
 
 
-    // Imagem (usando 'url' ou 'thumbnail_url' do MediaSerializer)
+    // Imagem 
     const img = cardWrapper.querySelector('.preview img');
     if (img) {
         const primaryMedia = Array.isArray(product.media)
@@ -246,10 +243,9 @@ if (mainButton) {
             <div class="options-menu-item delete-item"><span>&#128465;</span> Delete</div>
         `;
 
-        // Eventos de ação (AGORA CHAMAM AS FUNÇÕES IMPORTADAS DIRETAMENTE)
+        
         optionsMenu.querySelector('.edit-item')?.addEventListener("click", (e) => {
             e.stopPropagation();
-            // Passa product e os callbacks importados de script.js
             openEditModal(product, validateForm, handleAfterCreate); 
             optionsMenu.classList.remove('active');
         });
@@ -262,7 +258,6 @@ if (mainButton) {
 
         optionsMenu.querySelector('.delete-item')?.addEventListener("click", (e) => {
             e.stopPropagation();
-            // Passa o ID do produto e os callbacks importados de script.js
             deleteProduct(product.id, { closeModal: closeModal, handleAfterCreate: handleAfterCreate }); 
             optionsMenu.classList.remove('active');
         });
@@ -282,11 +277,7 @@ if (mainButton) {
         card.appendChild(optionsMenu);
     }
 
-    // Global listener to close all menus when clicking outside
-    // Esta lógica deve ser adicionada APENAS UMA VEZ por toda a aplicação
-    // É mais seguro se for adicionada no seu script.js principal ou noutro script de orquestração global.
-    // Assumimos que o script.js adiciona este listener globalmente.
-    // Aqui, vamos apenas adicionar uma guarda para não duplicar listeners.
+  
     if (!window.optionsMenuListenerAdded) {
         document.addEventListener('click', () => {
             document.querySelectorAll('.options-menu.active').forEach(menu => {

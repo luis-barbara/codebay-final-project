@@ -1,4 +1,6 @@
 // frontend/my_products/script.js
+
+
 function parseJwt(token) {
     try {
         const base64Url = token.split('.')[1];
@@ -14,8 +16,8 @@ function parseJwt(token) {
 }
 
 import { authFetch, getAccessToken } from '../registrations/auth.js';
-// Importa as funções de ação de produto (estas vêm de product-actions.js)
-// Renomeamos openEditModal para evitar conflito com a função openAddModal definida neste script.
+
+
 import { 
     openEditModal as importedOpenEditModal, 
     updateProduct, 
@@ -23,8 +25,7 @@ import {
     shareProduct 
 } from './product-actions.js';
 
-// --- Variáveis Globais do Módulo (Acessíveis a todas as funções dentro deste módulo) ---
-// Declaradas no top-level. A sua atribuição de valor DOM real acontece APÓS DOMContentLoaded.
+// Variáveis Globais do Módulo 
 let modalOverlay;
 let openModalBtn;
 let closeModalBtn;
@@ -44,13 +45,13 @@ let videoLinksContainer;
 let imagePlaceholders;
 let fileListContainer;
 let createProductBtn;
-let videoCounter = 0; // Contador de vídeos
+let videoCounter = 0; 
 
-// --- Armazenamento em Memória para Ficheiros (gerido por este script) ---
+
 let selectedPrimaryImages = [];
 let selectedProjectFiles = [];
 
-// --- Constantes (globais a este módulo) ---
+
 const MIN_TITLE_LENGTH = 3;
 const MIN_DESC_LENGTH = 10;
 const MAX_IMAGES = 4;
@@ -62,15 +63,15 @@ const BTN_ENABLED_COLOR = '#238636';
 
 
 
-// Exportada para que product-actions.js possa usá-la via callbacks
-export const updateButtonState = (button, disabled) => { // EXPORTED
+
+export const updateButtonState = (button, disabled) => { 
     if (!button) return;
     button.disabled = disabled;
     button.style.cursor = disabled ? 'not-allowed' : 'pointer';
     button.style.opacity = disabled ? '0.6' : '1';
 };
 
-// Funções internas auxiliares (não precisam ser exportadas)
+// Funções internas auxiliares 
 const checkVideoLimit = () => {
     if (!videoLinksContainer || !addVideoBtn) return;
     const currentVideos = videoLinksContainer.querySelectorAll('.video-url-input').length;
@@ -175,8 +176,8 @@ const handleProjectFileUploadPreview = (event) => {
     }
 };
 
-// Lógica principal de validação do formulário (EXPORTADA para product-actions.js)
-export const validateForm = () => { // EXPORTED
+// Lógica principal de validação do formulário 
+export const validateForm = () => { 
     const isTitleValid = titleInput.value.trim().length >= MIN_TITLE_LENGTH;
     const isDescriptionValid = descriptionInput.value.trim().length >= MIN_DESC_LENGTH;
     const priceValue = pricingInput.value.trim();
@@ -194,12 +195,12 @@ export const validateForm = () => { // EXPORTED
     return isFormValid;
 };
 
-// Lógica de Abrir/Fechar Modal (EXPORTADA para product-actions.js e product-render.js)
-export const closeModal = () => { // EXPORTED
+// Lógica de Abrir/Fechar Modal 
+export const closeModal = () => { 
     if (modalOverlay) modalOverlay.style.display = 'none';
 };
 
-export const openAddModal = () => { // EXPORTED
+export const openAddModal = () => { 
     if (!modalOverlay) return;
 
     titleInput.value = '';
@@ -230,12 +231,12 @@ export const openAddModal = () => { // EXPORTED
     checkVideoLimit();
 };
 
-export const handleAfterCreate = async () => { // EXPORTED para product-actions.js e product-render.js
+export const handleAfterCreate = async () => { 
     window.location.reload(); 
 };
 
-// --- Funções de Interação com a API (Privadas, pois só são chamadas internamente neste script) ---
 
+// Funções de Interação com a API
 async function createProductWithPrimaryImages(productData, primaryImageFiles) {
     const formData = new FormData();
     formData.append("title", productData.title);
@@ -299,25 +300,23 @@ async function uploadProjectFile(file, productId, title, description = '', isMai
     console.log(`Sending FormData to /api/storage/upload/: ${Array.from(formData.entries()).map(([k,v]) => `${k}=${v instanceof File ? v.name : v}`).join(', ')}`);
     
     let response;
-    let responseText = ''; // Para guardar a resposta em texto
-    let responseData = {}; // Para guardar a resposta JSON (ou objeto vazio)
+    let responseText = ''; 
+    let responseData = {}; 
 
     try {
-        // Envia a requisição autenticada
+        // requisição autenticada
         response = await authFetch("http://localhost:8000/api/storage/upload/", { method: "POST", body: formData });
         
-        // --- Processamento da Resposta ---
-        // 1. Tentar ler o corpo da resposta como texto (mais robusto que .json() direto)
         try {
             responseText = await response.text();
             console.log("uploadProjectFile: Raw response text from API:", responseText);
         } catch (textError) {
             console.warn("uploadProjectFile: Failed to read response body as text.", textError);
-            responseText = ''; // Garante que é uma string vazia se falhar
+            responseText = ''; 
         }
 
-        // 2. Tentar fazer parse do texto para JSON
-        if (responseText) { // Só tenta JSON.parse se houver texto
+        // parse do texto para JSON
+        if (responseText) { 
             try {
                 responseData = JSON.parse(responseText);
             } catch (jsonError) {
@@ -326,37 +325,28 @@ async function uploadProjectFile(file, productId, title, description = '', isMai
             }
         }
         
-        // 3. Verificar o status da resposta HTTP
+        // Verificar o status da resposta HTTP
         if (!response.ok) { 
-            // Se o status HTTP não é 2xx (e.g., 400, 403, 500), então é um erro do backend.
             console.error("uploadProjectFile: Backend returned a non-OK status.", response.status, responseData || responseText);
             const errorMsg = responseData.error || responseData.detail || responseText || `Unknown server error (Status: ${response.status}).`;
             throw new Error(`Failed to upload project file: ${errorMsg}`);
         }
         
-        // --- SE CHEGARMOS AQUI, A REQUISIÇÃO FOI UM SUCESSO (Status 2xx) ---
         console.log("Project file successfully uploaded and processed by backend:", responseData || responseText);
-        
-        // Retorna os dados para a Promise.all no handler principal.
-        // O Promise.all DEVE RESOLVER A PARTIR DAQUI.
-        return responseData || {}; // Retorna os dados JSON ou um objeto vazio em caso de sucesso mas resposta vazia/não JSON
+        return responseData || {};
 
     } catch (error) { 
-        // Este bloco catch apanhará APENAS:
-        // 1. Erros de rede (Failed to fetch).
-        // 2. Erros explicitamente lançados do bloco try (os 'throw new Error()').
-        // 3. Rejeições de Promise que não foram tratadas internamente pelo authFetch.
+        
         console.error("Caught unhandled error during project file upload request (rethrowing):", error, error.message, error.stack);
-        throw error; // Re-lança o erro para ser apanhado pelo handler principal do botão
+        throw error; 
     }
 }
 
 
 
-// --- Listener Principal DOMContentLoaded (ÚNICO para a página) ---
+
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Atribuição dos Elementos DOM (Acontece APENAS aqui, quando o DOM está pronto) ---
-    // Atribuição das variáveis declaradas no top-level
+   
     modalOverlay = document.getElementById('modalOverlay');
     openModalBtn = document.getElementById('openModalBtn'); 
     closeModalBtn = document.getElementById('closeModalBtn');
@@ -377,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileListContainer = document.querySelector('.file-list');
     createProductBtn = document.getElementById('createProductBtn');
 
-    // --- Configuração dos Event Listeners ---
+    // Configuração dos Event Listeners
     if (openModalBtn) openModalBtn.addEventListener('click', openAddModal);
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
     if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
@@ -424,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addFileBtn) { addFileBtn.addEventListener('click', () => fileUploadInput && fileUploadInput.click()); }
     if (fileUploadInput) { fileUploadInput.addEventListener('change', handleProjectFileUploadPreview); }
 
-    // --- Main Product Creation/Edit (Submission) Handler ---
+    // Main Product Creation/Edit
     if (createProductBtn) {
         createProductBtn.addEventListener("click", async (e) => {
             e.preventDefault();
@@ -467,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const createdProduct = await createProductWithPrimaryImages(productData, primaryImagesToUpload);
                     
-                    // console.log de depuração do produto criado
+                    // console.log do produto criado
                     console.log("DEBUG SCRIPT.JS: Produto criado:", createdProduct); 
                     console.log("DEBUG SCRIPT.JS: ID do Produto criado para upload de ficheiros:", createdProduct ? createdProduct.id : "undefined/null");
                     
@@ -496,22 +486,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
                 
-                // Redirecionamento/Atualização da UI após SUCESSO no modo 'create'
+                // Redirecionamento/Atualização 
                 if (mode === 'create') { 
                     closeModal(); 
                     if (typeof window.handleAfterCreate === 'function') { await window.handleAfterCreate(); }
                     else { window.location.reload(); }
                 }
 
-            } catch (error) { // <-- AQUI É O INÍCIO DO SEU BLOCO CATCH
-                // --- SUBSTITUA ESTE BLOCO CATCH PELO CÓDIGO FORNECIDO ---
+            } catch (error) { 
                 const errorMessage = error instanceof Error ? error.message : String(error);
-                console.error("Erro completo no fluxo do produto:", error); // Log o objeto de erro original
-                alert(`Erro: ${errorMessage}`); // Usa a mensagem de erro ou a representação em string
-                // --- FIM DA SUBSTITUIÇÃO ---
+                console.error("Erro completo no fluxo do produto:", error); 
+                alert(`Erro: ${errorMessage}`); 
+               
             } finally {
-                // O estado final do botão para o modo 'create' é gerido aqui.
-                // Para 'edit', o updateProduct.finally já faz o reset.
+               
                 if (createProductBtn.dataset.mode !== 'edit') { 
                     createProductBtn.disabled = false;
                     createProductBtn.textContent = "Criar Produto";
@@ -520,7 +508,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Initial State Setup ---
     validateForm();
     checkImageLimit();
     checkVideoLimit();

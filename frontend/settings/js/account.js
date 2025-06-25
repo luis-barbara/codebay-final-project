@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize components
     initSidebarNavigation();
     initFormValidation();
     initButtons();
@@ -14,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const formData = prepareFormData();
                 
                 try {
-                    // Replace with your actual API endpoint
+                    
                     const response = await fetch('/api/account/update', {
                         method: 'POST',
                         headers: {
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initSidebarNavigation() {
-    // Highlight active menu item
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.nav-item').forEach(item => {
         const link = item.querySelector('a');
@@ -110,7 +108,7 @@ function prepareFormData() {
 }
 
 function initButtons() {
-    // Primary button styling and behavior
+   
     document.querySelectorAll('.btn-primary').forEach(btn => {
         btn.style.backgroundColor = '#5A69EA';
         btn.style.color = 'white';
@@ -131,7 +129,7 @@ function initButtons() {
         });
     });
     
-    // Outline button styling and behavior
+   
     document.querySelectorAll('.btn-outline').forEach(btn => {
         btn.style.backgroundColor = 'transparent';
         btn.style.color = 'white';
@@ -151,7 +149,7 @@ function initButtons() {
             btn.style.backgroundColor = 'transparent';
         });
         
-        // Cancel button behavior
+       
         if (btn.textContent.includes('Cancel')) {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();

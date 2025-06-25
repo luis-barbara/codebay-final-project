@@ -1,4 +1,4 @@
-// Funções para carregar header/footer (mantidas como no original)
+
 async function loadcopyright() {
     const year = new Date().getFullYear();
     if(document.getElementById('copyright-year')) {
@@ -52,8 +52,6 @@ async function setupSidebar() {
 
     closeBtn.addEventListener('click', () => {
         sidebar.classList.remove('show');
-        // A transição do CSS precisa de tempo, por isso usamos um timeout
-        // para adicionar 'hidden' apenas depois da animação de saída.
         setTimeout(() => sidebar.classList.add('hidden'), 600); // 600ms = transition duration
         overlay.classList.add('hidden');
     });
@@ -64,19 +62,17 @@ async function setupSidebar() {
         overlay.classList.add('hidden');
     });
 
-    // --- LÓGICA DO SUBMENU ADICIONADA AQUI ---
+    // LÓGICA DO SUBMENU 
     submenuToggles.forEach(toggle => {
         toggle.addEventListener('click', () => {
-            // Encontra o elemento <li> pai
             const parentMenuItem = toggle.closest('.hamb-sidebar__menu-item--has-submenu');
             
-            // Adiciona ou remove a classe que controla o estado (aberto/fechado)
             if (parentMenuItem) {
                 parentMenuItem.classList.toggle('submenu-is-open');
             }
         });
     });
-    // --- FIM DA LÓGICA DO SUBMENU ---
+    
  }
 async function setupAvatarSidebar() {const avatarSidebar = document.getElementById('avatar-sidebar');
     const avatarOverlay = document.getElementById('avatar-overlay');
@@ -142,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentRealMonthIndex = currentDate.getMonth();
 
     let selectedYear = currentRealYear;
-    let selectedMonthIndex = -1; // -1 para "Ano Inteiro"
+    let selectedMonthIndex = -1; 
 
     const allDashboardData = {};
 
@@ -272,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDashboard(year, monthIndex) {
-        if (monthIndex === -1) { // Vista Anual
+        if (monthIndex === -1) { 
             const yearData = aggregateYearData(year);
             const prevYearData = aggregateYearData(year - 1);
             
@@ -323,14 +319,14 @@ document.addEventListener('DOMContentLoaded', () => {
         clientsChart.update();
     }
     
-    function updateStat(valueEl, percEl, currentValue, prevValue, formatType) { /* ... Função inalterada ... */ }
-    function updateOrdersTable(orders, year) { /* ... Função inalterada ... */ }
+    function updateStat(valueEl, percEl, currentValue, prevValue, formatType) {  }
+    function updateOrdersTable(orders, year) {  }
 
     function createCharts() {
         const defaultFontColor = '#94A3B8';
         const gridColor = 'rgba(255, 255, 255, 0.1)';
         const newColor = '#aa40c0';
-        const newColorClients = '#C475E8'; // Cor original para o gráfico de clientes, para diferenciação
+        const newColorClients = '#C475E8'; 
 
         const revenueGradient = document.getElementById('revenueChart').getContext('2d').createLinearGradient(0, 0, 0, 300);
         revenueGradient.addColorStop(0, 'rgba(170, 64, 192, 0.5)');
@@ -347,10 +343,10 @@ document.addEventListener('DOMContentLoaded', () => {
         clientsChart = new Chart('clientsChart', { type: 'line', data: { datasets: [{ label: 'Clients', borderColor: newColorClients, tension: 0.4, pointRadius: 0 }] }, options: { ...commonOptions, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => `${formatInteger(ctx.parsed.y)} clientes` }}}, scales: { y: { display: false }, x: { display: true, ticks: { color: defaultFontColor }, grid: { display: false } } } } });
     }
 
-    function aggregateYearData(year) { /* ... Função inalterada ... */ }
-    function generateFakeDataForYear(year) { /* ... Função inalterada ... */ }
+    function aggregateYearData(year) {  }
+    function generateFakeDataForYear(year) { }
     
-    // Recopying utility functions to avoid reference errors
+
     updateStat = function(valueEl, percEl, currentValue, prevValue, formatType) {
         const percentage = (prevValue && prevValue > 0) ? ((currentValue - prevValue) / prevValue) * 100 : 0;
         const formattedValue = formatType === 'currency' ? formatCurrency(currentValue) : formatInteger(currentValue);

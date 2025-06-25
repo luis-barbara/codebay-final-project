@@ -43,8 +43,6 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    # Usamos AllowAny para permitir que o pedido chegue a perform_create
-    # onde verificaremos explicitamente a autenticação para a criação.
     permission_classes = [AllowAny] 
 
     def get_queryset(self):
@@ -59,10 +57,8 @@ class ProductViewSet(viewsets.ModelViewSet):
         # A JWTAuthentication do DRF deve já ter tentado autenticar o self.request.user.
         logger.info(f"perform_create: Request received for user {self.request.user} (Authenticated: {self.request.user.is_authenticated})")
 
-        # Se o utilizador não estiver autenticado AQUI, é um problema na autenticação JWT.
         if not self.request.user.is_authenticated:
             logger.error("perform_create: Product creation denied. User is not authenticated, despite token presence.")
-            # Lançar PermissionDenied explícita para dar um 403 claro
             raise PermissionDenied("You must be authenticated to create a product. Please log in.")
 
         # Limite de 10 produtos por usuário
@@ -74,11 +70,11 @@ class ProductViewSet(viewsets.ModelViewSet):
                 raise PermissionDenied("Você atingiu o limite máximo de 10 produtos.")
         except Exception as e:
             logger.error(f"perform_create: Error checking product count for user {self.request.user.email}: {e}")
-            # Se ocorrer um erro ao aceder a self.request.user.products (ex: AnonymousUser), ele será apanhado aqui.
+            # Se ocorrer um erro ao aceder a self.request.user.products (ex: AnonymousUser)
             raise PermissionDenied("An error occurred while verifying user's product limit. Please ensure you are logged in.")
 
 
-        # Cria o produto com o usuário como vendedor (agora que sabemos que está autenticado)
+        # Cria o produto com o utilizador como vendedor 
         try:
             product = serializer.save(seller=self.request.user)
             logger.info(f"perform_create: Product '{product.title}' (ID: {product.id}) created by {self.request.user.email}.")
@@ -100,8 +96,6 @@ class ProductViewSet(viewsets.ModelViewSet):
                 )
             except Exception as e:
                 logger.error(f"perform_create: Error saving image {image.name} for product {product.id}: {e}")
-                # Consider deleting the product if image save fails critically
-                # product.delete() 
                 raise serializers.ValidationError(f"Failed to save image {image.name}: {e}")
         logger.info(f"perform_create: All images processed for product {product.id}.")
 

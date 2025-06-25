@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize buttons
+    
     initButtons();
     
-    // Logout button handler
+    
     const logoutBtn = document.querySelector('.btn-danger');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async function(e) {
             e.preventDefault();
             
             try {
-                // Replace with your actual API endpoint
+                
                 const response = await fetch('/api/auth/logout', {
                     method: 'POST',
                     headers: {
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 if (response.ok) {
-                    // Clear local storage and redirect
+                    
                     localStorage.removeItem('authToken');
                     localStorage.removeItem('user');
                     window.location.href = '../index.html';
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initButtons() {
-    // Danger button styling and behavior
+    
     document.querySelectorAll('.btn-danger').forEach(btn => {
         btn.style.backgroundColor = '#B72324';
         btn.style.color = 'white';
@@ -56,7 +56,7 @@ function initButtons() {
         });
     });
     
-    // Outline button styling and behavior
+    
     document.querySelectorAll('.btn-outline').forEach(btn => {
         btn.style.backgroundColor = 'transparent';
         btn.style.color = 'white';
@@ -76,7 +76,7 @@ function initButtons() {
             btn.style.backgroundColor = 'transparent';
         });
         
-        // Cancel button behavior
+       
         if (btn.textContent.includes('Cancel')) {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();

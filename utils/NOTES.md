@@ -1,16 +1,3 @@
-### django admin:
-
-email: luis_barbara@eticalgarve.com
-password: qwerty
-
-
-
-## Adminer
-
-utilizador: codebay
-senha: qwerty
-
-
 
 ## Stripe Onboarding demo
 
@@ -18,10 +5,12 @@ https://rocketrides.io/
 
 
 ## ngrok terminal install (antes de correr o make compose.start)
-docker run -it --rm -p 4041:4040 ngrok/ngrok http --authtoken 2yHkS8RhM1Dzkb6UVh84XomlXi1_3JM5EQosbHP3oKUJ1cKq3 host.docker.internal:8080
+docker run -it --rm -p 4041:4040 ngrok/ngrok http --authtoken ******* host.docker.internal:8080
 - rodar e ver o url gerado
 - criar novo destino webhook no stripe
 - configurar destino
+- se ngrok instalado no pc, no comand meter: ngrok http 8000
+
 
 ### O que selecionar (mínimo recomendado)
 Para começar com pagamentos, o mínimo geralmente é:
@@ -54,8 +43,6 @@ customer.subscription.deleted
 
 - depois meter url de destino e confirmar
 
-- https://954d-85-245-162-240.ngrok-free.app/api/payments/stripe-webhook/
-
-- url + /api/payments/stripe-webhook/
+- url ngrok + /api/payments/stripe-webhook/
 
 

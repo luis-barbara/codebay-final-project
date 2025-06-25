@@ -1,70 +1,205 @@
-# codebay-final-project
-A marketplace to buy and sell digital assets
 
+# CodeBay - Digital Marketplace Platform
+
+CodeBay is a digital marketplace where developers and creators can buy and sell code snippets, templates, graphics, and other digital assets. The platform features secure transactions, user authentication, and integrations with Stripe for payments and GetStream for real-time messaging.
+
+## Key Features
+- **User Authentication**: Secure signup, login, and logout
+- **Product Management**: Create, edit, view, and delete digital products
+- **Payment Processing**: Stripe integration for secure transactions
+- **Real-time Messaging**: GetStream integration for buyer-seller communication
+- **Containerized Architecture**: Docker Compose for easy deployment
+- **Reliable Database**: PostgreSQL for data storage
+- **Comprehensive Testing**: Pytest for unit and integration tests
+
+## Technology Stack
+- **Backend**: Django
+- **Database**: PostgreSQL
+- **Payments**: Stripe API
+- **Containerization**: Docker + Docker Compose
+- **Dependency Management**: Poetry
 
 ## Project Structure
 ```bash
-├── products/                                   # Django app for product management
-│   ├── migrations/                             # Database migrations
-│   ├── templates/                              # HTML templates for rendering views
-│   │   ├── products/                           # Templates related to product management
-│   │   │   ├── product_confirm_delete.html     # Confirmation page for deleting a product
-│   │   │   ├── product_list.html               # Page listing all products
-│   │   │   ├── product_update.html             # Form for updating an existing product
-│   │   │   ├── create_product.html             # Form for creating a new product
-│   │   │   ├── product_detail.html             # Single product detail view
-│   │   │   ├── checkout_success.html           # Stripe checkout success page
-│   │   │   ├── ...
-│   │   │   ├── index.html                      # Homepage for characters
-│   │   ├── registration/                       # Authentication-related templates
-│   │   │   ├── signin.html                     # User login page
-│   │   │   ├── signup.html                     # User signup page
-│   │   ├── base.html                           # Base template for consistent styling across pages
-│   ├── tests/                                  # Unit tests for the application
-│   ├── __init__.py
-│   ├── admin.py                                # Django Admin configuration
-│   ├── apps.py                                 # Application configuration
-│   ├── product.json                            # Sample data for testing database
-│   ├── forms.py                                # Form handling logic
-│   ├── stripe_service.py                       # Stripe payment logic
-│   ├── getstream_service.py                    # GetStream messaging logic
-│   ├── models.py                               # Database models defining characters
-│   ├── tests.py                                # Unit tests for character-related features
-│   ├── urls.py                                 # URL routing for character-related views
-│   ├── views.py                                # Application views handling requests
+.
+├── .DS_Store
+├── .devcontainer/
+│   └── devcontainer.json
+├── .dockerignore
+├── .env
+├── .gitignore
+├── LICENSE
+├── Makefile
+├── NOTES.md
+├── README.md
+├── backend/
+│   ├── Dockerfile
+│   ├── manage.py
+│   ├── poetry.lock
+│   ├── pyproject.toml
+│   ├── product-django.json
+│   ├── pytest.ini  
+├── accounts/
+│   ├── __pycache__/
+│   ├── defaults/
+│   └── migrations/
+│       └── __pycache__/
+├── chat/
+│   ├── __pycache__/
+│   └── migrations/
+│       └── __pycache__/
+├── codebay/
+│   └── __pycache__/
+├── logs/
+├── marketplace/
+│   ├── __pycache__/
+│   └── migrations/
+│       └── __pycache__/
+├── media/
+│   └── products/
+│       └── images/
+│        │    └── 2025/
+│        └── thumbnails/
 │ 
-├── codebay/                                    # Django project settings and configurations
-│   ├── __init__.py
-│   ├── asgi.py                                 # ASGI application entry point (for async support)
-│   ├── manage.py                               # 
-│   ├── settings.py                             # Django settings (database, middleware, authentication, etc.)
-│   ├── urls.py                                 # Project-wide URL configuration
-│   ├── wsgi.py                                 # WSGI application entry point (for production servers)
+├── payments/
+│       ├── __pycache__/
+│       └── migrations/
 │ 
-├── static/                                     # Static files (CSS, JS, images)
-├── docker-compose.yml                          # Docker Compose configuration for services (web, db, adminer)
-├── Dockerfile                                  # Docker setup for containerized deployment
-├── Makefile                                    # Helper commands for managing the project easily
-├── LICENSE                                     # Licensing information for the project
-├── poetry.lock                                 # Poetry dependencies lockfile (ensures consistency)
-├── pyproject.toml                              # Poetry dependency manager configuration
-├── pytest.ini                                  # Pytest configuration for test discovery and execution
-├── manage.py                                   # Django management commands entry point
-└── README.md                                   # Project documentation with setup, usage, and deployment instructions
+├── storage/
+│       ├── __pycache__/
+│       └── migrations/
+├── frontend/
+├── Contact/
+├── Wishlist/
+├── about/
+├── analytics/
+├── components/
+│   ├── css/
+│   ├── images/
+│   └── js/
+├── homepage/
+├── my_products/
+├── myorders/
+├── myprofile/
+├── product_details/
+├── registrations/
+├── settings/
+│   ├── css/
+│   └── js/
+├── stripe/
+├── support/
+
 ```
 
+## 🚀 Features
+
+# User Authentication
+
+Secure registration and login system  
+Password reset functionality   
+Profile management  
+
+# Product Management
+
+Create digital products with titles, descriptions, and pricing   
+Upload product files (code snippets, templates, graphics)   
+Categorize products for easy discovery   
+Edit and delete products   
+ 
+# Payment Processing
+
+Stripe integration for secure payments   
+Checkout process with success/failure handling   
+Purchase history tracking   
+
+# Docker Deployment
+
+Containerized PostgreSQL database   
+Easy setup with Docker Compose   
+Adminer for database management   
+
+# Requirements
+
+Before you begin, ensure you have the following installed:
+- [Docker](https://www.docker.com/get-started) 
+- [Poetry](https://python-poetry.org/docs/#installation)
+- [Python 3.12](https://www.python.org/downloads/)
 
 
+
+## **🛠️ Technology Stack**  
+| Layer          | Technology           |
+|----------------|----------------------|
+| **Frontend**   | Html, Css, Javascript|
+| **Backend**    | Javascript, Django   |
+|                | Python, Django Rest  |
+| **Database**   | Postgres             |
+| **Auth**       | JWT, OAuth 2.0       |
+| **Storage**    | AWS S3 + Boto3       |
+
+
+## 🚀 Getting Started
+-Prerequisites:
+
+-Django (>=5.1.7,<6.0.0)"   
+-Python-dotenv (>=1.0.1,<2.0.0)"   
+-Openai (>=1.68.2,<2.0.0)"   
+-Psycopg2-binary (>=2.9.10,<3.0.0)"   
+-Uvicorn (>=0.34.0,<0.35.0)"   
+-Whitenoise (>=6.9.0,<7.0.0)"    
+-Typer (>=0.15.2,<0.16.0)"    
+-Djangorestframework (>=3.16.0,<4.0.0)"   
+-Django-allauth (>=65.9.0,<66.0.0)"   
+-Pillow (>=11.2.1,<12.0.0)"   
+-Djangorestframework-simplejwt (>=5.5.0,<6.0.0)"   
+-Social-auth-app-django (>=5.4.3,<6.0.0)"   
+-Django-storages (>=1.14.6,<2.0.0)"   
+-Google-api-python-client (>=2.171.0,<3.0.0)"   
+-Google-auth-httplib2 (>=0.2.0,<0.3.0)"   
+-Google-auth-oauthlib (>=1.2.2,<2.0.0)"   
+-Boto3 (>=1.38.31,<2.0.0)"   
+-Stripe (>=12.2.0,<13.0.0)"   
+-Stream-chat (>=4.24.0,<5.0.0)"   
+-Django-cors-headers (>=4.7.0,<5.0.0)"   
+-AWS S3 account (for file storage) or alternative   
+-LiveServer Extension   
+
+
+
+## Installation
+# Clone the Repository
 ```bash
-marketplace/
-├── admin.py          # Registra seus models para o admin do Django
-├── apps.py           # Configuração da app
-├── forms.py          # Formulários Django (se usar)
-├── models.py         # Definição dos models (User, Product, etc)
-├── services/
-│   ├── stripe_service.py     # Integração com Stripe
-│   └── getstream.py          # Integração com GetStream
-├── tests.py          # Testes unitários e de integração
-├── urls.py           # URLs da app marketplace
-├── views.py          # Views (API endpoints, páginas, etc)
+git clone https://github.com/luis-barbara/codebay-final-project.git
 ```
+
+## Set Up Environment Variables
+Create a `.env` file in the root directory and configure it with the necessary settings:
+```bash
+POSTGRES_DB=your_database
+POSTGRES_USERNAME=your_username
+POSTGRES_PASSWORD=your_password
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+DJANGO_DEBUG=False
+```
+Make sure to replace `yourpassword` and `your_openai_api_key` with your actual PostgreSQL password and OpenAI API key.
+
+
+# Run the application:
+```bash
+make compose.start
+make migrations
+make compose.migrate
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+
+
+
+
+
+

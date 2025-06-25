@@ -11,19 +11,16 @@ console.log('Product details script loaded');
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // 1. Obter ID do produto
+    // ID do produto
     const urlParams = new URLSearchParams(window.location.search);
     let productId = urlParams.get('id');
 
-    // 2. Buscar dados do produto
+    // dados do produto
     const product = await fetchProduct(productId);
     console.log(product)
     if (!product) return;
 
-    // 3. Atualizar a UI
     updateProductUI(product);
-
-    // 4. Configurar botão de compra
     setupBuyButton(product.id);
 
   } catch (error) {
@@ -32,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Função para buscar produto
+// produto
 async function fetchProduct(productId) {
   try {
     const response = await fetch(`${API_BASE_URL}/public/products/${productId}/`);
@@ -50,7 +47,7 @@ async function fetchProduct(productId) {
   }
 }
 
-// Função para atualizar a interface
+
 async function updateProductUI(product) {
   try {
     document.querySelector('.product-title').textContent = product.title || 'Produto sem nome';
@@ -93,15 +90,15 @@ async function updateProductUI(product) {
         filesList.appendChild(li);
       });
 
-      // Detectar ficheiro README (case insensitive)
+      // Detectar ficheiro README 
       const readmeFile = product.files.find(f => f.title.toLowerCase().includes('readme'));
       const readmeContainer = document.querySelector('.readme');
 
       if (readmeContainer) {
-        readmeContainer.innerHTML = '<h2>Readme</h2>'; // Reset cabeçalho
+        readmeContainer.innerHTML = '<h2>Readme</h2>'; 
 
         if (readmeFile) {
-          // Buscar conteúdo do ficheiro readme
+          // conteúdo do ficheiro readme
           try {
             const readmeResponse = await fetch(readmeFile.file_url);
             if (!readmeResponse.ok) throw new Error('Erro ao carregar readme');
@@ -110,7 +107,7 @@ async function updateProductUI(product) {
 
             // Exibir o conteúdo dentro da caixa readme
             const pre = document.createElement('pre');
-            pre.style.whiteSpace = 'pre-wrap'; // permite quebra de linha automática
+            pre.style.whiteSpace = 'pre-wrap'; 
             pre.textContent = readmeText;
 
             readmeContainer.appendChild(pre);
@@ -161,7 +158,7 @@ function setupBuyButton(productId) {
   });
 }
 
-// Função para mostrar erros ao usuário
+// Função para mostrar erros ao user
 function showErrorToUser(message = 'Ocorreu um erro') {
   const errorElement = document.querySelector('.error-message') || document.createElement('div');
   errorElement.className = 'error-message';

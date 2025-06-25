@@ -108,7 +108,6 @@ const wishlistManager = {
   };
   
 
-  // Initialize the wishlist manager when DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
     wishlistManager.init();
   });

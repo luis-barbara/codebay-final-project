@@ -5,7 +5,7 @@ import { authFetch } from '../registrations/auth.js';
 
 let stripePromise = null;
 
-// Função para buscar a chave pública do backend e criar instância Stripe
+// Função para chave pública do backend e criar instância Stripe
 async function getStripe() {
   if (!stripePromise) {
     try {
@@ -28,9 +28,9 @@ export async function createCheckoutSession(productId) {
   try {
     const stripe = await getStripe();  
 
-    // Mostrar um carregando para o usuário enquanto cria a sessão de checkout
+    
     document.querySelector('.buy-btn').textContent = 'Loading...';
-    document.querySelector('.buy-btn').disabled = true;  // Desabilitar o botão enquanto a requisição é feita
+    document.querySelector('.buy-btn').disabled = true;  
 
     const response = await authFetch('http://localhost:8000/api/payments/create-checkout-session/', {
       method: 'POST',

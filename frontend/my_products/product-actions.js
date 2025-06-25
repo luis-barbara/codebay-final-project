@@ -2,35 +2,22 @@
 
 import { authFetch } from '../registrations/auth.js'; 
 
-/**
- * Função auxiliar interna para obter valores do modal, sabendo que é o script.js que gere o DOM.
- * @param {string} id - ID do elemento DOM.
- * @returns {string} O valor do input.
- */
+
+
 function getModalInputValue(id) {
     return document.getElementById(id)?.value?.trim() || '';
 }
 
-/**
- * Função auxiliar interna para definir valores no modal, sabendo que é o script.js que gere o DOM.
- * @param {string} id - ID do elemento DOM.
- * @param {string} value - O valor a definir.
- */
+
 function setModalInputValue(id, value) {
     const input = document.getElementById(id);
     if (input) input.value = value;
 }
 
-/**
- * Abre o modal de edição e preenche os campos.
- * @param {Object} product - O objeto produto a ser editado.
- * @param {Function} validateFormCallback - Callback para validar o formulário após preenchimento.
- */
+
 export function openEditModal(product, validateFormCallback) {
-    // Assumimos que 'modalOverlay' é o ID do modal principal (no script.js)
     document.getElementById("modalOverlay").style.display = "flex";
 
-    // Preenche os campos do formulário do modal
     setModalInputValue("title", product.title);
     setModalInputValue("description", product.description);
     setModalInputValue("categories", product.category);
@@ -43,28 +30,21 @@ export function openEditModal(product, validateFormCallback) {
     createProductBtn.dataset.productId = product.id;
     createProductBtn.textContent = "Edit Product"; 
 
-    // Chama o callback para revalidar o formulário principal
     if (typeof validateFormCallback === 'function') {
         validateFormCallback(); 
     }
-    // Nota: Lógica de pré-visualização de imagens/ficheiros para edição (se houver)
-    // teria que ser tratada no script.js que gere o modal, e não aqui.
+    
 }
 
-/**
- * Atualiza um produto existente no backend.
- * @param {number} productId - O ID do produto a ser atualizado.
- * @param {Object} updatedData - Os dados atualizados do produto (já validados).
- * @param {Object} callbacks - Objeto com funções de callback: {closeModal, handleAfterCreate, setButtonState}
- */
+
 export async function updateProduct(productId, updatedData, callbacks) {
     const { closeModal, handleAfterCreate, setButtonState } = callbacks;
 
-    setButtonState(true, "Updating..."); // Desativa e muda texto
+    setButtonState(true, "Updating..."); 
 
     const MIN_TITLE_LENGTH = 3;
     const MIN_DESC_LENGTH = 10; 
-    // Validação robusta ANTES de enviar para a API (redundante se o script.js já valida, mas seguro)
+   
     if (updatedData.title.length < MIN_TITLE_LENGTH) { alert(`Title must be at least ${MIN_TITLE_LENGTH} characters.`); setButtonState(false, "Edit Product"); return; }
     if (updatedData.description.length < MIN_DESC_LENGTH) { alert(`Description must be at least ${MIN_DESC_LENGTH} characters.`); setButtonState(false, "Edit Product"); return; }
     if (updatedData.category === '') { alert('Category is required.'); setButtonState(false, "Edit Product"); return; }
@@ -85,26 +65,21 @@ export async function updateProduct(productId, updatedData, callbacks) {
         }
 
         alert("Product updated successfully!");
-        closeModal(); // Chama o callback para fechar o modal
-        await handleAfterCreate(); // Chama o callback para atualizar a UI
+        closeModal(); 
+        await handleAfterCreate(); 
 
     } catch (error) {
         console.error("Error updating product:", error);
         alert(`Error updating product: ${error.message}`);
     } finally {
-        // Reseta o estado do botão para o modo 'create'
         setButtonState(false, "Create Product"); 
         document.getElementById("createProductBtn").dataset.mode = 'create';
         delete document.getElementById("createProductBtn").dataset.productId;
-        // Não chamamos validateForm aqui, pois já está implícito no setButtonState para o modo 'create'
+        
     }
 }
 
-/**
- * Exclui um produto do backend.
- * @param {number} productId - O ID do produto a ser excluído.
- * @param {Object} callbacks - Objeto com funções de callback: {closeModal, handleAfterCreate}
- */
+
 export async function deleteProduct(productId, callbacks) {
     const { closeModal, handleAfterCreate } = callbacks;
 
@@ -123,11 +98,11 @@ export async function deleteProduct(productId, callbacks) {
         }
 
         alert("Product deleted successfully!");
-        closeModal(); // Chama o callback para fechar o modal
+        closeModal(); 
 
-        document.getElementById(`product-${productId}`)?.remove(); // Remove o cartão da UI
+        document.getElementById(`product-${productId}`)?.remove(); 
         
-        await handleAfterCreate(); // Chama o callback para atualizar a UI
+        await handleAfterCreate(); 
 
     } catch (error) {
         console.error("Error deleting product:", error);
@@ -135,10 +110,7 @@ export async function deleteProduct(productId, callbacks) {
     }
 }
 
-/**
- * Compartilha o link de um produto.
- * @param {number} productId - O ID do produto a ser compartilhado.
- */
+
 export function shareProduct(productId) {
     const productUrl = `http://localhost:5500/frontend/product_details/index.html?id=${productId}`; 
 
@@ -159,13 +131,9 @@ export function shareProduct(productId) {
     }
 }
 
-/**
- * Publica um produto no marketplace.
- * @param {number} productId - O ID do produto a ser publicado.
- * @param {Object} callbacks - Objeto com funções de callback: {handleAfterAction, setButtonState (opcional para o botão de publicar)}
- */
+
 export async function publishProduct(productId, callbacks) {
-    const { handleAfterAction } = callbacks; // setButtonState é opcional aqui, depende de onde está o botão de publish
+    const { handleAfterAction } = callbacks; 
 
     const confirmed = confirm("Tem certeza que quer publicar este produto? Pode ser necessário completar o onboarding do Stripe.");
     if (!confirmed) return;
@@ -192,7 +160,7 @@ export async function publishProduct(productId, callbacks) {
             alert("Produto publicado com sucesso!");
         }
         
-        await handleAfterAction(); // Atualiza a lista de produtos na UI (recarregará a página)
+        await handleAfterAction(); 
 
     } catch (error) {
         console.error("Erro ao publicar produto:", error);
@@ -200,11 +168,7 @@ export async function publishProduct(productId, callbacks) {
     }
 }
 
-/**
- * Despublica um produto do marketplace.
- * @param {number} productId - O ID do produto a ser despublicado.
- * @param {Object} callbacks - Objeto com funções de callback: {handleAfterAction}
- */
+
 export async function unpublishProduct(productId, callbacks) {
     const { handleAfterAction } = callbacks;
 
@@ -224,7 +188,7 @@ export async function unpublishProduct(productId, callbacks) {
         }
 
         alert("Produto despublicado com sucesso!");
-        await handleAfterAction(); // Atualiza a lista de produtos na UI (recarregará a página)
+        await handleAfterAction(); 
 
     } catch (error) {
         console.error("Erro ao despublicar produto:", error);
@@ -232,11 +196,9 @@ export async function unpublishProduct(productId, callbacks) {
     }
 }
 
-/**
- * Inicia o onboarding no Stripe para o vendedor atual.
- */
+
 export async function startStripeOnboarding(id) {
-  const yourAccessToken = localStorage.getItem("accessToken"); // <- Pega do localStorage
+  const yourAccessToken = localStorage.getItem("accessToken"); 
 
   if (!yourAccessToken) {
     alert("Acesso não autorizado. Faça login novamente.");
@@ -255,7 +217,7 @@ export async function startStripeOnboarding(id) {
 
     if (response.ok) {
       const data = await response.json();
-      window.location.href = data.url; // redireciona o usuário para o Stripe
+      window.location.href = data.url; 
     } else {
       const errorData = await response.json().catch(() => ({}));
       console.error("Erro ao iniciar onboarding Stripe:", errorData);

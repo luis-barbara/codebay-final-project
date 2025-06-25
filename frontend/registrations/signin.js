@@ -1,14 +1,11 @@
 // frontend/registrations/signin.js
-// Only for login, store tokens and redirect
+
 
 // Import saveTokens from your auth.js module
-import { saveTokens } from './auth.js'; // Assuming auth.js is in the same directory
+import { saveTokens } from './auth.js'; 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // If already has token, redirects to main page
-    // NOTE: This check should ideally be done by the main application logic
-    // or after a refresh attempt, not on every signin page load if you expect refresh.
-    // However, for initial redirection after a successful manual login, it's fine.
+   
     if (localStorage.getItem('accessToken')) {
         window.location.href = '../homepage/index.html';
         return;
@@ -144,6 +141,5 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'http://localhost:8000/api/accounts/oauth/github/';
     });
 
-    // Initialize
     validateForm();
 });

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize components
+    
     initSidebarNavigation();
     initAvatarUpload();
     initButtons();
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = prepareFormData();
             
             try {
-                // Replace with your actual API endpoint
+                
                 const response = await fetch('/api/profile/update', {
                     method: 'POST',
                     headers: {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initSidebarNavigation() {
-    // Highlight active menu item
+   
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.nav-item').forEach(item => {
         const link = item.querySelector('a');
@@ -60,7 +60,7 @@ function initAvatarUpload() {
         avatarUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                if (file.size > 2 * 1024 * 1024) { 
                     showErrorAlert('Image size should be less than 2MB');
                     return;
                 }
@@ -68,7 +68,7 @@ function initAvatarUpload() {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     avatarPreview.src = event.target.result;
-                    uploadAvatar(file); // Send to server
+                    uploadAvatar(file); 
                 };
                 reader.readAsDataURL(file);
             }
@@ -139,7 +139,7 @@ function prepareFormData() {
 }
 
 function initButtons() {
-    // Primary button styling and behavior
+    
     document.querySelectorAll('.btn-primary').forEach(btn => {
         btn.style.backgroundColor = '#5A69EA';
         btn.style.color = 'white';
@@ -160,7 +160,7 @@ function initButtons() {
         });
     });
     
-    // Outline button styling and behavior
+    
     document.querySelectorAll('.btn-outline').forEach(btn => {
         btn.style.backgroundColor = 'transparent';
         btn.style.color = 'white';
@@ -180,7 +180,7 @@ function initButtons() {
             btn.style.backgroundColor = 'transparent';
         });
         
-        // Cancel button behavior
+        
         if (btn.textContent.includes('Cancel')) {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -189,7 +189,7 @@ function initButtons() {
         }
     });
     
-    // Danger button styling (for remove avatar)
+    
     document.querySelectorAll('.btn-danger').forEach(btn => {
         btn.style.backgroundColor = '#B72324';
         btn.style.color = 'white';

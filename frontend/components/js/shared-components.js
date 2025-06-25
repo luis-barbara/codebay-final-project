@@ -39,19 +39,6 @@ async function loadHeaderBasedOnAuth() {
 }
 
 
-// // Load product cards
-// async function loadCard() {
-//     const response = await fetch('../components/card.html');
-//     const card = await response.text();
-//     for (let i = 0; i < 9; i++) {
-//         const cardContainer = document.getElementById('product_card_' + i);
-//         if (cardContainer) {
-//             cardContainer.innerHTML += card;
-//         }
-//     }
-// }
-
-
 
 // Load hamburger menu and setup sidebar
 async function loadHamb() {
@@ -60,7 +47,6 @@ async function loadHamb() {
     const hambEl = document.getElementById('hamb');
     if (hambEl) {
         hambEl.innerHTML = hamb;
-        // Remove 'hidden' since CSS controls visibility
         const sidebar = document.getElementById('hamburger-sidebar');
         if (sidebar) {
             sidebar.classList.remove('hidden');
@@ -101,7 +87,7 @@ async function setupSidebar() {
 
     function hideSidebar() {
         sidebar.classList.remove('show');
-        setTimeout(() => sidebar.classList.add('hidden'), 600); // wait for animation to finish
+        setTimeout(() => sidebar.classList.add('hidden'), 600); 
         overlay.classList.add('hidden');
     }
 

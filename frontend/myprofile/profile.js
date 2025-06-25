@@ -27,23 +27,13 @@ function setupViewOptions() {
             viewButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
 
-            // Here you would typically load different product views
             const viewType = this.textContent.toLowerCase();
             loadProducts(viewType);
         });
     });
 }
 
-/**
- * Loads products based on view type
- */
 
-/**
- * Renders products in the grid
- */
-/**
- * Sets up the README editor functionality
- */
 function setupReadmeEditor() {
     const editBtn = document.querySelector('.edit-readme-btn');
     const readmeContent = document.querySelector('.readme-content');
@@ -57,7 +47,6 @@ function setupReadmeEditor() {
 
     editBtn.addEventListener('click', async () => {
         if (isEditing) {
-            // === SALVAR NO BACKEND ===
             const newBio = readmeContent.innerText.trim();
             const token = localStorage.getItem("accessToken");
 
@@ -69,7 +58,7 @@ function setupReadmeEditor() {
 
             try {
                 const email = "mopolan547@cristout.com";
-                const encodedEmail = encodeURIComponent(email); // bom hábito
+                const encodedEmail = encodeURIComponent(email); 
                 const url = `http://localhost:8000/api/accounts/profile/${encodedEmail}/`;
                 const response = await fetch(url, {
                     method: "PATCH",
@@ -103,7 +92,7 @@ function setupReadmeEditor() {
             }
 
         } else {
-            // === ENTRAR NO MODO DE EDIÇÃO ===
+            
             readmeContent.setAttribute('contenteditable', 'true');
             readmeContent.focus();
             editBtn.innerHTML = '<i class="fas fa-check"></i> Save';
@@ -113,13 +102,9 @@ function setupReadmeEditor() {
 }
 
 
-// ======================
-// INITIALIZATION
-// ======================
 
-/**
- * Main initialization function
- */
+// INITIALIZATION
+
 async function initializeProfilePage() {
     // Load all components
 
@@ -137,14 +122,13 @@ async function initializeProfilePage() {
     }
 
     // Load profile info
-    await showProfile(); // 👈 Move para aqui
+    await showProfile(); 
 
     // Setup profile functionality
     setupViewOptions();
     setupReadmeEditor();
 
 
-    // Setup any additional components
     if (typeof setupNotificationDropdown === 'function') {
         setupNotificationDropdown();
     }
@@ -157,7 +141,6 @@ async function initializeProfilePage() {
 }
 
 
-// Start the page initialization when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializeProfilePage);
 
 

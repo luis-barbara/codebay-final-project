@@ -136,6 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  validateForm(); // Inicializa com botão disabled
+  validateForm(); 
 });
 

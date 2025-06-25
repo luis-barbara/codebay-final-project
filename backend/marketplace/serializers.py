@@ -82,7 +82,6 @@ class MediaSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        # A criação pode ser ajustada para associar a mídia ao produto
         product = self.context.get('product')
         if product:
             validated_data['product'] = product  # Associar o produto
@@ -93,7 +92,7 @@ class MediaSerializer(serializers.ModelSerializer):
         # A atualização pode garantir que o campo 'is_primary' seja validado corretamente
         product = self.context.get('product')
         if product:
-            validated_data['product'] = product  # Atualiza o produto se necessário
+            validated_data['product'] = product  
         instance = super().update(instance, validated_data)
         return instance
 
@@ -106,7 +105,6 @@ class ProductSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
     files = ProjectFileSerializer(many=True, read_only=True)
     
-    # Removido file do serializer principal (será tratado separadamente)
     class Meta:
         model = Product
         fields = [
@@ -129,7 +127,7 @@ class ProductSerializer(serializers.ModelSerializer):
         """
         errors = {}
         
-        # Validação condicional dos campos
+        # Validação dos campos
         if 'title' in data and len(data['title']) < 3:
             errors['title'] = "Deve ter pelo menos 3 caracteres"
             

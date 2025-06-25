@@ -36,7 +36,7 @@ export function isLoggedIn() {
 
 // URL do endpoint de refresh de token e da página de login
 const TOKEN_REFRESH_URL = "http://localhost:8000/api/token/refresh/";
-const LOGIN_URL = "http://localhost:5500/frontend/registrations/signin.html"; // Ajuste se a sua URL de login for diferente
+const LOGIN_URL = "http://localhost:5500/frontend/registrations/signin.html"; 
 
 // Logout: apaga tokens e redireciona para login
 export function logout() {
@@ -68,44 +68,42 @@ async function refreshAccessToken() {
         if (!response.ok) {
             const errorData = await response.json();
             console.error("Failed to refresh token (server response):", response.status, errorData);
-            logout(); // Refresh falhou (ex: refresh token inválido/expirado), força logout
+            logout(); 
             return null;
         }
 
         const data = await response.json();
-        saveTokens(data.access, data.refresh); // Salva os novos tokens (access e refresh)
+        saveTokens(data.access, data.refresh);
         console.log("Token refreshed successfully. New Access Token obtained.");
-        return data.access; // Retorna o novo access token
+        return data.access; 
     } catch (error) {
         console.error("Network error during token refresh:", error);
-        logout(); // Erro de rede durante refresh, força logout
+        logout(); 
         return null;
     }
 }
 
-// Wrapper para fetch que já envia o token no header e trata erros (ex: token expirado/refresh)
-export async function authFetch(url, options = {}, isRetry = false) { // isRetry adicionado para evitar loops infinitos
+// Wrapper para fetch 
+export async function authFetch(url, options = {}, isRetry = false) { 
     let accessToken = getAccessToken();
     const headers = {
         ...options.headers,
     };
 
-    // Lógica para adicionar o token ao header se existir
+    // Lógica para adicionar o token ao header 
     if (accessToken) {
         headers['Authorization'] = `Bearer ${accessToken}`;
-    } else if (!isRetry) { // Se não há token e não é uma retry, tenta refrescar antes de falhar
+    } else if (!isRetry) { 
         console.warn("AuthFetch called without initial access token. Attempting refresh.");
-        accessToken = await refreshAccessToken(); // Tenta obter um token novo
+        accessToken = await refreshAccessToken(); 
         if (accessToken) {
-            headers['Authorization'] = `Bearer ${accessToken}`; // Adiciona o novo token ao header
+            headers['Authorization'] = `Bearer ${accessToken}`; 
         } else {
             console.error("Cannot proceed: No valid token after initial refresh attempt.");
-            // Retorna uma resposta de erro para simular um 401 e parar a execução
             return new Response(JSON.stringify({ detail: "Authentication required" }), { status: 401, headers: { 'Content-Type': 'application/json' } });
         }
-    } else { // Se não há token e é uma retry, significa que o refresh na primeira tentativa também falhou
+    } else { 
         console.error("Cannot proceed: No valid token after retry attempt.");
-        // Retorna uma resposta de erro para simular um 401 e parar a execução
         return new Response(JSON.stringify({ detail: "Authentication required (retry failed)" }), { status: 401, headers: { 'Content-Type': 'application/json' } });
     }
 
@@ -114,18 +112,15 @@ export async function authFetch(url, options = {}, isRetry = false) { // isRetry
         headers,
     });
 
-    // Se a resposta for 401 (Unauthorized) ou 403 (Forbidden) E não estamos já a tentar refrescar (isRetry é false)
+
     if ((response.status === 401 || response.status === 403) && !isRetry) {
         console.warn(`AuthFetch received ${response.status}. Token might be expired or invalid. Attempting to refresh token and retry original request.`);
-        const newAccessToken = await refreshAccessToken(); // Tenta refrescar o token
+        const newAccessToken = await refreshAccessToken(); 
 
         if (newAccessToken) {
-            // Se um novo access token foi obtido, retenta a requisição original
-            return authFetch(url, options, true); // Chama authFetch novamente com o novo token e marca como retry
+            return authFetch(url, options, true); 
         } else {
-            // Se o refresh falhou (newAccessToken é null), significa que logout já foi chamado pelo refreshAccessToken
             console.error("Token refresh failed. User needs to log in again.");
-            // Retorna a resposta 401/403 original para sinalizar ao chamador que a autenticação falhou
             return response; 
         }
     }
