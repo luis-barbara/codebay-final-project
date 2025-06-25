@@ -34,6 +34,11 @@ CodeBay is a digital marketplace where developers and creators can buy and sell 
 ├── README.md
 ├── backend/
 │   ├── Dockerfile
+│   ├── manage.py
+│   ├── poetry.lock
+│   ├── pyproject.toml
+│   ├── product-django.json
+│   ├── pytest.ini  
 ├── accounts/
 │   ├── __pycache__/
 │   ├── defaults/
@@ -83,7 +88,7 @@ CodeBay is a digital marketplace where developers and creators can buy and sell 
 │   └── js/
 ├── stripe/
 ├── support/
-├── docker-compose.yml
+
 ```
 
 ## 🚀 Features
