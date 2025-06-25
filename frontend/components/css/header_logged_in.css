@@ -1,0 +1,108 @@
+.header {
+    background-color: #020408;
+    color: #c8c9cd;
+    padding: 0px 32px;
+    display: flex;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.6px solid #6b6e72;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.left-section,
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-circle:hover {
+    cursor: pointer;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-icon-img {
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+}
+
+
+.menu-icon,
+.icon {
+    width: 24px;
+    height: 24px;
+    fill: #c8c9cd;
+    cursor: pointer;
+
+}
+
+.logo {
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+}
+
+.brand {
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.brand:hover {
+    cursor: pointer;
+    transition-duration: 100ms;
+    color: #c8c9cd;
+}
+
+
+
+.avatar {
+    width: 115%;
+    height: 115%;
+    object-fit: cover;
+}
+
+.hamburger {
+    padding: 3px 3px 0px 3px;
+    border: 0.6px solid #c8c9cd;
+    border-radius: 5px;
+}
+
+
+.icons:hover {
+    cursor: pointer;
+    transition-duration: 200ms;
+    color: #ffffff;
+}
+
+.icons_box {
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}

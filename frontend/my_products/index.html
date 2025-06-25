@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Products - CodeBay</title>
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/card.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="head"></div>
+
+    <div class="page-layout">
+        
+        <aside class="filters-panel">
+            <h2>Coming soon...</h2>
+            <div class="filter-group">
+                <h3>Sort by</h3>
+                <label><input type="radio" name="sort" checked> Newest</label>
+                <label><input type="radio" name="sort"> Best selling</label>
+                <label><input type="radio" name="sort"> Price: Low to High</label>
+                <label><input type="radio" name="sort"> Price: High to Low</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Categories</h3>
+                <label><input type="checkbox"> Templates</label>
+                <label><input type="checkbox"> Landing pages</label>
+                <label><input type="checkbox"> UI kits</label>
+                <label><input type="checkbox"> SaaS tools</label>
+                <label><input type="checkbox"> Scripts</label>
+                <label><input type="checkbox"> AI bots</label>
+                <label><input type="checkbox"> No-code</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Languages / Stack</h3>
+                <label><input type="checkbox"> Javascript</label>
+                <label><input type="checkbox"> Python</label>
+                <label><input type="checkbox"> HTML</label>
+                <label><input type="checkbox"> CSS</label>
+                <label><input type="checkbox"> React</label>
+                <label><input type="checkbox"> C</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <input type="range" min="0" max="1000" />
+            </div>
+
+            <div class="filter-group">
+                <h3>Rating</h3>
+                <label><input type="checkbox"> 5 stars</label>
+                <label><input type="checkbox"> 4 stars & up</label>
+                <label><input type="checkbox"> 3 stars & up</label>
+                <label><input type="checkbox"> 2 stars & up</label>
+            </div>
+        </aside>
+
+
+
+        <main class="main-content">
+
+            <div class="wishlist-header">
+                <h1>My Products</h1>
+                <div id="modal_btnbox">
+                    <button id="openModalBtn">Add Product</button>
+                </div>
+            </div>
+
+            <button class="toggle-filters">Show Filters</button>
+
+
+
+            <input type="text" class="search-bar" id="search_bar" placeholder="Search products...">
+            <div class="card-grid">
+
+
+            </div>
+
+        </main>
+    </div>
+
+
+    <div id="foot"></div>
+
+
+
+
+    <div id="filters-overlay" class="overlay hidden"></div>
+    <div id="filters-sidebar" class="sidebar filters-sidebar hidden">
+        <div class="sidebar-header">
+            <h3 style="margin: 0;">Filters</h3>
+            <button id="close-filters-sidebar" class="close-btn">&times;</button>
+        </div>
+        <div class="filter-group">
+            <h3>Sort by</h3>
+            <label><input type="radio" name="sort" checked> Newest</label>
+            <label><input type="radio" name="sort"> Best selling</label>
+            <label><input type="radio" name="sort"> Price: Low to High</label>
+            <label><input type="radio" name="sort"> Price: High to Low</label>
+        </div>
+        <div class="filter-group">
+            <h3>Categories</h3>
+            <label><input type="checkbox"> Templates</label>
+            <label><input type="checkbox"> Landing pages</label>
+            <label><input type="checkbox"> UI kits</label>
+            <label><input type="checkbox"> SaaS tools</label>
+            <label><input type="checkbox"> Scripts</label>
+            <label><input type="checkbox"> AI bots</label>
+            <label><input type="checkbox"> No-code</label>
+        </div>
+        <div class="filter-group">
+            <h3>Languages / Stack</h3>
+            <label><input type="checkbox"> Javascript</label>
+            <label><input type="checkbox"> Python</label>
+            <label><input type="checkbox"> HTML</label>
+            <label><input type="checkbox"> CSS</label>
+            <label><input type="checkbox"> React</label>
+            <label><input type="checkbox"> C</label>
+        </div>
+        <div class="filter-group">
+            <h3>Price Range</h3>
+            <input type="range" min="0" max="1000" />
+        </div>
+        <div class="filter-group">
+            <h3>Rating</h3>
+            <label><input type="checkbox"> 5 stars</label>
+            <label><input type="checkbox"> 4 stars & up</label>
+            <label><input type="checkbox"> 3 stars & up</label>
+            <label><input type="checkbox"> 2 stars & up</label>
+        </div>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Product</h2>
+                <button id="closeModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="Type here... (min. 3 letters)" />
+
+                <label for="description">Description</label>
+                <textarea id="description" placeholder="Type here... (min. 10 letters)"></textarea>
+
+                <label for="categories">Categories</label>
+                <select id="categories" aria-required="true">
+                    <option value="" disabled selected>Select option</option>
+                    <option value="bot">Bot</option>
+                    <option value="api">API</option>
+                    <option value="micro_saas">MicroSaaS</option>
+                    <option value="automation">Automation Template</option>
+                    <option value="script">Script</option>
+                    <option value="integration">Integration</option>
+                    <option value="digital_business">Digital Business</option>
+                    <option value="template">Template</option>
+                    <option value="dashboard">Dashboard</option>
+                </select>
+
+                <label for="languages">Languages/Stack</label>
+                <select id="languages" aria-required="true">
+                    <option value="" disabled selected>Select option</option>
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="go">Go</option>
+                    <option value="nodejs">Node.js</option>
+                    <option value="java">Java</option>
+                    <option value="php">PHP</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="react">React</option>
+                    <option value="vuejs">Vue.js</option>
+                    <option value="angular">Angular</option>
+                    <option value="rust">Rust</option>
+                </select>
+
+                <label for="github">Github Repository</label>
+                <input type="text" id="github" placeholder="Type here... (Optional)" />
+
+                <label for="pricing">Pricing</label>
+                <input type="text" id="pricing" placeholder="Type here... (Minimum 0€)" />
+
+                <div class="button-with-hint">
+                    <button id="addVideoBtn" class="btn btn-secondary" type="button">Add video link</button>
+                    <span class="input-hint">(Optional)</span>
+                </div>
+                <div id="videoLinksContainer"></div>
+
+                <div class="button-with-hint">
+                    <button id="addImageBtn" class="btn btn-secondary" type="button">Add image</button>
+                    <span class="input-hint">(Min. 1)</span>
+                </div>
+                <input type="file" id="imageUpload" accept="image/*" multiple hidden />
+
+                <div class="image-placeholder-container">
+                    <div class="image-placeholder"><small>Image 1</small></div>
+                    <div class="image-placeholder"><small>Image 2</small></div>
+                    <div class="image-placeholder"><small>Image 3</small></div>
+                    <div class="image-placeholder"><small>Image 4</small></div>
+                </div>
+
+                <div class="button-with-hint">
+                    <button id="addFileBtn" class="btn btn-secondary" type="button">Add file</button>
+                    <span class="input-hint">(Min. 1)</span>
+                </div>
+                <input type="file" id="fileUpload" multiple hidden />
+
+                <div class="file-list"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="cancelBtn" class="btn btn-secondary" type="button">Cancel</button>
+                <button id="createProductBtn" class="btn btn-primary" type="submit">Create product</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div id="hamb"></div>
+    <div id="avat"></div>
+</body>
+    <script src="../components/js/shared-components.js" defer></script>
+
+    <script type="module" src="../registrations/auth.js" defer></script>
+
+    <script type="module" src="script.js" defer></script>
+
+    <script type="module" src="product-render.js" defer></script>
+
+    <script type="module"src="product-actions.js"></script>
+</html>

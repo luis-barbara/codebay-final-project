@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="CodeBay is a digital asset marketplace where developers, makers, and agencies sell ready-to-use bots, APIs, microSaaS, and automations. Discover plug-and-play solutions to launch faster, cut costs, and scale without building from scratch.">
+    <title>CodeBay — Buy & Sell Ready-to-Use Digital Assets | APIs, Bots, MicroSaaS & More</title>
+    <link rel="icon" type="image/png" href="../codebay-favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- CSS Paths -->
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/card.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/header_logged_out.css">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="signup.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+
+    <!-- Other -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+
+<body>
+    <div id="head"></div>
+
+    <main>
+        <div class="container">
+            <div class="signup-box">
+                <div class="upper-text">
+                    <h1>Create your CodeBay account</h1>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <div class="icon-input">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="name" placeholder="Full Name" required>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="icon-input">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="text" id="email" placeholder="you@example.com" required>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="icon-input">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" placeholder="Your Password" required>
+                            <i class="fa-solid fa-eye" id="togglePassword"></i>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <div class="icon-input">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+                            <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="signup-btn" disabled>Create account</button>
+                </form>
+
+                <div class="signin-link">
+                    Already have an account? <a href="signin.html">Sign in</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="foot"></div>
+
+    <script src="../components/js/shared-components.js"></script>
+    <script src="signup.js"></script>
+</body>
+
+</html>

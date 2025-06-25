@@ -1,0 +1,588 @@
+body {
+    background-color: #0D1116;
+    margin: 0;
+    font-family: sans-serif;
+    color: #c8c9cd;
+    min-height: 100vh;
+}
+
+#modal_btnbox {
+    margin-left: auto;
+}
+
+#foot {
+    margin-bottom: 0;
+}
+
+#openModalBtn {
+    padding: 0.5rem 4rem;
+    background-color: #238636;
+    border: none;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#openModalBtn:hover {
+    background-color: #62a468;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.modal-content {
+    background-color: #05071E;
+    border: 0.6px solid #6b6e72;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 0.6px solid #6b6e72;
+    flex-shrink: 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #e6edf3;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+}
+
+.modal-body label {
+    font-size: 14px;
+    margin-bottom: -8px;
+}
+
+.modal-body input[type="text"],
+.modal-body textarea,
+.modal-body select {
+    width: 100%;
+    padding: 12px;
+    border: 0.6px solid #6b6e72;
+    border-radius: 6px;
+    background-color: #0D1116;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.modal-body input[type="text"]::placeholder,
+.modal-body textarea::placeholder {
+    color: #C8C9CD;
+}
+
+.modal-body textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.modal-body input[type="text"]:focus,
+.modal-body textarea:focus,
+.modal-body select:focus {
+    border: 2px solid #5A69EA;
+    box-shadow: 0 0 8px #5A69EA;
+    outline: none;
+}
+
+.modal-body select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23C8C9CD' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 1em;
+}
+
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #238636;
+    color: white;
+}
+
+.btn-primary :hover {
+    background-color: #ffffff;
+}
+
+.btn-secondary {
+    background-color: #404348;
+    color: white;
+}
+
+.modal-body .btn-secondary {
+    align-self: flex-start;
+}
+
+#videoLinksContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+/* NOVAS CLASSES ADICIONADAS */
+.button-with-hint {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    align-self: flex-start;
+}
+
+.input-hint {
+    color: #C8C9CD;
+    font-size: 14px;
+}
+/* FIM DAS NOVAS CLASSES */
+
+.image-placeholder-container {
+    display: flex;
+    gap: 16px;
+}
+
+.image-placeholder {
+    flex: 1;
+    height: 120px;
+    background-color: #0D1116;
+    border: 1px dashed #30363d;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #C8C9CD;
+    font-weight: bold;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.image-placeholder img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.file-list p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.file-list i {
+    margin-right: 8px;
+    color: #8b949e;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 0.6px solid #6b6e72;
+    flex-shrink: 0;
+}
+
+/* ... Restante do teu CSS ... */
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-icon-img {
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+}
+
+.page-layout {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 20px;
+    max-width: 1800px;
+    margin: 0 auto;
+    gap: 20px;
+    flex: 1;
+    min-height: 100vh;
+}
+
+.filters-panel {
+    width: 250px;
+    background-color: #14161c;
+    padding: 20px;
+    border: 1px solid #1f2128;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group h3 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.filter-group label {
+    display: block;
+    margin: 4px 0;
+    cursor: pointer;
+}
+
+.main-content {
+    flex: 1;
+    min-height: 95vh;
+}
+
+.wishlist-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 20px;
+}
+
+.wishlist-header h1 {
+    color: #fff;
+    font-size: 2rem;
+}
+
+.card.removing {
+    animation: fadeOut 0.3s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    background-color: #1a1c23;
+    color: white;
+    border: 1px solid #2a2d35;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.search-bar:focus {
+    border: 2px solid #5A69EA;
+    box-shadow: 0 0 8px #5A69EA;
+    outline: none;
+}
+
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.toggle-filters {
+    display: none;
+    background-color: #5A69EA;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.toggle-filters :hover {
+    background-color: #3c4ee0;
+}
+
+.sidebar.filters-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 80%;
+    max-width: 320px;
+    background-color: #14161c;
+    padding: 20px;
+    z-index: 1001;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.sidebar.filters-sidebar.show {
+    transform: translateX(0);
+}
+
+#filters-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.hidden {
+    display: none;
+}
+
+#filters-overlay.show {
+    display: block;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #05071E;
+    color: white;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    border: 0.6px solid #6B6E72;
+    overflow: hidden;
+    font-size: 14px;
+    position: relative;
+}
+
+.preview {
+    background-color: #05071E;
+    padding: 20px 20px 0 20px;
+}
+
+.preview .image-placeholder {
+    width: 100%;
+}
+
+.details {
+    padding: 20px;
+}
+
+.details .heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.details .description {
+    color: #aaa;
+    margin-bottom: 18px;
+}
+
+.details .tech {
+    color: #aaa;
+    margin-bottom: 18px;
+}
+
+.details .price-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.details .price {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.details .rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.details .rating .stars {
+    color: gold;
+}
+
+.button {
+    background-color: #5A69EA;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: #3c4ee0;
+}
+
+.error-message {
+    color: #ff5252;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 1em;
+}
+
+/* --- RESPONSIVIDADE --- */
+
+@media (max-width: 1024px) {
+    .page-layout {
+        flex-direction: column;
+    }
+    .main-content {
+        order: 1;
+    }
+    .toggle-filters {
+        display: block !important;
+    }
+    .filters-panel {
+        width: 100%;
+        order: 2;
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-bar {
+        font-size: 0.9rem;
+    }
+    .filters-panel {
+        font-size: 13px;
+    }
+    .details .heading {
+        font-size: 16px;
+    }
+    .details .price {
+        font-size: 18px;
+    }
+    .wishlist-header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    .wishlist-header h1 {
+        margin-bottom: 0;
+        font-size: 1.8rem;
+    }
+    #modal_btnbox {
+        margin-left: 0;
+        width: 100%;
+    }
+    #openModalBtn {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
+    .toggle-filters {
+        display: block !important;
+        width: 100%;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
+    .page-layout {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    .modal-body {
+        padding: 16px;
+    }
+    .modal-header,
+    .modal-footer {
+        padding: 16px;
+    }
+    .image-placeholder-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-layout {
+        padding: 10px;
+    }
+    .card-grid {
+        gap: 15px;
+    }
+    .wishlist-header h1 {
+        font-size: 1.6rem;
+    }
+    .modal-footer {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+    .modal-footer .btn {
+        width: 100%;
+    }
+}

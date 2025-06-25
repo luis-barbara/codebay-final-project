@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+  content="CodeBay is a digital asset marketplace where developers, makers, and agencies sell ready-to-use bots, APIs, microSaaS, and automations. Discover plug-and-play solutions to launch faster, cut costs, and scale without building from scratch.">
+  <title>CodeBay — Buy & Sell Ready-to-Use Digital Assets | APIs, Bots, MicroSaaS & More</title>
+  <link rel="icon" type="image/png" href="../codebay-favicon.png">
+  <link rel="stylesheet" href="../components/css/header_logged_in.css">
+  <link rel="stylesheet" href="../components/css/footer.css">
+  <link rel="stylesheet" href="../components/css/card.css">
+  <link rel="stylesheet" href="../components/css/both_menus.css">
+  <link rel="stylesheet" href="../components/css/notifications.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div id="head"></div>
+
+  <div class="full_container">
+  <div class="product-page">
+    <div class="product-header">
+      <div class="left-column">
+        <div class="product-image">
+          <img src="https://img.youtube.com/vi/7V5jdOjWVU4/maxresdefault.jpg" alt="Product Image">
+        </div>
+
+        <div class="button-group">
+          <div class="buttons-row">
+            <button>Images</button>
+            <button>Videos</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="product-details">
+      <div class="author">
+        <a href="#" style="text-decoration: none;"><img src="../components/images/default_avatar.webp"
+            alt="Author" class="author-avatar"></a>
+        <a href="#" style="text-decoration: none;"><span class="author-name">John Doe</span></a>
+        <span class="verified">✔</span>
+      </div>
+
+      <h1 class="product-title">Website Template</h1>
+      <p class="product-description">Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit
+        orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+      <div class="rating-price">
+        <div class="rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-value">5.0</span>
+          <span class="reviews">(40 reviews)</span>
+        </div>
+        <div class="price-box">
+          <div class="price-container">
+            <span class="price-label">Current Price</span>
+            <span class="price">$315.26</span>
+          </div>
+          <button class="buy-btn">Buy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="secundary_info">
+    <div class="files">
+      <h2>Files</h2>
+      <ul>
+        <li>
+          <span class="file-name">index.html</span>
+        </li>
+        <li>
+          <span class="file-name">main.py</span>
+        </li>
+        <li>
+          <span class="file-name">styles.css</span>
+        </li>
+        <li>
+          <span class="file-name">main.js</span>
+        </li>
+        <li>
+          <span class="file-name">template.html</span>
+        </li>
+      </ul>
+
+
+    </div>
+
+    <div class="readme">
+      <h2>Readme</h2>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget
+        suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget
+        suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget
+        suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+      <p>Vestibulum faucibus eget erat eget pretium. Donec commodo convallis eget suscipit orci. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit.</p>
+    </div>
+
+  </div>
+
+
+  <div class="suggestions"> 
+    <h2>Suggestions</h2>
+    <div class="card-grid"> 
+    </div>        
+  </div>
+</div>
+
+  <div id="foot"></div>
+  <div id="hamb"></div>
+  <div id="avat"></div>
+
+  <!-- Modal container -->
+<!-- Popup container -->
+<div id="media-popup" class="popup-container hidden-popup">
+  <div class="popup-content">
+    <button class="popup-close-btn">&times;</button>
+    <div class="popup-body">
+      <!-- Conteúdo do popup será injetado aqui via JS -->
+    </div>
+  </div>
+</div>
+
+
+</body>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="../components/js/shared-components.js"></script>
+<script type="module" src="script.js"></script>
+<script type="module" src="recomendations.js"></script>
+
+</html>

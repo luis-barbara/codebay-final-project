@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+    content="CodeBay is a digital asset marketplace where developers, makers, and agencies sell ready-to-use bots, APIs, microSaaS, and automations. Discover plug-and-play solutions to launch faster, cut costs, and scale without building from scratch.">
+    <title>CodeBay — Buy & Sell Ready-to-Use Digital Assets | APIs, Bots, MicroSaaS & More</title>
+    <link rel="icon" type="image/png" href="../codebay-favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../components/css/header_logged_in.css">
+    <link rel="stylesheet" href="../components/css/footer.css">
+    <link rel="stylesheet" href="../components/css/both_menus.css">
+    <link rel="stylesheet" href="../components/css/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="head"></div>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="header-title">Coming soon...</h1>
+            <div class="dash-date-picker" id="datePicker">
+                <button class="dash-date-picker__button" id="datePickerButton">
+                    <span id="datePickerLabel"></span>
+                    <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div class="dash-date-picker__dropdown" id="datePickerDropdown">
+                    </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+
+            <div class="main-column">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Total revenue</h2>
+                            <p class="card-value" id="total-revenue-value">$0 <span class="percentage" id="total-revenue-perc">0%</span></p>
+                        </div>
+                        <div class="card-legend">
+                            <span class="legend-item"><span class="legend-dot" style="background-color: #C475E8;"></span>Revenue</span>
+                        </div>
+                    </div>
+                    <div class="chart-container-large">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card card-fill-height">
+                    <h2 class="card-value" style="font-size: 1.25rem; margin-bottom: 1rem;">Last Orders</h2>
+                    <div class="table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>#Order</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Product</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-column">
+                <div class="card">
+                    <h2 class="card-title">Total orders</h2>
+                    <p class="card-value" id="total-orders-value">0 <span class="percentage" id="total-orders-perc">0%</span></p>
+                    <div class="chart-container-small">
+                        <canvas id="ordersChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Total clients</h2>
+                    <p class="card-value" id="total-clients-value">0 <span class="percentage" id="total-clients-perc">0%</span></p>
+                    <div class="chart-container-small">
+                        <canvas id="clientsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card quick-stats-card">
+                    <div class="stat-item">
+                        <div>
+                            <h3 class="card-title">New clients</h3>
+                            <p class="stat-item-value" id="new-clients-value">0 <span class="percentage" id="new-clients-perc">0%</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div>
+                            <h3 class="card-title">Regular clients</h3>
+                            <p class="stat-item-value" id="regular-clients-value">0 <span class="percentage" id="regular-clients-perc">0%</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div>
+                            <h3 class="card-title">Different products sold</h3>
+                            <p class="stat-item-value" id="products-sold-value">0 <span class="percentage" id="products-sold-perc">0%</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div>
+                            <h3 class="card-title">Money per order</h3>
+                            <p class="stat-item-value" id="money-per-order-value">$0 <span class="percentage" id="money-per-order-perc">0%</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="foot"></div>
+    <div id="hamb"></div>
+    <div id="avat"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

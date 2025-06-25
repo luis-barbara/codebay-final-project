@@ -1,0 +1,231 @@
+// frontend/my_products/product-actions.js
+
+import { authFetch } from '../registrations/auth.js'; 
+
+
+
+function getModalInputValue(id) {
+    return document.getElementById(id)?.value?.trim() || '';
+}
+
+
+function setModalInputValue(id, value) {
+    const input = document.getElementById(id);
+    if (input) input.value = value;
+}
+
+
+export function openEditModal(product, validateFormCallback) {
+    document.getElementById("modalOverlay").style.display = "flex";
+
+    setModalInputValue("title", product.title);
+    setModalInputValue("description", product.description);
+    setModalInputValue("categories", product.category);
+    setModalInputValue("languages", product.language);
+    setModalInputValue("pricing", product.price);
+    setModalInputValue("github", product.github_repo || ""); 
+
+    const createProductBtn = document.getElementById("createProductBtn"); 
+    createProductBtn.dataset.mode = 'edit';
+    createProductBtn.dataset.productId = product.id;
+    createProductBtn.textContent = "Edit Product"; 
+
+    if (typeof validateFormCallback === 'function') {
+        validateFormCallback(); 
+    }
+    
+}
+
+
+export async function updateProduct(productId, updatedData, callbacks) {
+    const { closeModal, handleAfterCreate, setButtonState } = callbacks;
+
+    setButtonState(true, "Updating..."); 
+
+    const MIN_TITLE_LENGTH = 3;
+    const MIN_DESC_LENGTH = 10; 
+   
+    if (updatedData.title.length < MIN_TITLE_LENGTH) { alert(`Title must be at least ${MIN_TITLE_LENGTH} characters.`); setButtonState(false, "Edit Product"); return; }
+    if (updatedData.description.length < MIN_DESC_LENGTH) { alert(`Description must be at least ${MIN_DESC_LENGTH} characters.`); setButtonState(false, "Edit Product"); return; }
+    if (updatedData.category === '') { alert('Category is required.'); setButtonState(false, "Edit Product"); return; }
+    if (updatedData.language === '') { alert('Language is required.'); setButtonState(false, "Edit Product"); return; }
+    if (isNaN(updatedData.price) || updatedData.price < 0) { alert('Price must be a positive number.'); setButtonState(false, "Edit Product"); return; }
+
+    try {
+        const response = await authFetch(`http://localhost:8000/api/marketplace/products/${productId}/`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error("Backend error during product update:", response.status, errorData);
+            throw new Error(errorData.detail || JSON.stringify(errorData) || "Failed to update product");
+        }
+
+        alert("Product updated successfully!");
+        closeModal(); 
+        await handleAfterCreate(); 
+
+    } catch (error) {
+        console.error("Error updating product:", error);
+        alert(`Error updating product: ${error.message}`);
+    } finally {
+        setButtonState(false, "Create Product"); 
+        document.getElementById("createProductBtn").dataset.mode = 'create';
+        delete document.getElementById("createProductBtn").dataset.productId;
+        
+    }
+}
+
+
+export async function deleteProduct(productId, callbacks) {
+    const { closeModal, handleAfterCreate } = callbacks;
+
+    const confirmed = confirm("Are you sure you want to delete this product?");
+    if (!confirmed) return;
+
+    try {
+        const response = await authFetch(`http://localhost:8000/api/marketplace/products/${productId}/`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error("Backend error during product deletion:", response.status, errorData);
+            throw new Error(errorData.detail || JSON.stringify(errorData) || "Failed to delete product");
+        }
+
+        alert("Product deleted successfully!");
+        closeModal(); 
+
+        document.getElementById(`product-${productId}`)?.remove(); 
+        
+        await handleAfterCreate(); 
+
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        alert(`Error deleting product: ${error.message}`);
+    }
+}
+
+
+export function shareProduct(productId) {
+    const productUrl = `http://localhost:5500/frontend/product_details/index.html?id=${productId}`; 
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'Check out this product on CodeBay!',
+            url: productUrl
+        }).then(() => {
+            console.log('Product shared successfully!');
+        }).catch(err => {
+            console.error("Error sharing product:", err);
+            navigator.clipboard.writeText(productUrl)
+                .then(() => alert("Product link copied to clipboard!"))
+                .catch(() => alert("Failed to copy the product link."));
+        });
+    } else {
+        prompt('Copy the link to share this product:', productUrl);
+    }
+}
+
+
+export async function publishProduct(productId, callbacks) {
+    const { handleAfterAction } = callbacks; 
+
+    const confirmed = confirm("Tem certeza que quer publicar este produto? Pode ser necessário completar o onboarding do Stripe.");
+    if (!confirmed) return;
+
+    try {
+        const response = await authFetch(`http://127.0.0.1:8000/api/marketplace/products/${productId}/publish/`, {
+            method: "POST",
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            console.error("Backend error during product publish:", response.status, responseData);
+            const errorMessage = responseData.onboarding_url 
+                                ? `Para publicar, por favor complete o seu registo no Stripe: ${responseData.onboarding_url}`
+                                : responseData.detail || JSON.stringify(responseData) || "Falha ao publicar o produto.";
+            throw new Error(errorMessage);
+        }
+
+        if (responseData.onboarding_url) {
+            alert("Redirecionando para o Stripe para completar o registo da conta...");
+            window.location.href = responseData.onboarding_url;
+        } else {
+            alert("Produto publicado com sucesso!");
+        }
+        
+        await handleAfterAction(); 
+
+    } catch (error) {
+        console.error("Erro ao publicar produto:", error);
+        alert(`Erro ao publicar produto: ${error.message}`);
+    }
+}
+
+
+export async function unpublishProduct(productId, callbacks) {
+    const { handleAfterAction } = callbacks;
+
+    const confirmed = confirm("Tem certeza que quer despublicar este produto? Ele deixará de aparecer no marketplace.");
+    if (!confirmed) return;
+
+    try {
+        const response = await authFetch(`http://127.0.0.1:8000/api/marketplace/products/?id=${productId}/unpublish/`, {
+            method: "POST",
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            console.error("Backend error during product unpublish:", response.status, responseData);
+            throw new Error(responseData.detail || JSON.stringify(responseData) || "Falha ao despublicar o produto.");
+        }
+
+        alert("Produto despublicado com sucesso!");
+        await handleAfterAction(); 
+
+    } catch (error) {
+        console.error("Erro ao despublicar produto:", error);
+        alert(`Erro ao despublicar produto: ${error.message}`);
+    }
+}
+
+
+export async function startStripeOnboarding(id) {
+  const yourAccessToken = localStorage.getItem("accessToken"); 
+
+  if (!yourAccessToken) {
+    alert("Acesso não autorizado. Faça login novamente.");
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:8000/api/payments/stripe/onboarding/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${yourAccessToken}`,
+        'Content-Type': 'application/json'      
+      },
+      body: JSON.stringify({ product_id: id})
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      window.location.href = data.url; 
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Erro ao iniciar onboarding Stripe:", errorData);
+      alert("Erro ao iniciar integração com o Stripe.");
+    }
+
+  } catch (error) {
+    console.error("Erro na requisição de onboarding:", error);
+    alert("Erro ao conectar ao Stripe. Tente novamente.");
+  }
+}

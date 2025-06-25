@@ -1,0 +1,221 @@
+.overlay { 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #020408;
+    color: #c8c9cd;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-right: 0.6px solid #c8c9cd;
+}
+
+.sidebar.show {
+    transform: translateX(0);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #c8c9cd;
+    cursor: pointer;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-menu li {
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.sidebar-menu li a i {
+    margin-right: 16px;
+}
+
+.hamb-sidebar__submenu-toggle span i {
+    margin-right: 16px;
+}
+
+
+/* Aplica text-decoration: none aos links dentro do menu */
+.sidebar-menu li a {
+    color: #c8c9cd; /* Garante que o texto dos links tenha a cor padrão */
+    text-decoration: none; /* Remove o sublinhado */
+    display: flex;
+    align-items: center; /* Para alinhar os ícones e o texto */
+}
+
+.sidebar-menu li > i {
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+.has-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.submenu {
+    padding-left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Aplica text-decoration: none aos links dentro do menu */
+.sidebar-menu li a {
+    color: #c8c9cd; /* Garante que o texto dos links tenha a cor padrão */
+    text-decoration: none; /* Remove o sublinhado */
+    display: flex;
+    align-items: center; /* Para alinhar os ícones e o texto */
+}
+.marker-remove {
+    display: block;
+    color: #9a9c9f;
+}
+
+.has-submenu div {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Sidebar da direita */
+.avatar-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 280px;
+    height: 100%;
+    background-color: #020408;
+    color: #c8c9cd;
+    z-index: 999;
+    transform: translateX(100%);
+    transition: transform 0.6s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-left: 0.6px solid #c8c9cd;
+}
+
+.avatar-sidebar.show {
+    transform: translateX(0);
+}
+
+.avatar-sidebar .logo-icon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-sidebar .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#filters-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #020408;
+    color: #c8c9cd;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-right: 0.6px solid #c8c9cd;
+}
+
+#filters-sidebar.show {
+    transform: translateX(0);
+}
+
+.hamb-sidebar__menu-item--has-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    cursor: pointer;
+}
+
+.hamb-sidebar__submenu-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.hamb-sidebar__submenu-chevron {
+    transition: transform 0.3s ease-in-out;
+    font-size: 14px;
+}
+
+.hamb-sidebar__submenu-list {
+    list-style: none;
+    padding-left: 24px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+
+.hamb-sidebar__menu-item--has-submenu.submenu-is-open .hamb-sidebar__submenu-chevron {
+    transform: rotate(180deg);
+}
+
+.hamb-sidebar__menu-item--has-submenu.submenu-is-open .hamb-sidebar__submenu-list {
+    max-height: 200px;
+    margin-top: 15px;
+}
