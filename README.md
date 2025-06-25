@@ -53,16 +53,16 @@ CodeBay is a digital marketplace where developers and creators can buy and sell 
 ├── media/
 │   └── products/
 │       └── images/
-│       |    └── 2025/
-|       └── thumbnails/
-|
+│        │    └── 2025/
+│        └── thumbnails/
+│ 
 ├── payments/
-|      ├── __pycache__/
-|      └── migrations/
-|
+│       ├── __pycache__/
+│       └── migrations/
+│ 
 ├── storage/
-|      ├── __pycache__/
-|      └── migrations/
+│       ├── __pycache__/
+│       └── migrations/
 ├── frontend/
 ├── Contact/
 ├── Wishlist/
