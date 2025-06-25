@@ -1,6 +1,7 @@
 // frontend/components/js/shared-components.js
 
 
+
 // Update copyright year
 async function loadCopyright() {
     const year = new Date().getFullYear();
@@ -248,3 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+
+
+
+

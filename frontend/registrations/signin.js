@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             // Call the centralized saveTokens function from auth.js
-            saveTokens(data.access, data.refresh); // <--- THIS IS THE CRITICAL CHANGE
+            saveTokens(data.access, data.refresh); 
 
             window.location.href = '../homepage/index.html';
 

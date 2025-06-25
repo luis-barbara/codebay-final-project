@@ -81,6 +81,12 @@
     border: none;
   }
 
+  .card-details:hover {
+    background-color: #7E91F3;
+  }
+
+
+
   .button:hover {
     background-color: #3c4ee0;
   }
