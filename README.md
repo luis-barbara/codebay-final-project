@@ -16,51 +16,74 @@ CodeBay is a digital marketplace where developers and creators can buy and sell 
 - **Backend**: Django
 - **Database**: PostgreSQL
 - **Payments**: Stripe API
-- **Messaging**: GetStream API
 - **Containerization**: Docker + Docker Compose
-- **Testing**: Pytest
 - **Dependency Management**: Poetry
 
 ## Project Structure
 ```bash
-├── products/                                   # Django app for product management
-│   ├── migrations/                             # Database migrations
-│   ├── templates/                              # HTML templates for rendering views
-│   │   ├── products/                           # Templates related to product management
-│   │   │   ├── product_confirm_delete.html     # Confirmation page for deleting a product
-│   │   │   ├── product_list.html               # Page listing all products
-│   │   │   ├── product_update.html             # Form for updating an existing product
-│   │   │   ├── create_product.html             # Form for creating a new product
-│   │   │   ├── product_detail.html             # Single product detail view
-│   │   │   ├── checkout_success.html           # Stripe checkout success page
-│   │   ├── registration/                       # Authentication-related templates
-│   │   │   ├── signin.html                     # User login page
-│   │   │   ├── signup.html                     # User signup page
-│   │   ├── base.html                           # Base template for consistent styling
-│   ├── tests/                                  # Unit tests
-│   ├── admin.py                                # Django Admin configuration
-│   ├── apps.py                                 # App configuration
-│   ├── forms.py                                # Form handling logic
-│   ├── stripe_service.py                       # Stripe payment logic
-│   ├── getstream_service.py                    # GetStream messaging logic
-│   ├── models.py                               # Database models
-│   ├── urls.py                                 # URL routing
-│   ├── views.py                                # Application views
-│ 
-├── codebay/                                    # Django project settings
-│   ├── settings.py                             # Project settings
-│   ├── urls.py                                 # Project-wide URLs
-│   ├── wsgi.py                                 # WSGI config
-│ 
-├── static/                                     # Static files
-├── docker-compose.yml                          # Docker Compose config
-├── Dockerfile                                  # Docker setup
-├── Makefile                                    # Helper commands
-├── LICENSE                                     # MIT License
-├── poetry.lock                                 # Poetry lockfile
-├── pyproject.toml                              # Poetry config
-├── pytest.ini                                  # Pytest config
-└── README.md                                   # This file
+.
+├── .DS_Store
+├── .devcontainer/
+│   └── devcontainer.json
+├── .dockerignore
+├── .env
+├── .gitignore
+├── LICENSE
+├── Makefile
+├── NOTES.md
+├── README.md
+├── backend/
+│   ├── Dockerfile
+├── accounts/
+│   ├── __pycache__/
+│   ├── defaults/
+│   └── migrations/
+│       └── __pycache__/
+├── chat/
+│   ├── __pycache__/
+│   └── migrations/
+│       └── __pycache__/
+├── codebay/
+│   └── __pycache__/
+├── logs/
+├── marketplace/
+│   ├── __pycache__/
+│   └── migrations/
+│       └── __pycache__/
+├── media/
+│   └── products/
+│       └── images/
+│       |    └── 2025/
+|       └── thumbnails/
+|
+├── payments/
+|      ├── __pycache__/
+|      └── migrations/
+|
+├── storage/
+|      ├── __pycache__/
+|      └── migrations/
+├── frontend/
+├── Contact/
+├── Wishlist/
+├── about/
+├── analytics/
+├── components/
+│   ├── css/
+│   ├── images/
+│   └── js/
+├── homepage/
+├── my_products/
+├── myorders/
+├── myprofile/
+├── product_details/
+├── registrations/
+├── settings/
+│   ├── css/
+│   └── js/
+├── stripe/
+├── support/
+├── docker-compose.yml
 ```
 
 ## 🚀 Features
@@ -104,7 +127,7 @@ Before you begin, ensure you have the following installed:
 |----------------|----------------------|
 | **Frontend**   | Html, Css, Javascript|
 | **Backend**    | Node.js, Express     |
-| **Database**   | MongoDB (Atlas)      |
+| **Database**   | Postgres             |
 | **Auth**       | JWT, OAuth 2.0       |
 | **Storage**    | AWS S3 + CloudFront  |
 
@@ -151,8 +174,7 @@ POSTGRES_USERNAME=your_username
 POSTGRES_PASSWORD=your_password
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
-OPENAI_API_KEY=your_openai_key
-DJANGO_DEBUG=True
+DJANGO_DEBUG=False
 ```
 Make sure to replace `yourpassword` and `your_openai_api_key` with your actual PostgreSQL password and OpenAI API key.
 
